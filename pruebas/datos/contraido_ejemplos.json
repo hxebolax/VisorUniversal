@@ -1,0 +1,588 @@
+{
+ "alfabeto": {
+  "#": "3456",
+  "%": "456",
+  "&": "12346",
+  "'": "4",
+  "*": "256",
+  "+": "235",
+  ",": "2",
+  "-": "36",
+  ".": "3",
+  "1": "16",
+  "2": "126",
+  "3": "146",
+  "4": "1456",
+  "5": "156",
+  "6": "1246",
+  "7": "12456",
+  "8": "1256",
+  "9": "246",
+  ":": "25",
+  ";": "23",
+  "=": "2356",
+  ">": "356",
+  "?": "26",
+  "@": "5",
+  "P": "1234",
+  "Q": "12345",
+  "Z": "1356",
+  "\\": "123456",
+  "^": "45",
+  "a": "1",
+  "b": "12",
+  "c": "14",
+  "d": "145",
+  "e": "15",
+  "f": "124",
+  "g": "1245",
+  "h": "125",
+  "i": "24",
+  "j": "245",
+  "k": "13",
+  "l": "123",
+  "m": "134",
+  "n": "1345",
+  "o": "135",
+  "p": "1234",
+  "q": "12345",
+  "r": "1235",
+  "s": "234",
+  "t": "2345",
+  "u": "136",
+  "v": "1236",
+  "w": "2456",
+  "x": "1346",
+  "y": "13456",
+  "z": "1356",
+  "{": "21",
+  "}": "35",
+  "Ì": "345",
+  "á": "12356",
+  "é": "2346",
+  "í": "34",
+  "ó": "346",
+  "ú": "23456",
+  "⠈": "4"
+ },
+ "ejemplos": [
+  [
+   "ase-",
+   "&e-"
+  ],
+  [
+   "sinados",
+   "s}49"
+  ],
+  [
+   "asesi-",
+   "&6i-"
+  ],
+  [
+   "nados",
+   "n49"
+  ],
+  [
+   "asesina-",
+   "&6}a-"
+  ],
+  [
+   "dos",
+   "d9"
+  ],
+  [
+   "ella",
+   "\\"
+  ],
+  [
+   "ellas",
+   "\\&"
+  ],
+  [
+   "él",
+   "é"
+  ],
+  [
+   "un",
+   "u"
+  ],
+  [
+   "unos",
+   "u9"
+  ],
+  [
+   "las",
+   "{&"
+  ],
+  [
+   "españas",
+   "{6pa7&"
+  ],
+  [
+   "algunas",
+   "kn&"
+  ],
+  [
+   "algunos",
+   "kn9"
+  ],
+  [
+   "breve",
+   ";v"
+  ],
+  [
+   "breves",
+   ";v6"
+  ],
+  [
+   "absolutas",
+   "ab&"
+  ],
+  [
+   "concreto",
+   "::t"
+  ],
+  [
+   "concretos",
+   "::t9"
+  ],
+  [
+   "concreta",
+   "::ta"
+  ],
+  [
+   "concretas",
+   "::t&"
+  ],
+  [
+   "estaba",
+   "6b"
+  ],
+  [
+   "estabas",
+   "6bs"
+  ],
+  [
+   "estaban",
+   "6bn"
+  ],
+  [
+   "anterior",
+   "3r"
+  ],
+  [
+   "anteriores",
+   "3r6"
+  ],
+  [
+   "anterioridad",
+   "3r4"
+  ],
+  [
+   "anterioridades",
+   "3r46"
+  ],
+  [
+   "ocasión",
+   "o#"
+  ],
+  [
+   "ocasional",
+   "o#l"
+  ],
+  [
+   "está",
+   "6t"
+  ],
+  [
+   "están",
+   "6n"
+  ],
+  [
+   "buenas",
+   "b&"
+  ],
+  [
+   "buenos",
+   "b9"
+  ],
+  [
+   "cuantos",
+   "cu9"
+  ],
+  [
+   "cuantas",
+   "cu&"
+  ],
+  [
+   "precomponer",
+   "+-px["
+  ],
+  [
+   "reconquista",
+   "r:qista"
+  ],
+  [
+   "sobreinterpretar",
+   ";y+t1"
+  ],
+  [
+   "reinterpretación",
+   "ry+ta#"
+  ],
+  [
+   "disconforme",
+   "*:f5me"
+  ],
+  [
+   "recompensa",
+   "r-p?sa"
+  ],
+  [
+   "interdisciplinar",
+   "y*ciplin1"
+  ],
+  [
+   "preconsular",
+   "+:sul1"
+  ],
+  [
+   "exconvicto",
+   "x:victo"
+  ],
+  [
+   "comprensión",
+   "-+ns#"
+  ],
+  [
+   "intercontinental",
+   "y:t}?tk"
+  ],
+  [
+   "recompremos",
+   "r-+m9"
+  ],
+  [
+   "diferenciables",
+   "dfcb6"
+  ],
+  [
+   "influenciables",
+   "}flu?cbs"
+  ],
+  [
+   "mimbres",
+   "mÌ;s"
+  ],
+  [
+   "provincias",
+   "pv}cs"
+  ],
+  [
+   "asientos",
+   "&*t9"
+  ],
+  [
+   "tormentos",
+   "t5mt9"
+  ],
+  [
+   "asientas",
+   "&*t&"
+  ],
+  [
+   "tormentas",
+   "t5mt&"
+  ],
+  [
+   "canciones",
+   "c3c#6"
+  ],
+  [
+   "pensiones",
+   "p?s#6"
+  ],
+  [
+   "producciones",
+   "pdu#6"
+  ],
+  [
+   "asientes",
+   "&*t6"
+  ],
+  [
+   "comandos",
+   "cw3ds"
+  ],
+  [
+   "complementes",
+   "-plems"
+  ],
+  [
+   "tristemente",
+   ">istm"
+  ],
+  [
+   "pateando",
+   "pat3d"
+  ],
+  [
+   "tembleque",
+   "t2bq"
+  ],
+  [
+   "iníciate",
+   "}íct"
+  ],
+  [
+   "apreciablemente",
+   "a+ecbm"
+  ],
+  [
+   "contrario",
+   ":>r"
+  ],
+  [
+   "contrariamente",
+   ":>rm"
+  ],
+  [
+   "ocasionalmente",
+   "o#lm"
+  ],
+  [
+   "genio",
+   "g?io"
+  ],
+  [
+   "genialmente",
+   "g?ikm"
+  ],
+  [
+   "brevedad",
+   ";v4"
+  ],
+  [
+   "ansia",
+   "3sia"
+  ],
+  [
+   "ansiedad",
+   "3sie4"
+  ],
+  [
+   "condestable",
+   ":dzb"
+  ],
+  [
+   "floresta",
+   "fl5z"
+  ],
+  [
+   "paraguas",
+   "%1gu&"
+  ],
+  [
+   "imparable",
+   "Ì%1b"
+  ],
+  [
+   "prepara",
+   "+%1"
+  ],
+  [
+   "anteojos",
+   "%3oj9"
+  ],
+  [
+   "panteísmo",
+   "p%3ísmo"
+  ],
+  [
+   "constante",
+   ":st3t"
+  ],
+  [
+   "mangante",
+   "m3g3t"
+  ],
+  [
+   "quedamos",
+   "qdam9"
+  ],
+  [
+   "requemar",
+   "rqm1"
+  ],
+  [
+   "renquear",
+   "rnq1"
+  ],
+  [
+   "lloriquear",
+   "\\5iq1"
+  ],
+  [
+   "brillo",
+   ";i\\o"
+  ],
+  [
+   "cobre",
+   "co;e"
+  ],
+  [
+   "establo",
+   "6t,lo"
+  ],
+  [
+   "meseta",
+   "m6eta"
+  ],
+  [
+   "peces",
+   "pec6"
+  ],
+  [
+   "labrar",
+   "la;1"
+  ],
+  [
+   "descuadrar",
+   "d6cua*1"
+  ],
+  [
+   "roguemos",
+   "rogu29"
+  ],
+  [
+   "cuento",
+   "cu?to"
+  ],
+  [
+   "cuerpo",
+   "cu<po"
+  ],
+  [
+   "puesto",
+   "pu6to"
+  ],
+  [
+   "baobabs",
+   "baob,s"
+  ],
+  [
+   "telares",
+   "tel16"
+  ],
+  [
+   "palas",
+   "pk&"
+  ],
+  [
+   "faros",
+   "f19"
+  ],
+  [
+   "alababan",
+   "k,,3"
+  ],
+  [
+   "trinen",
+   ">}?"
+  ],
+  [
+   "tren",
+   ">?"
+  ],
+  [
+   "drenen",
+   "*??"
+  ],
+  [
+   "graben",
+   "=,?"
+  ],
+  [
+   "traben",
+   ">,?"
+  ],
+  [
+   "entren",
+   "?>?"
+  ],
+  [
+   "compren",
+   "-+?"
+  ],
+  [
+   "bosquimano",
+   "b9qÌ3o"
+  ],
+  [
+   "cuello",
+   "c8\\o"
+  ],
+  [
+   "cómo",
+   "{@w"
+  ],
+  [
+   "quién",
+   "{@qn"
+  ],
+  [
+   "show",
+   "@show"
+  ],
+  [
+   "kilo",
+   "@kilo"
+  ],
+  [
+   "ahora",
+   "@}⠈h@}"
+  ],
+  [
+   "ente",
+   "?te"
+  ],
+  [
+   "entonces",
+   "?t"
+  ],
+  [
+   "novedad",
+   "nv4"
+  ],
+  [
+   "novedades",
+   "1345–1236–"
+  ]
+ ],
+ "contraejemplos": [
+  [
+   "labrar",
+   "l,r1"
+  ],
+  [
+   "descuadrar",
+   "d6cu4r1"
+  ],
+  [
+   "roguemos",
+   "rog8m9"
+  ],
+  [
+   "cuento",
+   "c8nto"
+  ],
+  [
+   "cuerpo",
+   "c8rpo"
+  ],
+  [
+   "puesto",
+   "p8sto"
+  ]
+ ]
+}

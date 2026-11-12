@@ -1,0 +1,152 @@
+{
+  "id": "neural",
+  "nombre": "Voces neuronales de Microsoft, sin conexión",
+  "version": "1.0",
+  "contrato": 1,
+  "modulo": "motor_neural",
+  "autor": "Microsoft (el motor y las voces); Александр Линьков y la comunidad nvda.ru (el controlador del que sale este motor, GPL); el autor del visor (el adaptador)",
+  "origen": "El modo embebido de la biblioteca de voz de Microsoft (Azure Cognitive Services Speech), en su versión de 64 bits. Las voces se copian aparte y se detectan solas.",
+  "licencia": "La biblioteca y las voces son de Microsoft y llevan su licencia: hace falta tenerla, y con ella viene la clave que descifra los modelos. El paquete trae el motor, no las voces ni la clave. El adaptador es del proyecto.",
+  "descripcion": "Las voces neuronales de Microsoft funcionando DENTRO DEL EQUIPO: suenan como las de sus servicios en línea, pero sin conexión y sin que salga de aquí nada de lo que leas. Aguantan bien la velocidad alta, que es raro en una voz neuronal. El paquete no trae voces: se copian en su carpeta y aparecen solas, de cualquier idioma. Hace falta además la clave que descifra los modelos, que se pone en la carpeta «licencia».",
+  "conservar": [
+    "voces",
+    "licencia"
+  ],
+  "ajustes": [
+    {
+      "clave": "tono",
+      "clase": "deslizador",
+      "etiqueta": "&Tono de la voz, de 0 a 100:",
+      "minimo": 0,
+      "maximo": 100,
+      "defecto": 50,
+      "ayuda": "Cómo de grave o de aguda es la voz.\n\nEl 50 es el tono con el que está entrenada, y es donde mejor suena. Estas voces aguantan moverlo bastante sin volverse metálicas, más que las de trozos grabados, porque el sonido se genera entero cada vez.\n\nAun así, si buscas una voz claramente más grave o más aguda, prueba antes con otra: las siete que vienen son personas distintas y no se parecen."
+    },
+    {
+      "clave": "frecuencia",
+      "clase": "lista",
+      "etiqueta": "&Calidad del sonido:",
+      "defecto": 24000,
+      "opciones": [
+        {
+          "valor": 24000,
+          "texto": "24 kHz, la buena"
+        },
+        {
+          "valor": 16000,
+          "texto": "16 kHz"
+        },
+        {
+          "valor": 8000,
+          "texto": "8 kHz, como un teléfono"
+        }
+      ],
+      "ayuda": "Cuántas veces por segundo se mide el sonido. Cuanto más alta, más agudos se oyen.\n\n24 kHz es a lo que están hechas estas voces y lo que debes dejar puesto. Bajarlo no hace que hablen antes ni que ocupen menos: la voz se genera igual y solo suena peor.\n\nSirve para un equipo muy justo en el que el sonido se entrecorte, y poco más. La biblioteca sí sabe dar las tres, así que no se pierde nada por probarlas."
+    },
+    {
+      "clave": "estilo",
+      "clase": "lista",
+      "etiqueta": "&Estilo al hablar:",
+      "defecto": "",
+      "opciones": [
+        {
+          "valor": "",
+          "texto": "El normal de la voz"
+        },
+        {
+          "valor": "cheerful",
+          "texto": "Alegre"
+        },
+        {
+          "valor": "sad",
+          "texto": "Triste"
+        },
+        {
+          "valor": "angry",
+          "texto": "Enfadado"
+        },
+        {
+          "valor": "excited",
+          "texto": "Entusiasmado"
+        },
+        {
+          "valor": "friendly",
+          "texto": "Cercano"
+        },
+        {
+          "valor": "hopeful",
+          "texto": "Esperanzado"
+        },
+        {
+          "valor": "shouting",
+          "texto": "Gritando"
+        },
+        {
+          "valor": "whispering",
+          "texto": "Susurrando"
+        },
+        {
+          "valor": "terrified",
+          "texto": "Aterrado"
+        },
+        {
+          "valor": "unfriendly",
+          "texto": "Seco"
+        },
+        {
+          "valor": "newscast",
+          "texto": "De informativo"
+        },
+        {
+          "valor": "narration-professional",
+          "texto": "De narrador"
+        },
+        {
+          "valor": "chat",
+          "texto": "De conversación"
+        }
+      ],
+      "ayuda": "Con qué intención habla la voz. Es una de las cosas que estas voces hacen y casi ninguna otra.\n\nOJO: NO TODAS LAS VOCES TIENEN ESTILOS, y las que los tienen no tienen todos. Una voz que no lo tenga se limita a ignorarlo y habla normal, así que probar no cuesta nada ni rompe nada.\n\nPara leer libros, los que valen la pena son «de narrador» —pensado exactamente para eso— y «de conversación», que suena menos solemne. «De informativo» va bien para prensa y textos técnicos.\n\nLos de emoción —alegre, triste, enfadado— llaman la atención al probarlos y cansan en un capítulo entero. Susurrando y gritando son para un rato, no para leer."
+    },
+    {
+      "clave": "fuerza_estilo",
+      "clase": "deslizador",
+      "etiqueta": "&Cuánto se nota el estilo, de 1 a 200:",
+      "minimo": 1,
+      "maximo": 200,
+      "defecto": 100,
+      "ayuda": "Cuánta intensidad se le pone al estilo elegido. Solo hace algo si has elegido uno.\n\n100 es la intensidad normal, la que tendría ese estilo por sí solo. Por debajo se insinúa, y por encima se exagera.\n\nPara leer, bajarlo a 50 o 60 suele quedar mejor que dejarlo en 100: se nota la intención sin que la voz esté actuando todo el rato. Por encima de 150 casi siempre suena forzado."
+    },
+    {
+      "clave": "carpeta_extra",
+      "clase": "texto",
+      "etiqueta": "&Otra carpeta donde buscar voces:",
+      "defecto": "",
+      "ayuda": "Ruta completa de otra carpeta con voces, además de la del propio motor.\n\nSirve para no duplicar gigas: si ya tienes las voces en otro sitio del disco, pon aquí esa carpeta y se usan desde ahí. Se busca dentro de ella cualquier carpeta que tenga un «data», así que da igual cómo estén organizadas.\n\nDéjalo vacío si copias las voces dentro del motor, que es lo normal. Ahí hay un archivo LEEME que explica dónde van.\n\nSi la ruta no existe, se dice en el registro y se sigue con las que sí estén: una carpeta mal escrita no deja el programa sin voz."
+    },
+    {
+      "clave": "clave",
+      "clase": "texto",
+      "etiqueta": "Cla&ve de las voces:",
+      "defecto": "",
+      "ayuda": "Los modelos de voz vienen cifrados y hace falta la clave para abrirlos. Sin ella las voces se ven en la lista pero no suenan.\n\nLO NORMAL ES NO ESCRIBIR NADA AQUÍ: se deja el archivo que te dieron, con su nombre «SynthModel.key», en la carpeta «licencia» del motor, y se lee solo. Si tus voces no están cifradas, el archivo se llamará «SynthModel.license» y sirve igual.\n\nEste campo está para quien la tenga apuntada en otro sitio y prefiera pegarla. Lo que escribas aquí manda sobre el archivo.\n\nSi falta, el motor lo dice al arrancar y se apunta en el registro con la ruta exacta donde hay que dejarla."
+    },
+    {
+      "clave": "espera_maxima",
+      "clase": "deslizador",
+      "etiqueta": "&Espera máxima por frase, en segundos:",
+      "minimo": 1,
+      "maximo": 30,
+      "defecto": 10,
+      "ayuda": "Cuánto se espera a que una frase esté lista antes de darla por perdida y seguir con la siguiente.\n\nEstas voces generan la frase entera antes de entregarla, y la primera con una voz recién elegida carga además su modelo, que son unos veinticinco megas. Esa primera vez tarda unos segundos; las siguientes, décimas.\n\nDiez segundos dan de sobra. Súbelo si notas que la lectura se salta la primera frase al cambiar de voz, sobre todo con las voces en un disco lento."
+    }
+  ],
+  "precargar": [
+    "speechapi/Microsoft.CognitiveServices.Speech.core.dll",
+    "speechapi/Microsoft.CognitiveServices.Speech.extension.onnxruntime.dll",
+    "speechapi/Microsoft.CognitiveServices.Speech.extension.embedded.tts.dll",
+    "speechapi/Microsoft.CognitiveServices.Speech.extension.audio.sys.dll",
+    "speechapi/Microsoft.CognitiveServices.Speech.extension.kws.dll",
+    "speechapi/Microsoft.CognitiveServices.Speech.extension.kws.ort.dll"
+  ]
+}

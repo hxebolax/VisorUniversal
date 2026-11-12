@@ -1,0 +1,92 @@
+# Requisitos del Visor Universal
+# --------------------------------
+# Instálalos con la opción 1 del archivo VisorUniversal.bat, que los pone
+# dentro de un entorno virtual y no toca el Python del sistema.
+
+# Interfaz gráfica.  Es la que aporta el control de texto nativo de Windows,
+# que es lo que hace que la aplicación sea accesible y rápida.
+wxPython>=4.2.1
+
+# Analizador XML y HTML escrito en C.  Es el responsable de que un libro de
+# treinta millones de caracteres se procese en aproximadamente un segundo.
+lxml>=5.0.0
+
+# Visor HTML accesible sobre wx.html2.WebView.  Es lo que permite ver una tabla
+# del libro como una tabla de verdad, con las órdenes de tabla del lector de
+# pantalla.  Si falta, o si el equipo no tiene el motor de Edge WebView2, el
+# programa muestra ese contenido como texto y sigue funcionando.
+wx-accessible-webview>=0.2.0
+
+# Lectura de PDF: extrae el texto y rasteriza las páginas escaneadas para el
+# OCR.  Es el motor PDF de Chrome (PDFium) empaquetado para Python: no necesita
+# ningún programa externo y su licencia es permisiva, al contrario que la de
+# otras bibliotecas de PDF.
+pypdfium2>=4.0
+
+# Inspección del interior de un PDF, que PDFium no expone: el diccionario de
+# cifrado, el catálogo, las fuentes, los formularios y las firmas.  Es lo que
+# permite distinguir el PDF que solo prohíbe imprimir —y que se abre sin
+# contraseña— del que de verdad la necesita, y lo que alimenta el informe de
+# accesibilidad.  Es Python puro y su licencia es permisiva (BSD).
+pypdf>=6.0
+
+# Medida de la maquetación de los PDF que **no** traen estructura, que son la
+# mayoría: da el tamaño de letra y la fuente de cada palabra, y con eso se
+# deducen los encabezados —que sin este dato no se detectan— y las tablas.
+# Arrastra pdfminer.six, que es quien hace el trabajo de bajo nivel.  Es
+# OPCIONAL: sin él, un PDF sin etiquetar se lee como texto corrido, que es lo
+# que hacía el programa antes.
+pdfplumber>=0.11
+
+# Tratamiento de imagen para el reconocimiento óptico: pasa la página a gris y
+# le sube el contraste antes de dársela al OCR.  Medido sobre un folleto en
+# color, eso llevó los productos leídos con su precio de 7 a 10 sobre 14, y la
+# basura de 31 líneas a 7.  Es OPCIONAL: sin ella se reconoce igual, con la
+# página tal cual sale del PDF.
+Pillow>=10.0
+
+# Reconocimiento óptico de caracteres de Windows, para los PDF escaneados
+# cuando no hay inteligencia artificial configurada.  Es OPCIONAL: sin él se
+# usa la IA, y si tampoco la hay se avisa de que el PDF no tiene texto.
+winsdk>=1.0.0b10
+
+# Reproducción de audio para los libros DAISY grabados.  Envuelve BASS, de
+# Un4seen, que es lo que permite las tres cosas que un audiolibro necesita:
+# posicionar en el segundo exacto —un libro DAISY reproduce recortes, no
+# archivos—, cambiar la velocidad sin que suba el tono de la voz, y abrir los
+# MP3 de hace veinte años igual que los formatos de ahora.
+#
+# No está en PyPI: es una biblioteca propia y se instala desde su «wheel», que
+# va en «dependencias» (lleva dentro las DLL de BASS, gratuitas para uso no
+# comercial: https://www.un4seen.com).
+#
+# Es OPCIONAL: sin ella los libros DAISY se abren igual y se leen con la voz
+# sintética, pero no suena su grabación.
+./dependencias/basskit-0.3.3-py3-none-any.whl
+
+# Acceso a las API de Windows.  Hacen falta para la lectura en voz alta, que
+# usa las voces SAPI 5 del sistema a través de COM.
+pywin32>=306
+
+# Comunicación directa con NVDA, JAWS y el Narrador de Windows.
+# Es OPCIONAL: si no se instala, la aplicación anuncia igualmente usando las
+# regiones activas del sistema de accesibilidad de Windows.
+accessible-output2>=0.17
+
+# Generación del ejecutable (solo hace falta para compilar, no para usar).
+# Con Python 3.15 hace falta freeze-core 0.8 o posterior: la 0.7 trae su
+# ejecutable base hecho con la 3.15.0rc1, y con el Python 3.15.0 definitivo el
+# programa compilado no arranca («Failed to import encodings module»).
+cx_Freeze>=8.7.2
+freeze-core>=0.8.0
+
+# Firma de las actualizaciones.  El programa la usa para comprobar que el aviso
+# de versión nueva lo ha escrito quien dice, y no quien haya podido hacerse con
+# el servidor; el guion de empaquetado la usa para firmarlo.  Es OPCIONAL: sin
+# clave pública configurada en «src/version.py», las actualizaciones se
+# comprueban solo con su sha256 y esta biblioteca no hace falta.
+cryptography>=42.0
+
+# Batería de pruebas (solo para desarrollar, no para usar el programa).  Se
+# lanza con la opción P del menú, o con: python -m pytest
+pytest>=8.0

@@ -1,0 +1,2290 @@
+# -*- coding: utf-8 -*-
+"""Ventana principal de la aplicación.
+
+Reúne todas las piezas: el panel de lectura, los menús, los atajos de
+teclado, los diálogos, los sonidos y el guardado de la sesión.
+
+Dos detalles importantes de comportamiento:
+
+* **El análisis del libro se hace en un hilo aparte.**  Aunque abrir un libro
+  enorme cuesta poco más de un segundo, durante ese tiempo la ventana debe
+  seguir respondiendo y anunciando que está trabajando.  Cuando el análisis
+  termina, el resultado vuelve al hilo de la interfaz con ``wx.CallAfter``,
+  que es la única forma segura de tocar la interfaz desde otro hilo.
+
+* **Las teclas de una sola letra se interceptan en la ventana**, no en el
+  control de texto, mediante ``EVT_CHAR_HOOK``.  Así funcionan siempre, y las
+  combinaciones con Control o Alt se dejan pasar para que las procesen los
+  aceleradores de los menús.
+"""
+
+from __future__ import annotations
+
+import os
+import threading
+import time
+from pathlib import Path
+
+import wx
+
+from formatos import base as formatos
+from interfaz import atajos as tabla_atajos
+from interfaz import anuncios
+from interfaz.anuncios import Anunciador
+from interfaz.dialogos import actualizacion as dialogos_actualizacion
+from interfaz.dialogos import audio as dialogos_audio
+from interfaz.dialogos import ayuda as dialogos_ayuda
+from interfaz.dialogos import buscar as dialogos_buscar
+from interfaz.dialogos import contenido as dialogos_contenido
+from interfaz.dialogos import diccionario as dialogos_diccionario
+from interfaz.dialogos import navegacion as dialogos_navegacion
+from interfaz.dialogos import opciones as dialogos_opciones
+from interfaz.dialogos import perfiles as dialogos_perfiles
+from interfaz.dialogos import preguntar as dialogos_preguntar
+from interfaz.dialogos import primer_uso as dialogos_primer_uso
+from interfaz.dialogos import progreso as dialogos_progreso
+from interfaz.dialogos import pronunciacion as dialogos_pronunciacion
+from interfaz.dialogos.espera import ejecutar_esperando
+from interfaz.dialogos import registro as dialogos_registro
+from interfaz.dialogos import visor_html
+from interfaz.lector import PanelLectura
+from interfaz.lectura_voz import DialogoVoz, LectorEnVozAlta
+from interfaz.reproductor_daisy import DialogoReproductor, ReproductorDaisy
+from interfaz import teclas_globales
+from interfaz.temporizador import DialogoTemporizador, Temporizador
+from interfaz.bandeja import IconoBandeja
+from nucleo import actualizaciones, audio, cache, daisy as lector_daisy
+from nucleo import descripciones, diccionario, estadisticas, html_elementos
+from nucleo import instancia, marcado
+from nucleo import navegacion, rutas
+from nucleo.busqueda import Buscador, OpcionesBusqueda
+from nucleo.configuracion import Marcador
+from nucleo.documento import Documento
+from nucleo.ia.servicio import Servicio
+from nucleo.idioma import _, _n
+from nucleo.marcas import TipoMarca
+from nucleo.navegacion import Objetivo
+from nucleo.registro import cronometro, obtener_registro, registrar_excepcion
+from sonidos.gestor import GestorSonidos
+from version import NOMBRE, VERSION
+
+log = obtener_registro(__name__)
+
+#: Segundos durante los que, tras cerrarse un menú, los avisos «inmediatos» se
+#: tratan como normales.  El paso del menú al manejador es instantáneo, así que
+#: con medio segundo sobra; más tiempo empezaría a retrasar avisos de teclas
+#: pulsadas justo después de usar un menú.
+ESPERA_TRAS_MENU = 0.5
+
+#: Cuántos caracteres de una nota al pie se dicen de una vez.  Una nota normal
+#: cabe entera; una que sea media página se recorta, porque un aviso hablado que
+#: dura cinco minutos no se puede parar ni releer.  Para esas está saltar a la
+#: nota con Intro.
+LARGO_NOTA = 700
+
+#: Longitud del fragmento de texto que se guarda con cada marcador.
+LONGITUD_FRAGMENTO = 120
+
+
+class _SoltarArchivo(wx.FileDropTarget):
+    """Permite abrir un libro arrastrándolo sobre la ventana.
+
+    Si se sueltan varios archivos a la vez se abre el primero, porque la
+    aplicación muestra un libro cada vez.
+    """
+
+    def __init__(self, ventana: "VentanaPrincipal") -> None:
+        super().__init__()
+        self._ventana = ventana
+
+    def OnDropFiles(self, x, y, nombres):  # noqa: N802 (nombre impuesto por wx)
+        """Recibe la lista de archivos soltados."""
+        if not nombres:
+            return False
+        log.info("Archivo soltado en la ventana: %s", nombres[0])
+        wx.CallAfter(self._ventana.abrir_libro, nombres[0])
+        return True
+
+
+class VentanaPrincipal(wx.Frame):
+    """Ventana principal del programa.
+
+    :param configuracion: Preferencias de la aplicación.
+    :param version: Versión del programa, para el título y el diálogo «Acerca de».
+    """
+
+    def __init__(self, configuracion, version: str) -> None:
+        super().__init__(
+            None, title=NOMBRE,
+            size=(int(configuracion.obtener("ventana_ancho")),
+                  int(configuracion.obtener("ventana_alto"))),
+        )
+        self.configuracion = configuracion
+        self.version = version
+        self.documento: Documento | None = None
+        self.ruta_actual: str = ""
+        #: Cronómetro de lectura del documento abierto.  Se crea vacío para que
+        #: el cursor pueda moverse por la pantalla de bienvenida sin que haya
+        #: que comprobar en cada paso si existe.
+        self.cronometro = estadisticas.Cronometro()
+        self.buscador: Buscador | None = None
+        self.marcadores: list[Marcador] = []
+        self._dialogo_buscar: dialogos_buscar.DialogoBuscar | None = None
+        self._ultima_busqueda: tuple[str, OpcionesBusqueda] | None = None
+        #: Visor de registros abierto, si lo hay.  No es modal, así que la
+        #: ventana tiene que acordarse de él para no abrir dos.
+        self.visor_registro = None
+        #: Descripciones de imágenes guardadas del libro abierto.  Se cambia
+        #: por la colección del libro al abrirlo, de modo que las que se
+        #: hicieron en su día están disponibles desde el primer momento.
+        self.descripciones = descripciones.Coleccion()
+        #: Ventana de progreso mientras se abre un libro, si la hay.
+        self._progreso = None
+        #: Libro DAISY con grabación, cuando el abierto lo es.
+        self.libro_daisy = None
+        #: Última línea cuya descripción guardada se ha anunciado, para no
+        #: repetirla a cada movimiento del cursor dentro del mismo párrafo.
+        self._linea_descrita = -1
+        self._cargando = False
+        self._identificadores: dict[str, int] = {}
+        self._referencias_id: list[wx.WindowIDRef] = []
+
+        self.sonidos = GestorSonidos(
+            activado=bool(configuracion.obtener("sonidos_activados")),
+            volumen=int(configuracion.obtener("sonidos_volumen")),
+        )
+        self.anunciador = Anunciador(self)
+        self.lector = PanelLectura(self, configuracion, self.sonidos, self.anunciador,
+                                   al_moverse=self._al_moverse, version=version)
+        # El panel de lectura tiene que ocupar toda la ventana.  Hace falta un
+        # organizador explícito porque el marco tiene un segundo hijo (la
+        # etiqueta oculta que usa el anunciador) y, cuando hay más de uno,
+        # wxWidgets deja de ajustar el tamaño automáticamente: sin esto el
+        # panel se queda con su tamaño mínimo y el texto se muestra en una
+        # columna de unos pocos caracteres de ancho.
+        organizador = wx.BoxSizer(wx.VERTICAL)
+        organizador.Add(self.lector, 1, wx.EXPAND)
+        self.SetSizer(organizador)
+
+        # Lectura en voz alta.  Se crea aquí, pero no toca el sintetizador
+        # hasta que se usa por primera vez: conectar con SAPI cuesta unas
+        # décimas y quien no lea en voz alta no tiene por qué pagarlas.
+        self.lectura_voz = LectorEnVozAlta(self)
+        #: Icono de la bandeja, mientras la ventana esté escondida en ella.
+        self.icono_bandeja = None
+        #: Teclas globales registradas en Windows.
+        self.reproductor_daisy = ReproductorDaisy(self)
+        self.registro_global = teclas_globales.Registro(self, self._al_pulsar_tecla_global)
+
+        self.CreateStatusBar(1)
+        self.SetStatusText(_("Listo. Pulsa Control+O para abrir un documento."))
+        self._construir_menus()
+        self._preparar_teclas()
+
+        self.lector.admitir_soltar_archivos(lambda: _SoltarArchivo(self))
+        # Windows trata la tecla F1 de forma especial: la convierte en una
+        # petición de ayuda (un evento propio) y nunca llega a la tabla de
+        # aceleradores, así que el atajo del menú no se dispara por sí solo.
+        # Se comprobó probando todos los atajos uno a uno: F1 era el único que
+        # no funcionaba.  Atendiendo el evento de ayuda, la tecla vuelve a
+        # abrir el manual.
+        # Cuándo se cerró el último menú.  Lo consulta «anunciar» para saber si
+        # el foco está a punto de moverse y hay que esperarlo.
+        self._menu_cerrado_en = 0.0
+        self.Bind(wx.EVT_MENU_CLOSE, self._al_cerrar_menu)
+        self.Bind(wx.EVT_HELP, self.al_manual)
+        self.Bind(wx.EVT_CLOSE, self._al_cerrar_ventana)
+        if configuracion.obtener("ventana_maximizada"):
+            self.Maximize()
+        self.Centre()
+        # Sin libro abierto, el control muestra el resumen de lo que se puede
+        # hacer en vez de quedarse en blanco.
+        self.lector.mostrar_presentacion()
+        self.lector.texto.SetFocus()
+
+        # Instancia única: se anota esta ventana para que una segunda copia
+        # del programa pueda traerla al frente, y se vigila si deja el encargo
+        # de abrir un libro.
+        # Las teclas globales se piden a Windows una vez creada la ventana:
+        # RegisterHotKey necesita una ventana de verdad a la que mandar los
+        # avisos.  Se hace al final del arranque para no retrasar lo que se ve.
+        wx.CallAfter(self.aplicar_teclas_globales)
+        self.Bind(wx.EVT_ICONIZE, self._al_minimizar)
+
+        # Restos de una actualización anterior: si la copia salió bien el
+        # propio guion se limpia, así que esto es para cuando algo se torció.
+        # El recorrido guiado se ofrece después de que la ventana esté
+        # entera: abrirlo antes dejaría el foco en un sitio raro si se cierra.
+        if dialogos_primer_uso.hace_falta(configuracion):
+            wx.CallAfter(self.al_primer_uso, None)
+
+        actualizaciones.limpiar_restos()
+        wx.CallAfter(self._revisar_actualizacion_anterior)
+        if self.configuracion.obtener("comprobar_actualizaciones", True):
+            wx.CallAfter(self._comprobar_actualizaciones, False)
+
+        # El temporizador de apagado manda tanto sobre la voz sintética como
+        # sobre el reproductor DAISY, así que vive aquí y no en ninguno de los
+        # dos.
+        self.temporizador = Temporizador(self)
+
+        instancia.anotar_ventana(self.GetHandle())
+        self._vigilante_encargos = wx.Timer(self)
+        self.Bind(wx.EVT_TIMER, self._al_revisar_encargos, self._vigilante_encargos)
+        self._vigilante_encargos.Start(700)
+
+    # =======================================================================
+    # Construcción de la interfaz
+    # =======================================================================
+
+    def _nuevo_id(self, identificador: str) -> int:
+        """Reserva un identificador numérico de wx para una orden.
+
+        El objeto devuelto por ``wx.NewIdRef`` libera el identificador cuando
+        se destruye, así que hay que conservarlo mientras exista la ventana:
+        por eso se guarda en ``_referencias_id`` y no solo su número.
+        """
+        referencia = wx.NewIdRef()
+        self._referencias_id.append(referencia)
+        numero = referencia.GetId()
+        self._identificadores[identificador] = numero
+        return numero
+
+    def _anadir(self, menu: wx.Menu, identificador: str, manejador, casilla: bool = False) -> wx.MenuItem:
+        """Añade una opción de menú a partir de la tabla de atajos."""
+        numero = self._nuevo_id(identificador)
+        etiqueta = tabla_atajos.etiqueta_de_menu(identificador)
+        definicion = tabla_atajos.orden(identificador)
+        clase = wx.ITEM_CHECK if casilla else wx.ITEM_NORMAL
+        elemento = menu.Append(numero, etiqueta, definicion.descripcion, clase)
+        self.Bind(wx.EVT_MENU, manejador, id=numero)
+        return elemento
+
+    def _construir_menus(self) -> None:
+        """Crea la barra de menús completa."""
+        barra = wx.MenuBar()
+
+        archivo = wx.Menu()
+        self._anadir(archivo, "abrir", self.al_abrir)
+        self._anadir(archivo, "abrir_carpeta", self.al_abrir_carpeta)
+        self.menu_recientes = wx.Menu()
+        archivo.AppendSubMenu(self.menu_recientes, _("&Recientes"))
+        archivo.AppendSeparator()
+        self._anadir(archivo, "cerrar_libro", self.al_cerrar_libro)
+        # Exportar es un submenú porque los destinos son varios y cada uno
+        # sirve para algo distinto: texto para cualquier programa, Markdown
+        # para conservar la estructura, HTML para el navegador y EPUB para el
+        # móvil.  Con una sola orden habría que elegir el formato dentro del
+        # diálogo de guardar, que es donde peor se encuentra.
+        self.menu_exportar = wx.Menu()
+        self._anadir(self.menu_exportar, "exportar_texto",
+                     lambda evento: self.al_exportar("txt"))
+        self._anadir(self.menu_exportar, "exportar_md",
+                     lambda evento: self.al_exportar("md"))
+        self._anadir(self.menu_exportar, "exportar_html",
+                     lambda evento: self.al_exportar("html"))
+        self._anadir(self.menu_exportar, "exportar_epub",
+                     lambda evento: self.al_exportar("epub"))
+        self.menu_exportar.AppendSeparator()
+        self._anadir(self.menu_exportar, "exportar_audio", self.al_exportar_audio)
+        archivo.AppendSubMenu(self.menu_exportar, _("&Exportar"))
+        archivo.AppendSeparator()
+        self._anadir(archivo, "salir", lambda evento: self.Close())
+        barra.Append(archivo, _("&Archivo"))
+
+        ir = wx.Menu()
+        self._anadir(ir, "buscar", self.al_buscar)
+        self._anadir(ir, "buscar_siguiente", lambda evento: self.repetir_busqueda(True))
+        self._anadir(ir, "buscar_anterior", lambda evento: self.repetir_busqueda(False))
+        ir.AppendSeparator()
+        self._anadir(ir, "ir_linea", self.al_ir_a_linea)
+        self._anadir(ir, "ir_porcentaje", self.al_ir_a_porcentaje)
+        self._anadir(ir, "ir_pagina", self.al_ir_a_pagina)
+        ir.AppendSeparator()
+        self._anadir(ir, "ir_principio", lambda evento: self.saltar_a(0, _("Principio del documento.")))
+        self._anadir(ir, "ir_final", self.al_ir_al_final)
+        self._anadir(ir, "atras", self.al_atras)
+        self._anadir(ir, "adelante", self.al_adelante)
+        ir.AppendSeparator()
+        self._anadir(ir, "indice", self.al_indice)
+        self._anadir(ir, "elementos", self.al_elementos)
+        self._anadir(ir, "marcadores", self.al_marcadores)
+        barra.Append(ir, _("&Ir a"))
+
+        herramientas = wx.Menu()
+        self._anadir(herramientas, "poner_marcador", self.al_poner_marcador)
+        self._anadir(herramientas, "poner_nota", self.al_poner_nota)
+        herramientas.AppendSeparator()
+        self._anadir(herramientas, "ver_imagen", self.al_ver_imagen)
+        self._anadir(herramientas, "ver_tabla", self.al_ver_tabla)
+        self._anadir(herramientas, "ver_html", self.al_ver_html)
+        self._anadir(herramientas, "ver_capitulo", self.al_ver_capitulo)
+        self._anadir(herramientas, "describir_imagen", self.al_describir_imagen)
+        self._anadir(herramientas, "describir_todo", self.al_describir_todo)
+        self._anadir(herramientas, "leer_nota", self.al_leer_nota)
+        self._anadir(herramientas, "diccionario", self.al_diccionario)
+        self._anadir(herramientas, "resumir", self.al_resumir)
+        self._anadir(herramientas, "preguntar", self.al_preguntar)
+        self._anadir(herramientas, "informacion", self.al_informacion)
+        herramientas.AppendSeparator()
+        self.opcion_ajuste = self._anadir(herramientas, "ajuste_linea", self.al_ajuste_linea, casilla=True)
+        self.opcion_ajuste.Check(bool(self.configuracion.obtener("ajuste_de_linea")))
+        self.opcion_sonidos = self._anadir(herramientas, "sonidos", self.al_alternar_sonidos, casilla=True)
+        self.opcion_sonidos.Check(bool(self.configuracion.obtener("sonidos_activados")))
+        herramientas.AppendSeparator()
+        self._anadir(herramientas, "temporizador", self.al_temporizador)
+        self._anadir(herramientas, "datos_guardados", self.al_datos_guardados)
+        self._anadir(herramientas, "perfiles", self.al_perfiles)
+        self._anadir(herramientas, "opciones", self.al_opciones)
+        voz = wx.Menu()
+        self._anadir(voz, "leer_voz", self.al_leer_voz)
+        self._anadir(voz, "detener_voz", self.al_detener_voz)
+        voz.AppendSeparator()
+        self._anadir(voz, "frase_anterior", lambda evento: self._leer_frase(False))
+        self._anadir(voz, "frase_siguiente", lambda evento: self._leer_frase(True))
+        self._anadir(voz, "leer_seleccion",
+                     lambda evento: self.lectura_voz.leer_seleccion())
+        voz.AppendSeparator()
+        self._anadir(voz, "voz_mas_rapido", lambda evento: self._leer_mas_o_menos(5))
+        self._anadir(voz, "voz_mas_lento", lambda evento: self._leer_mas_o_menos(-5))
+        voz.AppendSeparator()
+        self._anadir(voz, "pronunciacion", self.al_pronunciacion)
+        self._anadir(voz, "ajustes_voz", self.al_ajustes_voz)
+        barra.Append(voz, _("&Voz"))
+
+        # El reproductor tiene menú propio porque su navegación no se parece a
+        # nada de lo demás: los niveles y los saltos por tiempo solo existen
+        # cuando lo que se escucha es una grabación.
+        daisy = wx.Menu()
+        self._anadir(daisy, "daisy_reproductor", self.al_reproductor_daisy)
+        daisy.AppendSeparator()
+        self._anadir(daisy, "daisy_atras",
+                     lambda evento: self.reproductor_daisy.saltar_segundos(-audio.SALTO))
+        self._anadir(daisy, "daisy_adelante",
+                     lambda evento: self.reproductor_daisy.saltar_segundos(audio.SALTO))
+        daisy.AppendSeparator()
+        self._anadir(daisy, "daisy_punto_anterior",
+                     lambda evento: self.reproductor_daisy.punto_anterior())
+        self._anadir(daisy, "daisy_punto_siguiente",
+                     lambda evento: self.reproductor_daisy.punto_siguiente())
+        self._anadir(daisy, "daisy_nivel_arriba",
+                     lambda evento: self.reproductor_daisy.cambiar_nivel(-1))
+        self._anadir(daisy, "daisy_nivel_abajo",
+                     lambda evento: self.reproductor_daisy.cambiar_nivel(1))
+        daisy.AppendSeparator()
+        self._anadir(daisy, "daisy_donde_estoy",
+                     lambda evento: self.reproductor_daisy.donde_estoy())
+        barra.Append(daisy, _("&Reproductor"))
+        barra.Append(herramientas, _("&Herramientas"))
+
+        menu_ayuda = wx.Menu()
+        self._anadir(menu_ayuda, "manual", self.al_manual)
+        self._anadir(menu_ayuda, "atajos_ayuda", self.al_atajos)
+        self._anadir(menu_ayuda, "primer_uso", self.al_primer_uso)
+        menu_ayuda.AppendSeparator()
+        self._anadir(menu_ayuda, "carpeta_datos",
+                     lambda evento: rutas.abrir_en_explorador(rutas.directorio_datos()))
+        self._anadir(menu_ayuda, "ver_registro", self.al_ver_registro)
+        menu_ayuda.AppendSeparator()
+        # Buscar actualizaciones va aquí, justo encima de la invitación al café:
+        # las dos son «cosas del programa» y no del documento.  Aparece siempre,
+        # aunque no haya servidor configurado en version.py; en ese caso lo dice
+        # al pulsarla, que se entiende mejor que una orden que falta.
+        self._anadir(menu_ayuda, "buscar_actualizaciones", self.al_buscar_actualizaciones)
+        self._anadir(menu_ayuda, "invitar_cafe", self.al_invitar_cafe)
+        self._anadir(menu_ayuda, "acerca_de", self.al_acerca_de)
+        barra.Append(menu_ayuda, _("A&yuda"))
+
+        self.SetMenuBar(barra)
+        self._instalar_aceleradores()
+        self._refrescar_recientes()
+        self._actualizar_disponibilidad()
+
+    def _instalar_aceleradores(self) -> None:
+        """Construye a mano la tabla de atajos de teclado de los menús.
+
+        wxWidgets sabe deducir el atajo del texto que va tras el tabulador en
+        la etiqueta del menú, pero solo entiende los nombres de tecla en inglés
+        («Home», «Left»...).  Como la interfaz está en español, esos nombres se
+        escriben en español y la tabla se construye aquí explícitamente, a
+        partir de los mismos datos.  Así el texto que se ve y la tecla que
+        funciona no pueden desincronizarse.
+        """
+        entradas: list[wx.AcceleratorEntry] = []
+        for definicion in tabla_atajos.ORDENES:
+            numero = self._identificadores.get(definicion.identificador)
+            if numero is None:
+                continue
+            partes = tabla_atajos.descomponer(definicion.atajo)
+            if partes is None:
+                continue
+            modificadores, tecla = partes
+            banderas = wx.ACCEL_NORMAL
+            for modificador in modificadores:
+                minuscula = modificador.lower()
+                if minuscula in ("ctrl", "control"):
+                    banderas |= wx.ACCEL_CTRL
+                elif minuscula in ("shift", _("mayús"), "mayus"):
+                    banderas |= wx.ACCEL_SHIFT
+                elif minuscula == "alt":
+                    banderas |= wx.ACCEL_ALT
+            codigo = self._codigo_de_tecla(tecla)
+            if codigo is None:
+                log.warning("Atajo no reconocido para «%s»: %s",
+                            definicion.identificador, definicion.atajo)
+                continue
+            entradas.append(wx.AcceleratorEntry(banderas, codigo, numero))
+            if definicion.atajo_alterno:
+                alterno = self._entrada_acelerador(definicion.atajo_alterno, numero)
+                if alterno is not None:
+                    entradas.append(alterno)
+        self.SetAcceleratorTable(wx.AcceleratorTable(entradas))
+        log.debug("Tabla de aceleradores instalada con %d atajos", len(entradas))
+
+    def _entrada_acelerador(self, atajo: str, numero: int) -> wx.AcceleratorEntry | None:
+        """Convierte un atajo escrito en una entrada de la tabla de teclas."""
+        partes = tabla_atajos.descomponer(atajo)
+        if partes is None:
+            return None
+        modificadores, tecla = partes
+        banderas = wx.ACCEL_NORMAL
+        for modificador in modificadores:
+            minuscula = modificador.lower()
+            if minuscula in ("ctrl", "control"):
+                banderas |= wx.ACCEL_CTRL
+            elif minuscula in ("shift", _("mayús"), "mayus"):
+                banderas |= wx.ACCEL_SHIFT
+            elif minuscula == "alt":
+                banderas |= wx.ACCEL_ALT
+        codigo = self._codigo_de_tecla(tecla)
+        if codigo is None:
+            return None
+        return wx.AcceleratorEntry(banderas, codigo, numero)
+
+    @staticmethod
+    def _codigo_de_tecla(tecla: str) -> int | None:
+        """Traduce el nombre de una tecla a su código de wxPython.
+
+        Solo admite las teclas con nombre de :data:`atajos.TECLAS_ESPECIALES`
+        y las letras y cifras sueltas.  Los signos de puntuación quedan fuera a
+        propósito: en una tabla de aceleradores, Windows interpreta el código
+        como una tecla virtual, y el de la coma (44) es el de Impr Pant, de
+        modo que un atajo así se registraría sobre otra tecla distinta.
+        """
+        nombre_wx = tabla_atajos.TECLAS_ESPECIALES.get(tecla)
+        if nombre_wx is not None:
+            return getattr(wx, nombre_wx, None)
+        if len(tecla) == 1 and tecla.isalnum():
+            return ord(tecla.upper())
+        return None
+
+    def _refrescar_recientes(self) -> None:
+        """Rehace el submenú de libros recientes."""
+        for elemento in list(self.menu_recientes.GetMenuItems()):
+            self.menu_recientes.Delete(elemento)
+        recientes = self.configuracion.recientes()
+        if not recientes:
+            elemento = self.menu_recientes.Append(wx.ID_ANY, _("(No hay documentos recientes)"))
+            elemento.Enable(False)
+            return
+        for numero, ruta in enumerate(recientes, start=1):
+            nombre = Path(ruta).name
+            elemento = self.menu_recientes.Append(wx.ID_ANY, "&%d  %s" % (numero, nombre), ruta)
+            self.Bind(wx.EVT_MENU, lambda evento, destino=ruta: self.abrir_libro(destino),
+                      id=elemento.GetId())
+        self.menu_recientes.AppendSeparator()
+        limpiar = self.menu_recientes.Append(wx.ID_ANY, _("&Vaciar la lista"))
+        self.Bind(wx.EVT_MENU, self._al_vaciar_recientes, id=limpiar.GetId())
+
+    def _al_vaciar_recientes(self, evento) -> None:
+        """Borra la lista de libros recientes."""
+        self.configuracion.establecer("documentos_recientes", [])
+        self.configuracion.guardar()
+        self._refrescar_recientes()
+        self.anunciar(_("Lista de documentos recientes vaciada."))
+
+    def _actualizar_disponibilidad(self) -> None:
+        """Activa o desactiva las opciones que necesitan un libro abierto."""
+        hay_libro = self.documento is not None
+        barra = self.GetMenuBar()
+        if barra is None:
+            return
+        for identificador in ("cerrar_libro", "exportar_texto", "buscar", "buscar_siguiente",
+                              "buscar_anterior", "ir_linea", "ir_porcentaje", "ir_pagina",
+                              "ir_principio", "ir_final", "atras", "adelante", "indice",
+                              "elementos", "marcadores", "poner_marcador", "poner_nota",
+                              "ver_imagen", "ver_tabla", "ver_html", "describir_imagen",
+                              "describir_todo", "informacion",
+                              "leer_voz", "detener_voz", "frase_anterior", "frase_siguiente",
+                              "leer_seleccion", "exportar_md", "exportar_html",
+                              "exportar_epub", "exportar_audio", "temporizador",
+                              "resumir", "preguntar", "leer_nota", "ver_capitulo"):
+            numero = self._identificadores.get(identificador)
+            if numero is not None:
+                barra.Enable(numero, hay_libro)
+        # Las órdenes del reproductor solo tienen sentido con una grabación
+        # delante: en cualquier otro libro se quedan apagadas en vez de decir
+        # «este libro no tiene grabación» una y otra vez.
+        hay_grabacion = self.reproductor_daisy.activo
+        for identificador in ("daisy_reproductor", "daisy_atras", "daisy_adelante",
+                              "daisy_punto_anterior", "daisy_punto_siguiente",
+                              "daisy_nivel_arriba", "daisy_nivel_abajo",
+                              "daisy_donde_estoy"):
+            numero = self._identificadores.get(identificador)
+            if numero is not None:
+                barra.Enable(numero, hay_grabacion)
+
+    # =======================================================================
+    # Teclado
+    # =======================================================================
+
+    def _preparar_teclas(self) -> None:
+        """Prepara la tabla de teclas rápidas y engancha el interceptor."""
+        self._teclas_navegacion: dict[str, tuple[Objetivo, int]] = {
+            atajo.tecla: (atajo.objetivo, atajo.nivel) for atajo in tabla_atajos.NAVEGACION
+        }
+        self.Bind(wx.EVT_CHAR_HOOK, self._al_pulsar_tecla)
+
+    def _al_pulsar_tecla(self, evento: wx.KeyEvent) -> None:
+        """Interpreta las teclas de navegación rápida de una sola pulsación."""
+        if self.FindFocus() is not self.lector.texto:
+            evento.Skip()   # el foco está en un menú u otro control
+            return
+
+        codigo = evento.GetKeyCode()
+        mayusculas = evento.ShiftDown()
+        control = evento.ControlDown()
+
+        # Tercera vía por la que puede aparecer el menú contextual del control
+        # de texto: la tecla Aplicaciones y Mayús+F10.  Se consumen aquí para
+        # que no lleguen al control.  Se comprueba antes que nada, incluso sin
+        # libro abierto, porque el texto de presentación está en ese mismo
+        # control.  Más adelante, estas mismas teclas abrirán un menú propio
+        # que dependa de dónde esté el cursor.
+        if codigo == wx.WXK_WINDOWS_MENU or (codigo == wx.WXK_F10 and mayusculas):
+            log.debug("Tecla de menú contextual consumida")
+            return
+
+        if self.documento is None or self._cargando:
+            evento.Skip()
+            return
+
+        # Control+Inicio y Control+Fin tienen que referirse al libro entero.
+        # El control de texto los atiende por su cuenta, antes que el
+        # acelerador del menú, y solo conoce el tramo que tiene cargado: sin
+        # esto, en un libro grande Control+Fin se detendría a mitad del libro.
+        if control and not evento.AltDown() and not mayusculas:
+            if codigo == wx.WXK_HOME:
+                self.saltar_a(0, _("Principio del documento."), inmediato=True)
+                return
+            if codigo == wx.WXK_END:
+                self.al_ir_al_final(None)
+                return
+
+        if control or evento.AltDown() or evento.MetaDown():
+            evento.Skip()   # lo resolverán los aceleradores de los menús
+            return
+
+        if codigo in (wx.WXK_RETURN, wx.WXK_NUMPAD_ENTER):
+            if self.activar_elemento():
+                return
+            evento.Skip()
+            return
+
+        caracter = evento.GetUnicodeKey()
+        if caracter == wx.WXK_NONE or caracter < 32:
+            evento.Skip()
+            return
+        tecla = chr(caracter).upper()
+
+        if tecla in self._teclas_navegacion:
+            objetivo, nivel = self._teclas_navegacion[tecla]
+            self.navegar_a(objetivo, not mayusculas, nivel)
+            return
+        if tecla == tabla_atajos.SECCION_SIGUIENTE:
+            self.navegar_a(Objetivo.SECCION, not mayusculas)
+            return
+        if tecla == tabla_atajos.CONTENEDOR_FIN:
+            self.navegar_contenedor(not mayusculas)
+            return
+        if tecla == tabla_atajos.MARCADOR_SIGUIENTE:
+            self.navegar_marcador(not mayusculas, solo_notas=False)
+            return
+        if tecla == tabla_atajos.NOTA_SIGUIENTE:
+            self.navegar_marcador(not mayusculas, solo_notas=True)
+            return
+        if tecla == tabla_atajos.DESCRIBIR_IMAGEN:
+            self.al_describir_imagen(None)
+            return
+        if tecla == tabla_atajos.DEFINIR_PALABRA:
+            self.al_diccionario(None)
+            return
+        if tecla == tabla_atajos.DONDE_ESTOY:
+            self.anunciar(navegacion.contexto_de_lectura(self.documento, self.lector.posicion()),
+                          inmediato=True)
+            return
+        if tecla == tabla_atajos.REPETIR_ANUNCIO:
+            self.anunciar(self.anunciador.ultimo_mensaje or self.lector.linea_actual(),
+                          inmediato=True)
+            return
+        evento.Skip()
+
+    # =======================================================================
+    # Apertura y cierre de libros
+    # =======================================================================
+
+    def al_abrir(self, evento) -> None:
+        """Pide un archivo y lo abre."""
+        with wx.FileDialog(self, "Abrir documento", wildcard=formatos.filtro_dialogo(),
+                           style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST) as dialogo:
+            carpeta = self.configuracion.obtener("ultima_carpeta", "")
+            if carpeta and os.path.isdir(carpeta):
+                dialogo.SetDirectory(carpeta)
+            if dialogo.ShowModal() != wx.ID_OK:
+                return
+            self.abrir_libro(dialogo.GetPath())
+
+    def abrir_libro(self, ruta: str) -> None:
+        """Abre un libro, analizándolo en un hilo aparte.
+
+        :param ruta: Ruta del archivo que se quiere abrir.
+        """
+        if self._cargando:
+            self.anunciar(_("Espera: todavía se está abriendo otro documento."))
+            return
+        destino = Path(ruta)
+        if not destino.exists():
+            wx.MessageBox(_("El archivo ya no existe:\n%s") % destino,
+                          _("No se encuentra el documento"), wx.OK | wx.ICON_ERROR, self)
+            self.configuracion.quitar_reciente(str(destino))
+            self._refrescar_recientes()
+            return
+        self.guardar_sesion()
+        self._cargando = True
+        self.SetStatusText(_("Abriendo «%s»...") % destino.name)
+        self.anunciar(_("Abriendo %s. Espera un momento.") % destino.stem)
+
+        # El OCR del PDF usa la IA que esté configurada, que es lo que mejor
+        # resultado da; si no hay, queda el reconocimiento de Windows.
+        self._preparar_ocr_pdf()
+
+        # Progreso: un EPUB tarda una décima, pero un PDF escaneado son
+        # minutos.  La ventana se abre siempre y se cierra sola: en lo rápido
+        # apenas se ve, y en lo lento es la diferencia entre saber qué está
+        # pasando y no saberlo, además de poder echarse atrás.
+        canal = formatos.Progreso()
+        self._progreso = dialogos_progreso.DialogoProgreso(
+            self, _("Abriendo el documento"), _("Abriendo %s...") % destino.name,
+            al_cancelar=canal.cancelar)
+        canal.conectar(self._progreso.avanzar)
+        self._progreso.mostrar_tras()
+
+        opciones = formatos.OpcionesAnalisis(
+            tablas_en_linea=bool(self.configuracion.obtener("tablas_en_linea")),
+            anunciar_imagenes_sin_texto=bool(
+                self.configuracion.obtener("anunciar_imagenes_sin_texto")),
+            estructura_pdf=bool(self.configuracion.obtener("pdf_estructura", True)),
+            progreso=canal,
+        )
+        usar_cache = bool(self.configuracion.obtener("usar_cache"))
+
+        def trabajo():
+            """Analiza el libro fuera del hilo de la interfaz."""
+            try:
+                documento = None
+                if usar_cache:
+                    documento = cache.cargar(destino, opciones.firma())
+                if documento is None:
+                    with cronometro(log, "apertura completa de %s" % destino.name):
+                        documento = formatos.analizar(destino, opciones)
+                    if usar_cache:
+                        cache.guardar(documento, opciones.firma())
+                # La grabación se lee siempre, venga el texto de la caché o no:
+                # es rápido y es lo que ata cada frase con su trozo de audio.
+                libro_daisy = None
+                if lector_daisy.es_libro_daisy(destino):
+                    try:
+                        libro_daisy = lector_daisy.abrir(destino, canal)
+                    except Exception as error:
+                        registrar_excepcion(
+                            log, "No se ha podido leer la grabación DAISY", error)
+                wx.CallAfter(self._libro_listo, documento, str(destino), libro_daisy)
+            except formatos.Cancelado:
+                log.info("Apertura cancelada por el usuario: %s", destino)
+                wx.CallAfter(self._libro_cancelado)
+            except formatos.ErrorFormato as error:
+                wx.CallAfter(self._libro_fallido, str(error), str(destino))
+            except Exception as error:  # pragma: no cover - salvaguarda
+                registrar_excepcion(log, "Fallo inesperado al abrir %s" % destino, error)
+                wx.CallAfter(
+                    self._libro_fallido,
+                    _("Ha ocurrido un error inesperado al abrir el libro.\n"
+                    "Consulta el registro para ver los detalles.\n\n%s") % error,
+                    str(destino),
+                )
+
+        threading.Thread(target=trabajo, name="analisis", daemon=True).start()
+
+    def _preparar_ocr_pdf(self) -> None:
+        """Deja el analizador de PDF listo para reconocer páginas escaneadas.
+
+        Se hace justo antes de abrir, no al arrancar, porque el usuario puede
+        haber cambiado el proveedor de IA mientras tanto.
+        """
+        from formatos import ocr
+        from formatos.pdf import analizador_pdf
+        from nucleo.ia.servicio import Servicio
+
+        servicio = Servicio(self.configuracion)
+        analizador_pdf.servicio_ia = servicio if servicio.activa else None
+        analizador_pdf.ocr_modo = str(self.configuracion.obtener("pdf_ocr_modo", "auto"))
+        analizador_pdf.ocr_idiomas = str(self.configuracion.obtener("pdf_ocr_idiomas", ""))
+        analizador_pdf.ocr_ajustes = ocr.Ajustes.desde_configuracion(self.configuracion)
+        analizador_pdf.ocr_maximo = int(self.configuracion.obtener("pdf_ocr_maximo", 100))
+
+    def _cerrar_progreso(self) -> None:
+        """Cierra la ventana de progreso, si estaba abierta."""
+        if self._progreso is not None:
+            self._progreso.cerrar()
+            self._progreso = None
+
+    def _libro_cancelado(self) -> None:
+        """El usuario ha cancelado la apertura: se deja todo como estaba."""
+        self._cargando = False
+        self._cerrar_progreso()
+        self.SetStatusText(_("Apertura cancelada."))
+        self.sonidos.reproducir("limite")
+        self.lector.texto.SetFocus()
+        self.anunciar(_("Apertura cancelada."))
+
+    def _libro_listo(self, documento: Documento, ruta: str, libro_daisy=None) -> None:
+        """Se ejecuta en el hilo de la interfaz cuando el libro está analizado."""
+        self._cargando = False
+        self._cerrar_progreso()
+        if wx.IsBusy():
+            wx.EndBusyCursor()
+        self.documento = documento
+        self.ruta_actual = ruta
+        self.buscador = Buscador(documento)
+        # Las descripciones de las imágenes viajan con el libro: al abrirlo
+        # vuelven las que ya se hicieron, sin gastar otra petición de IA.
+        self.descripciones = descripciones.Coleccion(ruta)
+        self._linea_descrita = -1
+        # Cada libro tiene sus nombres propios, así que su tabla de
+        # pronunciación se rehace al abrirlo.
+        self.lectura_voz.refrescar_pronunciacion()
+        # El cronómetro de lectura continúa donde se quedó la última vez.
+        self.cronometro = estadisticas.Cronometro.desde_dict(
+            self.configuracion.datos_de(ruta).lectura)
+
+        datos = self.configuracion.datos_de(ruta)
+        datos.titulo = documento.metadatos.titulo
+        self.marcadores = list(datos.marcadores)
+        posicion = datos.posicion if self.configuracion.obtener("recordar_posicion") else 0
+        posicion = max(0, min(posicion, len(documento)))
+
+        self.libro_daisy = libro_daisy
+        if libro_daisy is not None and libro_daisy.tiene_audio:
+            self.reproductor_daisy.cargar(libro_daisy)
+        else:
+            self.reproductor_daisy.descargar()
+
+        self.lector.cargar_documento(documento, posicion)
+        self.lector.restaurar_historial(datos.historial, datos.indice_historial)
+        # Si la ventana de progreso llegó a aparecer, el foco estaba en ella;
+        # al cerrarse tiene que volver al texto, no quedarse en el aire.
+        self.lector.texto.SetFocus()
+        self.configuracion.anadir_reciente(ruta)
+        self.configuracion.establecer("ultima_carpeta", str(Path(ruta).parent))
+        self.configuracion.guardar()
+        self._refrescar_recientes()
+        self._actualizar_disponibilidad()
+
+        titulo = documento.metadatos.titulo or Path(ruta).stem
+        autor = documento.metadatos.autor
+        self.SetTitle("%s - %s" % (titulo, NOMBRE))
+        self.sonidos.reproducir("abrir")
+        resumen = _("%s%s. %d por ciento leído.") % (
+            titulo, _(", de %s") % autor if autor else "", documento.porcentaje_en(posicion)
+        )
+        self.anunciar(_("Documento abierto: %s") % resumen)
+        self._actualizar_estado(posicion)
+        self._presentar_grabacion(posicion)
+
+    def _presentar_grabacion(self, posicion: int) -> None:
+        """Avisa de que el libro trae grabación y, si se pidió, la arranca.
+
+        Merece un aviso propio: en un libro DAISY de solo audio, el texto que
+        se ve es el índice y poco más, y sin decirlo parecería que el libro ha
+        venido incompleto cuando en realidad lo que trae es una voz humana
+        leyéndolo entero.
+        """
+        if not self.reproductor_daisy.activo:
+            return
+        libro = self.libro_daisy
+        self.reproductor_daisy.frase = self.reproductor_daisy.frase_en(posicion)
+        self.anunciar(_("%s Duración de la grabación: %s. Control+Espacio para escucharla, "
+                      "Control+Alt+R para los mandos.")
+                      % (libro.descripcion_del_tipo(),
+                         audio.duracion_legible(libro.duracion)))
+        if self.configuracion.obtener("daisy_reproducir_al_abrir"):
+            self.reproductor_daisy.reproducir(self.reproductor_daisy.frase)
+
+    def _libro_fallido(self, mensaje: str, ruta: str) -> None:
+        """Informa de que un libro no se ha podido abrir."""
+        self._cargando = False
+        self._cerrar_progreso()
+        if wx.IsBusy():
+            wx.EndBusyCursor()
+        self.SetStatusText(_("No se ha podido abrir el documento."))
+        self.sonidos.reproducir("error")
+        log.error("No se ha podido abrir %s: %s", ruta, mensaje)
+        wx.MessageBox(mensaje, _("No se ha podido abrir el documento"), wx.OK | wx.ICON_ERROR, self)
+
+    def al_abrir_carpeta(self, evento) -> None:
+        """Pide una carpeta y la abre como libro DAISY.
+
+        Hace falta una orden aparte porque un libro DAISY **no es un archivo**:
+        es una carpeta con el índice, los SMIL y la grabación dentro.  Se puede
+        abrir eligiendo cualquier archivo de dentro, pero eso hay que saberlo;
+        así se elige el libro tal y como lo ve quien lo ha descargado.
+        """
+        inicial = str(self.configuracion.obtener("ultima_carpeta", "") or "")
+        with wx.DirDialog(self, _("Elige la carpeta del libro DAISY"), inicial,
+                          style=wx.DD_DIR_MUST_EXIST) as dialogo:
+            if dialogo.ShowModal() != wx.ID_OK:
+                return
+            carpeta = dialogo.GetPath()
+        if not lector_daisy.es_libro_daisy(carpeta):
+            wx.MessageBox(
+                _("En esa carpeta no hay ningún libro DAISY.\n\n"
+                  "Un libro DAISY tiene dentro un archivo «ncc.html» (versión 2.02) o uno "
+                  "con extensión «.ncx» (versión 3). Comprueba que has elegido la carpeta "
+                  "del libro y no la que la contiene."),
+                _("Abrir libro DAISY"), wx.OK | wx.ICON_INFORMATION, self)
+            return
+        self.abrir_libro(carpeta)
+
+    def al_cerrar_libro(self, evento) -> None:
+        """Cierra el libro actual."""
+        if self.documento is None:
+            return
+        self.lectura_voz.detener()
+        self.reproductor_daisy.descargar()
+        self.libro_daisy = None
+        self.guardar_sesion()
+        self.documento = None
+        self.ruta_actual = ""
+        self.buscador = None
+        self.marcadores = []
+        self.descripciones = descripciones.Coleccion()
+        self.lector.cerrar_documento()
+        self.SetTitle(NOMBRE)
+        self.SetStatusText(_("Listo. Pulsa Control+O para abrir un documento."))
+        self._actualizar_disponibilidad()
+        self.sonidos.reproducir("cerrar")
+        self.anunciar(_("Documento cerrado."))
+
+    def guardar_sesion(self) -> None:
+        """Guarda la posición, los marcadores y el historial del libro actual."""
+        if self.documento is None or not self.ruta_actual:
+            return
+        datos = self.configuracion.datos_de(self.ruta_actual)
+        datos.lectura = self.cronometro.como_dict()
+        datos.posicion = self.lector.posicion()
+        datos.marcadores = list(self.marcadores)
+        historial, indice = self.lector.historial()
+        datos.historial = historial
+        datos.indice_historial = indice
+        datos.titulo = self.documento.metadatos.titulo
+        self.configuracion.guardar()
+        log.debug("Sesión guardada en la posición %d", datos.posicion)
+
+    # =======================================================================
+    # Navegación
+    # =======================================================================
+
+    def _al_cerrar_menu(self, evento) -> None:
+        """Anota que acaba de cerrarse un menú, y por tanto el foco va a moverse."""
+        self._menu_cerrado_en = time.monotonic()
+        evento.Skip()
+
+    def anunciar(self, mensaje: str, inmediato: bool = False) -> None:
+        """Anuncia un mensaje y lo muestra en la barra de estado.
+
+        :param mensaje: Texto que se lee y se escribe en la barra de estado.
+        :param inmediato: ``True`` cuando el aviso responde a una tecla pulsada
+                          dentro del texto del libro, donde el foco no se mueve
+                          y no hace falta esperar.  Las órdenes de menú usan el
+                          valor por omisión, que espera a que el foco vuelva del
+                          menú: si no, el lector de pantalla anuncia el control
+                          que recibe el foco y tapa el aviso.
+
+        **Si el aviso llega justo después de cerrarse un menú, la espera se
+        pone de todas formas**, aunque se haya pedido inmediato.  La misma
+        orden se puede lanzar de dos maneras —con su tecla, sin mover el foco, o
+        desde el menú, que sí lo mueve— y quien la escribe no tiene por qué
+        acordarse de distinguirlo en cada llamada.  Sin esto, un aviso como «no
+        hay ninguna tabla que ver como HTML» se decía mientras el foco volvía al
+        texto y el lector de pantalla lo tapaba con la línea del cursor.
+        """
+        if not mensaje:
+            return
+        if inmediato and time.monotonic() - self._menu_cerrado_en < ESPERA_TRAS_MENU:
+            inmediato = False
+        retardo = anuncios.RETARDO_INMEDIATO if inmediato else anuncios.RETARDO_NORMAL
+        self.anunciador.anunciar(mensaje, retardo=retardo)
+        self.SetStatusText(mensaje.replace("\n", " ")[:200])
+
+    def saltar_a(self, posicion: int, mensaje: str = "", inmediato: bool = False) -> None:
+        """Coloca el cursor en una posición y lo anuncia."""
+        if self.documento is None:
+            return
+        self.lector.ir_a(posicion, registrar=True)
+        if mensaje:
+            self.anunciar(mensaje, inmediato=inmediato)
+
+    def navegar_a(self, objetivo: Objetivo, siguiente: bool, nivel: int = 0) -> None:
+        """Salta al elemento anterior o siguiente del tipo indicado."""
+        if self.documento is None:
+            return
+        resultado = navegacion.navegar(
+            self.documento, self.lector.posicion(), objetivo, siguiente,
+            circular=bool(self.configuracion.obtener("navegacion_circular")), nivel=nivel,
+        )
+        self._aplicar_resultado(resultado)
+
+    def navegar_contenedor(self, al_final: bool) -> None:
+        """Va al principio o más allá del final de la lista o tabla actual."""
+        if self.documento is None:
+            return
+        resultado = navegacion.navegar_contenedor(self.documento, self.lector.posicion(), al_final)
+        self._aplicar_resultado(resultado)
+
+    def _aplicar_resultado(self, resultado) -> None:
+        """Mueve el cursor y anuncia según el resultado de una navegación."""
+        if not resultado.encontrado:
+            self.sonidos.reproducir("limite")
+            self.anunciar(resultado.mensaje, inmediato=True)
+            return
+        if resultado.dio_la_vuelta:
+            self.sonidos.reproducir("vuelta")
+        elif resultado.tipo is not None:
+            self.sonidos.reproducir_marca(resultado.tipo)
+        # El aviso se prepara y se marca **antes** de mover el cursor: al
+        # moverlo se dispara _al_moverse, que si no lo diría por su cuenta y
+        # el anuncio de la navegación lo cortaría a media frase.
+        descripcion = self._descripcion_guardada_en(resultado.posicion)
+        if descripcion:
+            self._linea_descrita = self.documento.linea_de(resultado.posicion)
+        self.lector.ir_a(resultado.posicion, registrar=True)
+        self.anunciar(resultado.mensaje + descripcion, inmediato=True)
+
+    def _descripcion_guardada_en(self, posicion: int) -> str:
+        """Devuelve la descripción guardada de la imagen que hay en un punto.
+
+        Devuelve la cadena vacía si no hay imagen, si no tiene descripción
+        guardada o si el usuario ha desactivado el aviso.
+        """
+        if self.documento is None:
+            return ""
+        if not self.configuracion.obtener("ia_anunciar_descripcion", True):
+            return ""
+        for marca in navegacion.elementos_en_linea(self.documento, posicion):
+            if marca.tipo not in (TipoMarca.IMAGEN, TipoMarca.FIGURA):
+                continue
+            guardada = self.descripciones.obtener(getattr(marca, "referencia", ""))
+            if guardada is not None and guardada.texto.strip():
+                return _(" Descripción guardada: %s") % guardada.texto.strip()
+        return ""
+
+    def navegar_marcador(self, siguiente: bool, solo_notas: bool) -> None:
+        """Salta al marcador o a la nota anterior o siguiente."""
+        if self.documento is None:
+            return
+        candidatos = [m for m in self.marcadores if (m.es_nota if solo_notas else True)]
+        if not candidatos:
+            self.sonidos.reproducir("limite")
+            self.anunciar(_("No hay notas en este documento.") if solo_notas
+                          else _("No hay marcadores en este documento."), inmediato=True)
+            return
+        actual = self.lector.posicion()
+        candidatos.sort(key=lambda m: m.inicio)
+        elegido = None
+        if siguiente:
+            elegido = next((m for m in candidatos if m.inicio > actual), None)
+        else:
+            anteriores = [m for m in candidatos if m.inicio < actual]
+            elegido = anteriores[-1] if anteriores else None
+        if elegido is None:
+            self.sonidos.reproducir("limite")
+            self.anunciar(_("No hay %s %s.") % ("siguiente" if siguiente else "anterior",
+                                             "nota" if solo_notas else "marcador"), inmediato=True)
+            return
+        self.sonidos.reproducir("nota" if elegido.es_nota else "marcador")
+        self.lector.ir_a(elegido.inicio, registrar=True)
+        if elegido.es_nota:
+            self.anunciar("Nota: %s" % elegido.nota, inmediato=True)
+        else:
+            self.anunciar("Marcador. %s" % self.lector.linea_actual().strip(), inmediato=True)
+
+    def al_atras(self, evento) -> None:
+        """Vuelve a la posición anterior del historial."""
+        if not self.lector.retroceder():
+            self.sonidos.reproducir("limite")
+            self.anunciar(_("No hay ninguna posición anterior."))
+        else:
+            self.anunciar(_("Posición anterior. ") + self.lector.linea_actual().strip())
+
+    def al_adelante(self, evento) -> None:
+        """Avanza a la siguiente posición del historial."""
+        if not self.lector.avanzar():
+            self.sonidos.reproducir("limite")
+            self.anunciar(_("No hay ninguna posición siguiente."))
+        else:
+            self.anunciar(_("Posición siguiente. ") + self.lector.linea_actual().strip())
+
+    def al_ir_al_final(self, evento) -> None:
+        """Salta al final del libro."""
+        if self.documento is not None:
+            self.saltar_a(len(self.documento), _("Final del documento."))
+
+    def al_ir_a_linea(self, evento) -> None:
+        """Pide un número de línea y salta a ella."""
+        if self.documento is None:
+            return
+        actual = self.documento.linea_de(self.lector.posicion()) + 1
+        with dialogos_navegacion.DialogoSalto(
+            self, _("Ir a la línea"), _("&Número de línea (de 1 a %d):") % self.documento.total_lineas,
+            1, self.documento.total_lineas, actual,
+        ) as dialogo:
+            if dialogo.ShowModal() == wx.ID_OK and dialogo.valor is not None:
+                destino = self.documento.inicio_de_linea(dialogo.valor - 1)
+                self.saltar_a(destino, _("Línea %d.") % dialogo.valor)
+
+    def al_ir_a_porcentaje(self, evento) -> None:
+        """Pide un porcentaje y salta al punto correspondiente."""
+        if self.documento is None:
+            return
+        actual = self.documento.porcentaje_en(self.lector.posicion())
+        with dialogos_navegacion.DialogoSalto(
+            self, _("Ir al porcentaje"), _("&Porcentaje del documento (de 0 a 100):"), 0, 100, actual,
+        ) as dialogo:
+            if dialogo.ShowModal() == wx.ID_OK and dialogo.valor is not None:
+                destino = self.documento.posicion_de_porcentaje(dialogo.valor)
+                self.saltar_a(destino, _("%d por ciento del documento.") % dialogo.valor)
+
+    def al_ir_a_pagina(self, evento) -> None:
+        """Pide un número de página y salta a ella."""
+        if self.documento is None:
+            return
+        total = self.documento.total_paginas
+        if not total:
+            self.sonidos.reproducir("limite")
+            self.anunciar(_("Este documento no tiene numeración de páginas."))
+            return
+        grupo = self.documento.marcas.grupo(TipoMarca.SALTO_PAGINA)
+        actual = max(self.documento.indice_de_pagina(self.lector.posicion()) + 1, 1)
+        with dialogos_navegacion.DialogoSalto(
+            self, _("Ir a la página"), _("&Número de página (de 1 a %d):") % total, 1, total, actual,
+        ) as dialogo:
+            if dialogo.ShowModal() == wx.ID_OK and dialogo.valor is not None:
+                marca = grupo[dialogo.valor - 1]
+                self.sonidos.reproducir("pagina")
+                self.saltar_a(marca.posicion, _("Página %s.") % (marca.texto or dialogo.valor))
+
+    def al_indice(self, evento) -> None:
+        """Abre el índice del libro."""
+        if self.documento is None:
+            return
+        with dialogos_navegacion.DialogoIndice(self, self.documento, self.lector.posicion()) as dialogo:
+            if dialogo.ShowModal() == wx.ID_OK and dialogo.posicion_elegida is not None:
+                self.sonidos.reproducir("seccion")
+                self.saltar_a(dialogo.posicion_elegida, self.lector.linea_actual().strip())
+
+    def al_elementos(self, evento) -> None:
+        """Abre la lista de elementos del libro."""
+        if self.documento is None:
+            return
+        with dialogos_navegacion.DialogoElementos(self, self.documento, self.lector.posicion()) as dialogo:
+            if dialogo.ShowModal() == wx.ID_OK and dialogo.posicion_elegida is not None:
+                self.saltar_a(dialogo.posicion_elegida, self.lector.linea_actual().strip())
+
+    # =======================================================================
+    # Búsqueda
+    # =======================================================================
+
+    def al_buscar(self, evento) -> None:
+        """Abre (o vuelve a mostrar) el cuadro de búsqueda."""
+        if self.documento is None:
+            return
+        if self._dialogo_buscar is None:
+            self._dialogo_buscar = dialogos_buscar.DialogoBuscar(
+                self, self.configuracion, self.ejecutar_busqueda
+            )
+        seleccion = self.lector.texto_seleccionado().strip()
+        if seleccion and len(seleccion) < 100:
+            self._dialogo_buscar.campo.SetValue(seleccion)
+        self._dialogo_buscar.Show()
+        self._dialogo_buscar.Raise()
+        self._dialogo_buscar.campo.SetFocus()
+
+    def ejecutar_busqueda(self, termino: str, hacia_adelante: bool,
+                          opciones: OpcionesBusqueda) -> bool:
+        """Busca un término y lleva el cursor al resultado."""
+        if self.documento is None or self.buscador is None:
+            return False
+        self._ultima_busqueda = (termino, opciones)
+        desde = self.lector.posicion()
+        resultado = self.buscador.buscar(termino, desde, hacia_adelante, opciones)
+        if resultado.encontrado:
+            self.sonidos.reproducir("encontrado")
+            self.lector.seleccionar(resultado.inicio, resultado.fin)
+            self.lector.registrar_en_historial(resultado.inicio)
+            self.anunciar("%s %s" % (resultado.mensaje, self.lector.linea_actual().strip()))
+        else:
+            self.sonidos.reproducir("limite")
+            self.anunciar(resultado.mensaje)
+        if self._dialogo_buscar is not None and self._dialogo_buscar.IsShown():
+            self._dialogo_buscar.mostrar_estado(resultado.mensaje)
+        return resultado.encontrado
+
+    def repetir_busqueda(self, hacia_adelante: bool) -> None:
+        """Repite la última búsqueda en la dirección indicada."""
+        if self._ultima_busqueda is None:
+            self.al_buscar(None)
+            return
+        termino, opciones = self._ultima_busqueda
+        self.ejecutar_busqueda(termino, hacia_adelante, opciones)
+
+    def contar_apariciones(self, termino: str, opciones: OpcionesBusqueda) -> int:
+        """Cuenta cuántas veces aparece un término en el libro."""
+        if self.buscador is None:
+            return 0
+        return self.buscador.contar(termino, opciones)
+
+    # =======================================================================
+    # Marcadores y notas
+    # =======================================================================
+
+    def _fragmento_actual(self) -> str:
+        """Texto representativo de la posición actual, para los marcadores."""
+        if self.documento is None:
+            return ""
+        seleccionado = self.lector.texto_seleccionado().strip()
+        if seleccionado:
+            return seleccionado[:LONGITUD_FRAGMENTO]
+        return self.lector.linea_actual().strip()[:LONGITUD_FRAGMENTO]
+
+    def _marcador_en(self, posicion: int) -> Marcador | None:
+        """Devuelve el marcador que cubre una posición, si lo hay."""
+        for marcador in self.marcadores:
+            if marcador.inicio <= posicion <= max(marcador.fin, marcador.inicio):
+                return marcador
+            if self.documento is not None:
+                if self.documento.linea_de(marcador.inicio) == self.documento.linea_de(posicion):
+                    return marcador
+        return None
+
+    def al_poner_marcador(self, evento) -> None:
+        """Pone o quita un marcador en la posición actual."""
+        if self.documento is None:
+            return
+        inicio, fin = self.lector.seleccion()
+        existente = self._marcador_en(inicio)
+        if existente is not None and not existente.es_nota:
+            self.marcadores.remove(existente)
+            self.anunciar(_("Marcador eliminado."))
+        else:
+            self.marcadores.append(Marcador(inicio, fin, "", self._fragmento_actual()))
+            self.sonidos.reproducir("marcador")
+            self.anunciar(_("Marcador puesto en el %d por ciento.")
+                          % self.documento.porcentaje_en(inicio))
+        self.guardar_sesion()
+
+    def al_poner_nota(self, evento) -> None:
+        """Escribe o edita la nota de la posición actual."""
+        if self.documento is None:
+            return
+        inicio, fin = self.lector.seleccion()
+        existente = self._marcador_en(inicio)
+        texto_previo = existente.nota if existente is not None else ""
+        with dialogos_contenido.DialogoNota(self, texto_previo, self._fragmento_actual()) as dialogo:
+            if dialogo.ShowModal() != wx.ID_OK:
+                return
+            if not dialogo.nota:
+                if existente is not None:
+                    self.marcadores.remove(existente)
+                    self.anunciar(_("Nota eliminada."))
+                self.guardar_sesion()
+                return
+            if existente is not None:
+                self.marcadores.remove(existente)
+            self.marcadores.append(Marcador(inicio, fin, dialogo.nota, self._fragmento_actual()))
+            self.sonidos.reproducir("nota")
+            self.anunciar(_("Nota guardada."))
+        self.guardar_sesion()
+
+    def al_marcadores(self, evento) -> None:
+        """Abre la lista de marcadores y notas."""
+        if self.documento is None:
+            return
+        with dialogos_navegacion.DialogoMarcadores(
+            self, self.documento, list(self.marcadores), self.lector.posicion(),
+            self.configuracion
+        ) as dialogo:
+            resultado = dialogo.ShowModal()
+            for eliminado in dialogo.eliminados:
+                if eliminado in self.marcadores:
+                    self.marcadores.remove(eliminado)
+            if dialogo.eliminados:
+                self.guardar_sesion()
+            if resultado == wx.ID_OK and dialogo.posicion_elegida is not None:
+                self.saltar_a(dialogo.posicion_elegida, self.lector.linea_actual().strip())
+
+    # =======================================================================
+    # Contenido: imágenes y tablas
+    # =======================================================================
+
+    def _marca_en_linea(self, tipos: tuple[TipoMarca, ...]):
+        """Busca en la línea actual la primera marca de alguno de esos tipos."""
+        if self.documento is None:
+            return None
+        elementos = navegacion.elementos_en_linea(self.documento, self.lector.posicion())
+        for marca in elementos:
+            if marca.tipo in tipos:
+                return marca
+        return None
+
+    def al_ver_imagen(self, evento) -> None:
+        """Muestra la imagen que hay en la línea actual."""
+        if self.documento is None:
+            return
+        marca = self._marca_en_linea((TipoMarca.IMAGEN, TipoMarca.FIGURA))
+        if marca is None:
+            self.sonidos.reproducir("limite")
+            self.anunciar(_("No hay ninguna imagen en esta línea. "
+                          "Usa la tecla G para ir a la siguiente imagen."))
+            return
+        self.mostrar_imagen(marca)
+
+    def mostrar_imagen(self, marca) -> None:
+        """Abre el visor de una imagen del libro.
+
+        Es el **único** sitio por el que se abre, tanto desde el menú como con
+        Intro sobre la ilustración.  Antes había dos llamadas y una de ellas no
+        pasaba las descripciones guardadas, de modo que al entrar con Intro no
+        se veía la descripción hecha con IA ni se podía pedir otra.
+        """
+        with dialogos_contenido.DialogoImagen(
+                self, self.ruta_actual, marca, self.configuracion,
+                self.descripciones, self._contexto_de_imagen(marca)) as dialogo:
+            dialogo.ShowModal()
+
+    def _contexto_de_imagen(self, marca) -> str:
+        """Redacta los datos del libro que ayudan a la IA a describir mejor.
+
+        Saber que el libro es un manual de botánica, o una novela del XIX,
+        cambia por completo qué destaca la IA de una misma lámina.  Se le pasa
+        también la descripción que trae el EPUB, que suele ser escueta pero
+        acierta con el asunto.
+        """
+        if self.documento is None:
+            return ""
+        partes = []
+        metadatos = self.documento.metadatos
+        if metadatos.titulo:
+            partes.append(_("Título del documento: %s") % metadatos.titulo)
+        if metadatos.autor:
+            partes.append("Autor: %s" % metadatos.autor)
+        original = (getattr(marca, "texto", "") or "").strip()
+        if original:
+            partes.append(_("Descripción que trae el propio documento: %s") % original)
+        referencia = getattr(marca, "referencia", "")
+        if referencia:
+            partes.append(_("Archivo de la imagen dentro del documento: %s") % referencia)
+        return "\n".join(partes)
+
+    def datos_de_imagen(self, marca) -> bytes:
+        """Extrae del EPUB los bytes de una imagen.
+
+        Devuelve una cadena de bytes vacía si no se puede, en vez de fallar:
+        quien llama ya avisa con un mensaje claro.
+        """
+        referencia = getattr(marca, "referencia", "")
+        if not referencia or not self.ruta_actual:
+            return b""
+        try:
+            return formatos.extraer_recurso(self.ruta_actual, referencia) or b""
+        except Exception as error:
+            registrar_excepcion(log, "No se ha podido extraer la imagen %s" % referencia, error)
+            return b""
+
+    def al_describir_imagen(self, evento) -> None:
+        """Describe con IA la imagen que hay en la línea actual.
+
+        Es la orden de la tecla rápida: abre el diálogo y **ya lanza la
+        petición**, de modo que con una sola pulsación se obtiene la
+        descripción.  Si ya había una guardada se muestra esa, sin gastar otra
+        petición; desde el propio diálogo se puede pedir una nueva.
+        """
+        if self.documento is None:
+            return
+        marca = self._marca_en_linea((TipoMarca.IMAGEN, TipoMarca.FIGURA))
+        if marca is None:
+            self.sonidos.reproducir("limite")
+            self.anunciar(_("No hay ninguna imagen en esta línea. "
+                          "Usa la tecla G para ir a la siguiente imagen."), inmediato=True)
+            return
+        from nucleo.ia.servicio import Servicio
+
+        guardada = self.descripciones.obtener(getattr(marca, "referencia", ""))
+        if guardada is None:
+            motivo = Servicio(self.configuracion).motivo_no_disponible()
+            if motivo:
+                self.sonidos.reproducir("limite")
+                self.anunciar(motivo)
+                wx.MessageBox(motivo, _("Descripción con inteligencia artificial"),
+                              wx.OK | wx.ICON_INFORMATION, self)
+                return
+        datos = self.datos_de_imagen(marca)
+        if not datos and guardada is None:
+            self.sonidos.reproducir("error")
+            self.anunciar(_("No se ha podido extraer esta imagen del documento."), inmediato=True)
+            return
+        from interfaz.dialogos.ia import DialogoDescripcion
+
+        with DialogoDescripcion(self, datos, marca, self.configuracion, self.descripciones,
+                                self._contexto_de_imagen(marca), guardada,
+                                al_vuelo=True) as dialogo:
+            dialogo.ShowModal()
+
+    def imagenes_del_libro(self) -> list:
+        """Todas las imágenes del libro, sin repetir y en orden de aparición.
+
+        Una misma ilustración puede salir varias veces —un logotipo al empezar
+        cada capítulo, por ejemplo— y describirla una vez por aparición sería
+        tirar el tiempo y la cuota: se agrupan por archivo, que es la clave con
+        la que se guardan las descripciones.
+        """
+        if self.documento is None:
+            return []
+        vistas = set()
+        imagenes = []
+        for tipo in (TipoMarca.IMAGEN, TipoMarca.FIGURA):
+            for marca in self.documento.marcas.grupo(tipo).marcas:
+                referencia = marca.referencia or ""
+                if not referencia or referencia in vistas:
+                    continue
+                vistas.add(referencia)
+                imagenes.append(marca)
+        imagenes.sort(key=lambda marca: marca.posicion)
+        return imagenes
+
+    def al_describir_todo(self, evento) -> None:
+        """Describe de una vez todas las imágenes del libro que falten."""
+        if self.documento is None:
+            return
+        imagenes = self.imagenes_del_libro()
+        if not imagenes:
+            self.sonidos.reproducir("limite")
+            self.anunciar(_("Este documento no tiene ninguna imagen que describir."))
+            wx.MessageBox(_("Este documento no tiene ninguna imagen que describir."),
+                          _("Describir todas las imágenes"),
+                          wx.OK | wx.ICON_INFORMATION, self)
+            return
+        from nucleo.ia.servicio import Servicio
+
+        motivo = Servicio(self.configuracion).motivo_no_disponible()
+        if motivo:
+            self.sonidos.reproducir("limite")
+            wx.MessageBox(motivo, _("Describir todas las imágenes"),
+                          wx.OK | wx.ICON_INFORMATION, self)
+            return
+        from interfaz.dialogos.ia import DialogoDescribirTodo
+
+        with DialogoDescribirTodo(self, imagenes, self.configuracion, self.descripciones,
+                                  self.datos_de_imagen, self._contexto_de_imagen) as dialogo:
+            dialogo.ShowModal()
+            hechas = dialogo.hechas
+        if hechas:
+            self.anunciar(_n("Se ha descrito %d imagen del documento.",
+                             "Se han descrito %d imágenes del documento.", hechas) % hechas)
+
+    def al_ver_tabla(self, evento) -> None:
+        """Muestra la tabla que hay en la línea actual."""
+        if self.documento is None:
+            return
+        marca = self._marca_en_linea((TipoMarca.TABLA,))
+        if marca is None:
+            contenedor = self.documento.marcas.contenedor_en(self.lector.posicion())
+            if contenedor is not None and contenedor.tipo is TipoMarca.TABLA:
+                marca = contenedor
+        if marca is None:
+            self.sonidos.reproducir("limite")
+            self.anunciar(_("No hay ninguna tabla aquí. Usa la tecla T para ir a la siguiente."))
+            return
+        with dialogos_contenido.DialogoTabla(self, marca, self.configuracion) as dialogo:
+            dialogo.ShowModal()
+
+    def elemento_estructurado_en_el_cursor(self):
+        """Busca la tabla, la lista, la cita o la fórmula que hay en el cursor.
+
+        Se mira primero lo que hay en la propia línea (una tabla en modo
+        marcador cabe entera en una línea) y después los contenedores que
+        abarcan la posición, que es como se encuentra la lista o la tabla
+        dentro de la que se está leyendo.
+        """
+        if self.documento is None:
+            return None
+        posicion = self.lector.posicion()
+        for marca in navegacion.elementos_en_linea(self.documento, posicion):
+            if html_elementos.se_puede_convertir(marca):
+                return marca
+        contenedor = self.documento.marcas.contenedor_en(posicion)
+        if html_elementos.se_puede_convertir(contenedor):
+            return contenedor
+        # Las citas no están entre los contenedores indexados, así que se
+        # buscan aparte: son pocas y la lista está ordenada por posición.
+        for marca in self.documento.marcas.grupo(TipoMarca.CITA).marcas:
+            if marca.posicion <= posicion < marca.posicion + max(marca.longitud, 1):
+                return marca
+        return None
+
+    def al_ver_html(self, evento) -> None:
+        """Muestra en el visor HTML el elemento donde está el cursor."""
+        if self.documento is None:
+            return
+        marca = self.elemento_estructurado_en_el_cursor()
+        if marca is None:
+            self.sonidos.reproducir("limite")
+            self.anunciar(_("Aquí no hay ninguna tabla, lista, cita ni fórmula que ver como "
+                          "HTML. Usa la tecla T, L, Q o E para ir a la siguiente."),
+                          inmediato=True)
+            return
+        visor_html.mostrar(self, self.documento, marca)
+
+    def activar_elemento(self) -> bool:
+        """Acciona el elemento que hay bajo el cursor (Intro).
+
+        Sigue un enlace, abre una imagen o muestra una tabla, según lo que
+        haya en la línea.  Devuelve ``True`` si ha hecho algo.
+        """
+        if self.documento is None:
+            return False
+        posicion = self.lector.posicion()
+        elementos = navegacion.elementos_en_linea(self.documento, posicion)
+
+        # Un enlace solo se activa si el cursor está realmente dentro de él.
+        for marca in elementos:
+            if marca.tipo is TipoMarca.ENLACE:
+                dentro = marca.posicion <= posicion < marca.posicion + max(marca.longitud, 1)
+                if dentro or len([m for m in elementos if m.tipo is TipoMarca.ENLACE]) == 1:
+                    return self._seguir_enlace(marca)
+        for marca in elementos:
+            if marca.tipo in (TipoMarca.IMAGEN, TipoMarca.FIGURA):
+                self.mostrar_imagen(marca)
+                return True
+            if marca.tipo is TipoMarca.TABLA:
+                with dialogos_contenido.DialogoTabla(self, marca, self.configuracion) as dialogo:
+                    dialogo.ShowModal()
+                return True
+        return False
+
+    def _seguir_enlace(self, marca) -> bool:
+        """Sigue un enlace interno del libro, o avisa si es externo."""
+        from formatos.epub import es_url_externa
+
+        destino = marca.referencia or ""
+        if not destino:
+            return False
+        if es_url_externa(destino):
+            respuesta = wx.MessageBox(
+                _("Este enlace lleva a una página de Internet:\n\n%s\n\n¿Quieres abrirlo en el "
+                "navegador?") % destino,
+                _("Enlace externo"), wx.YES_NO | wx.ICON_QUESTION, self,
+            )
+            if respuesta == wx.YES:
+                wx.LaunchDefaultBrowser(destino)
+            return True
+        posicion = self.documento.resolver_referencia(destino)
+        if posicion < 0:
+            self.sonidos.reproducir("limite")
+            self.anunciar(_("El destino de este enlace no está en el documento."))
+            return True
+        self.sonidos.reproducir("enlace")
+        self.saltar_a(posicion, "Enlace seguido. " + self.documento.texto_de_linea(posicion).strip())
+        return True
+
+    # =======================================================================
+    # Otras órdenes
+    # =======================================================================
+
+    def al_informacion(self, evento) -> None:
+        """Muestra los datos y las estadísticas del libro."""
+        if self.documento is None:
+            return
+        wx.BeginBusyCursor()
+        try:
+            dialogo = dialogos_contenido.DialogoInformacion(
+                self, self.documento, self.cronometro, self.lector.posicion())
+        finally:
+            wx.EndBusyCursor()
+        with dialogo:
+            dialogo.ShowModal()
+
+    def al_exportar(self, formato: str = "txt") -> None:
+        """Guarda el documento en el formato pedido.
+
+        Los cuatro formatos conservan la estructura —encabezados, listas— y no
+        solo el texto: es lo que permite seguir navegando el documento después
+        de exportarlo.
+        """
+        from nucleo import exportar
+
+        if self.documento is None:
+            return
+        nombres = exportar.nombres()
+        if formato not in nombres:
+            formato = "txt"
+        rotulo, extension, filtro = nombres[formato]
+        base = self.documento.metadatos.titulo or Path(self.ruta_actual).stem
+        nombre = "".join(c for c in base if c not in '\\/:*?"<>|') + extension
+        with wx.FileDialog(self, _("Exportar a %s") % rotulo, defaultFile=nombre,
+                           wildcard=filtro,
+                           style=wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT) as dialogo:
+            if dialogo.ShowModal() != wx.ID_OK:
+                return
+            destino = dialogo.GetPath()
+        ok, resultado = ejecutar_esperando(
+            self, _("Exportando a %s...") % rotulo,
+            lambda: exportar.exportar(self.documento, destino, formato))
+        if ok:
+            self.anunciar(_("Documento exportado correctamente a %s.") % rotulo)
+        else:
+            wx.MessageBox(_("No se ha podido exportar:\n%s") % resultado,
+                          _("Exportar"), wx.OK | wx.ICON_ERROR, self)
+
+    def al_ajuste_linea(self, evento) -> None:
+        """Activa o desactiva el ajuste de línea."""
+        activo = self.lector.alternar_ajuste_de_linea()
+        self.opcion_ajuste.Check(activo)
+        self.configuracion.guardar()
+        self.anunciar(_("Ajuste de línea activado.") if activo else _("Ajuste de línea desactivado."))
+
+    def al_alternar_sonidos(self, evento) -> None:
+        """Activa o desactiva los sonidos de navegación."""
+        activo = not self.sonidos.activado
+        self.sonidos.activado = activo
+        self.opcion_sonidos.Check(activo)
+        self.configuracion.establecer("sonidos_activados", activo)
+        self.configuracion.guardar()
+        if activo:
+            self.sonidos.reproducir("marcador")
+        self.anunciar("Sonidos activados." if activo else "Sonidos desactivados.")
+
+    def al_perfiles(self, evento) -> None:
+        """Abre la ventana de perfiles de lectura."""
+        with dialogos_perfiles.DialogoPerfiles(self) as dialogo:
+            dialogo.ShowModal()
+
+    def aplicar_preferencias(self, reabrir: bool = False, avisar_teclas: bool = False) -> None:
+        """Lleva a la ventana los ajustes que haya en la configuración.
+
+        Lo usan tanto el diálogo de opciones como el de perfiles: los dos
+        cambian los mismos ajustes, y lo que hay que hacer después de cambiarlos
+        es exactamente lo mismo.
+
+        :param reabrir: Si alguno de los ajustes cambiados obliga a volver a
+                        convertir el documento, en cuyo caso se pregunta.
+        :param avisar_teclas: Si hay que avisar de las teclas globales que no
+                              haya concedido Windows.
+        """
+        self.opcion_sonidos.Check(bool(self.configuracion.obtener("sonidos_activados")))
+        if bool(self.configuracion.obtener("ajuste_de_linea")) != \
+                bool(self.opcion_ajuste.IsChecked()):
+            self.lector.alternar_ajuste_de_linea()
+            self.opcion_ajuste.Check(bool(self.configuracion.obtener("ajuste_de_linea")))
+        self.lector.refrescar_apariencia()
+        self.lectura_voz.aplicar_ajustes()
+        # El gestor de sonidos guarda su estado en atributos, no lee la
+        # configuración: hay que llevárselo.
+        self.sonidos.activado = bool(self.configuracion.obtener("sonidos_activados", True))
+        self.sonidos.establecer_volumen(int(self.configuracion.obtener("sonidos_volumen", 70)))
+        if avisar_teclas:
+            # Las teclas globales pueden haber cambiado: se vuelven a pedir a
+            # Windows y se avisa de las que no hayan entrado.
+            self.aplicar_teclas_globales(avisar=True)
+        if reabrir and self.ruta_actual:
+            respuesta = wx.MessageBox(
+                _("Has cambiado una opción que afecta a cómo se convierte el libro.\n"
+                "¿Quieres volver a abrirlo ahora para que surta efecto?"),
+                _("Volver a abrir el documento"), wx.YES_NO | wx.ICON_QUESTION, self,
+            )
+            if respuesta == wx.YES:
+                self.abrir_libro(self.ruta_actual)
+
+    def al_opciones(self, evento) -> None:
+        """Abre el diálogo de preferencias."""
+        with dialogos_opciones.DialogoOpciones(self, self.configuracion, self.sonidos) as dialogo:
+            if dialogo.ShowModal() != wx.ID_OK:
+                return
+            self.aplicar_preferencias(reabrir=dialogo.hay_que_reanalizar,
+                                      avisar_teclas=True)
+
+    def al_manual(self, evento) -> None:
+        """Convierte el manual a página web y lo abre en el navegador.
+
+        El manual se guarda en Markdown dentro de ``data``, porque así es un
+        archivo de texto que se puede leer y editar con cualquier programa.
+        Para consultarlo se convierte a HTML —con el conversor propio de
+        :mod:`nucleo.marcado`, sin depender de ninguna biblioteca externa— y se
+        abre en el navegador, que es donde mejor se leen los encabezados, las
+        tablas y las listas con un lector de pantalla.
+
+        La página convertida se guarda en ``data/temp`` y solo se vuelve a
+        generar cuando el manual ha cambiado.
+        """
+        origen = rutas.ruta_manual()
+        if not origen.exists():
+            wx.MessageBox(
+                _("No se encuentra el manual de usuario.\n\nDebería estar en:\n%s") % origen,
+                _("Manual de usuario"), wx.OK | wx.ICON_INFORMATION, self)
+            return
+        destino = rutas.ruta_temp() / "MANUAL_USUARIO.html"
+        try:
+            if (not destino.exists()
+                    or destino.stat().st_mtime < origen.stat().st_mtime):
+                with cronometro(log, "conversion del manual a HTML"):
+                    texto = origen.read_text(encoding="utf-8")
+                    destino.write_text(marcado.a_html(texto, _("Manual de %s") % NOMBRE),
+                                       encoding="utf-8")
+            wx.LaunchDefaultBrowser(destino.as_uri())
+            log.info("Manual abierto en el navegador: %s", destino)
+        except Exception as error:
+            registrar_excepcion(log, "No se ha podido preparar el manual", error)
+            wx.MessageBox(_("No se ha podido abrir el manual:\n%s") % error,
+                          _("Manual de usuario"), wx.OK | wx.ICON_ERROR, self)
+
+    def al_atajos(self, evento) -> None:
+        """Muestra la lista de atajos de teclado."""
+        with dialogos_ayuda.DialogoAtajos(self) as dialogo:
+            dialogo.ShowModal()
+
+    def al_ver_registro(self, evento) -> None:
+        """Abre el visor de registros.
+
+        No es modal a propósito: para diagnosticar un problema hay que poder
+        dejarlo abierto, reproducir el fallo en la ventana principal y ver
+        aparecer el error.  Si ya estaba abierto, se trae al frente en lugar de
+        abrir un segundo visor.
+        """
+        if self.visor_registro is not None:
+            self.visor_registro.Raise()
+            self.visor_registro.SetFocus()
+            return
+        self.visor_registro = dialogos_registro.DialogoRegistro(self, self.configuracion)
+        self.visor_registro.Show()
+
+    def al_leer_voz(self, evento) -> None:
+        """Empieza a leer, pausa o continúa.
+
+        Con un libro DAISY grabado delante, esta orden manda sobre la grabación
+        y no sobre la voz sintética.  Es deliberado: la tecla significa «lee
+        esto en voz alta», y cuando el libro trae la voz de un narrador humano
+        eso es lo que hay que hacer sonar.
+        """
+        if self.reproductor_daisy.activo:
+            self.reproductor_daisy.alternar()
+            return
+        self.lectura_voz.alternar()
+
+    def al_detener_voz(self, evento) -> None:
+        """Corta la lectura, sea la grabación o la voz sintética."""
+        if self.reproductor_daisy.activo:
+            self.reproductor_daisy.detener(anunciar=True)
+            return
+        self.lectura_voz.detener(anunciar=True)
+
+    def al_datos_guardados(self, evento) -> None:
+        """Abre el gestor de lo que el programa guarda de cada libro."""
+        from interfaz.dialogos.datos import DialogoDatos
+
+        with DialogoDatos(self, self.configuracion, self.ruta_actual) as dialogo:
+            dialogo.ShowModal()
+            if dialogo.hubo_cambios:
+                # Los marcadores del libro abierto pueden haberse borrado desde
+                # ahí, así que se vuelven a leer en vez de dejar en memoria unos
+                # que ya no están guardados.
+                if self.ruta_actual:
+                    datos = self.configuracion.datos_de(self.ruta_actual)
+                    self.marcadores = list(datos.marcadores)
+                    self.descripciones = descripciones.Coleccion(self.ruta_actual)
+                self._refrescar_recientes()
+
+    def al_donde_estoy(self) -> None:
+        """Dice por dónde va la lectura, con el detalle que corresponda.
+
+        Con una grabación delante interesa el tiempo —cuánto llevas, cuánto
+        queda—; con texto, el capítulo y el porcentaje.  Es la misma pregunta
+        con dos respuestas distintas.
+        """
+        if self.reproductor_daisy.activo:
+            self.reproductor_daisy.donde_estoy()
+            return
+        if self.documento is None:
+            self.anunciar(_("No hay ningún documento abierto."), inmediato=True)
+            return
+        self.anunciar(navegacion.contexto_de_lectura(self.documento, self.lector.posicion()),
+                      inmediato=True)
+
+    def al_reproductor_daisy(self, evento) -> None:
+        """Abre los mandos del reproductor DAISY."""
+        if not self.reproductor_daisy.activo:
+            self.anunciar(_("Este documento no tiene grabación."), inmediato=True)
+            return
+        with DialogoReproductor(self, self.reproductor_daisy) as dialogo:
+            dialogo.ShowModal()
+
+    def _leer_frase(self, adelante: bool) -> None:
+        """Una frase adelante o atrás, con el motor que toque."""
+        if self.reproductor_daisy.activo:
+            self.reproductor_daisy.saltar_frase(adelante)
+            return
+        self.lectura_voz.saltar_frase(adelante)
+
+    def _leer_mas_o_menos(self, incremento: int) -> None:
+        """Sube o baja la velocidad de lo que se esté escuchando."""
+        if self.reproductor_daisy.activo:
+            self.reproductor_daisy.cambiar_velocidad(1 if incremento > 0 else -1)
+            return
+        self.lectura_voz.cambiar_velocidad(incremento)
+
+    def al_ajustes_voz(self, evento) -> None:
+        """Abre los ajustes de la lectura en voz alta."""
+        with DialogoVoz(self, self.lectura_voz) as dialogo:
+            dialogo.ShowModal()
+
+    def al_invitar_cafe(self, evento) -> None:
+        """Abre en el navegador la página de donaciones del autor."""
+        from version import URL_DONACIONES
+
+        wx.LaunchDefaultBrowser(URL_DONACIONES)
+        self.anunciar(_("Gracias. Se ha abierto la página de donaciones en el navegador."))
+
+    def al_acerca_de(self, evento) -> None:
+        """Muestra la información del programa."""
+        with dialogos_ayuda.DialogoAcercaDe(self, self.version) as dialogo:
+            dialogo.ShowModal()
+
+    # =======================================================================
+    # Barra de estado
+    # =======================================================================
+
+    # =======================================================================
+    # Bandeja del sistema y teclas globales
+    # =======================================================================
+
+    def aplicar_teclas_globales(self, avisar: bool = False) -> None:
+        """Registra en Windows las teclas globales configuradas.
+
+        :param avisar: Si se informa de las que no se han podido registrar.
+                       Se usa al volver de las opciones, donde el usuario acaba
+                       de tocarlas y espera saber si han quedado puestas.
+        """
+        registradas = self.registro_global.aplicar(self.configuracion)
+        fallidas = self.registro_global.fallidas
+        if fallidas:
+            log.warning("Teclas globales no registradas: %s", ", ".join(fallidas))
+        if not avisar:
+            return
+        if fallidas:
+            detalle = "\n".join(
+                "%s: %s" % (next((a.etiqueta for a in teclas_globales.CATALOGO
+                                  if a.identificador == clave), clave), motivo)
+                for clave, motivo in fallidas.items())
+            wx.MessageBox(
+                "Han quedado puestas %d teclas globales, pero estas no:\n\n%s"
+                % (registradas, detalle),
+                _("Teclas globales"), wx.OK | wx.ICON_WARNING, self)
+        elif registradas:
+            self.anunciar("%d teclas globales puestas." % registradas)
+
+    def _al_pulsar_tecla_global(self, accion: str) -> None:
+        """Ejecuta la acción de una tecla global.
+
+        Llega desde Windows aunque el foco esté en otro programa, así que aquí
+        no se puede dar por supuesto que la ventana esté visible ni activa.
+        """
+        log.debug("Tecla global: %s", accion)
+        if accion == "mostrar_ocultar":
+            self.alternar_visibilidad()
+            return
+        # Las mismas teclas sirven para las dos formas de escuchar un libro:
+        # mandan sobre la grabación cuando el libro es un DAISY con audio y
+        # sobre la voz sintética en cualquier otro caso.  Es lo que se espera
+        # de una tecla que significa «pausa» o «más deprisa».
+        if self.reproductor_daisy.activo:
+            reproductor = self.reproductor_daisy
+            acciones = {
+                "leer_pausar": reproductor.alternar,
+                "detener": lambda: reproductor.detener(anunciar=True),
+                "frase_anterior": lambda: reproductor.saltar_frase(False),
+                "frase_siguiente": lambda: reproductor.saltar_frase(True),
+                "mas_rapido": lambda: reproductor.cambiar_velocidad(1),
+                "mas_lento": lambda: reproductor.cambiar_velocidad(-1),
+                "salto_atras": lambda: reproductor.saltar_segundos(-audio.SALTO),
+                "salto_adelante": lambda: reproductor.saltar_segundos(audio.SALTO),
+                "punto_anterior": reproductor.punto_anterior,
+                "punto_siguiente": reproductor.punto_siguiente,
+                "donde_estoy": reproductor.donde_estoy,
+            }
+        else:
+            acciones = {
+                "leer_pausar": self.lectura_voz.alternar,
+                "detener": lambda: self.lectura_voz.detener(anunciar=True),
+                "frase_anterior": lambda: self.lectura_voz.saltar_frase(False),
+                "frase_siguiente": lambda: self.lectura_voz.saltar_frase(True),
+                "mas_rapido": lambda: self.lectura_voz.cambiar_velocidad(5),
+                "mas_lento": lambda: self.lectura_voz.cambiar_velocidad(-5),
+                # Sin grabación no hay «diez segundos atrás», pero sí el
+                # equivalente en texto: la página y el encabezado.
+                "salto_atras": lambda: self.navegar_a(Objetivo.PAGINA, False),
+                "salto_adelante": lambda: self.navegar_a(Objetivo.PAGINA, True),
+                "punto_anterior": lambda: self.navegar_a(Objetivo.ENCABEZADO, False),
+                "punto_siguiente": lambda: self.navegar_a(Objetivo.ENCABEZADO, True),
+                "donde_estoy": self.al_donde_estoy,
+            }
+        metodo = acciones.get(accion)
+        if metodo is not None:
+            metodo()
+
+    def alternar_visibilidad(self) -> None:
+        """Esconde la ventana en la bandeja, o la trae de vuelta."""
+        if self.icono_bandeja is not None or not self.IsShown():
+            self.restaurar_desde_bandeja()
+        else:
+            self.esconder_en_bandeja()
+
+    def esconder_en_bandeja(self) -> None:
+        """Quita la ventana de la pantalla y deja el icono de la bandeja."""
+        if self.icono_bandeja is not None:
+            return
+        self.icono_bandeja = IconoBandeja(self)
+        self.Hide()
+        log.info("Ventana escondida en la bandeja del sistema")
+
+    def restaurar_desde_bandeja(self) -> None:
+        """Devuelve la ventana a la pantalla y quita el icono."""
+        self.traer_al_frente()
+        self.anunciar(_("%s.") % NOMBRE)
+
+    def traer_al_frente(self) -> None:
+        """Pone la ventana delante, venga de donde venga.
+
+        Sirve para las tres formas de tenerla escondida —minimizada, oculta en
+        la bandeja o simplemente detrás de otro programa— y hace falta llamarla
+        entera en todas: ``Raise`` de wx no sortea la proteccion de primer
+        plano de Windows, y forzar el primer plano por la API del sistema no
+        arregla el estado interno de wx.  Hacen falta las dos cosas.
+        """
+        if self.IsIconized():
+            self.Iconize(False)
+        if not self.IsShown():
+            self.Show()
+        self.Raise()
+        if self.icono_bandeja is not None:
+            self.icono_bandeja.Destroy()
+            self.icono_bandeja = None
+        instancia.forzar_al_frente(self.GetHandle())
+        self.lector.texto.SetFocus()
+
+    def _al_minimizar(self, evento) -> None:
+        """Al minimizar, esconde el programa en la bandeja si así se ha pedido."""
+        if evento.IsIconized() and self.configuracion.obtener("minimizar_a_bandeja", False):
+            # El paso a la bandeja se aplaza: hacerlo dentro del propio evento
+            # de minimizar deja a Windows a medio camino y la ventana puede
+            # quedarse sin repintar.
+            wx.CallAfter(self.esconder_en_bandeja)
+        evento.Skip()
+
+    def _al_moverse(self, posicion: int) -> None:
+        """Reacciona a que el cursor haya cambiado de sitio."""
+        self.cronometro.latido(posicion)
+        self._actualizar_estado(posicion)
+        self._avisar_de_la_descripcion(posicion)
+
+    def _avisar_de_la_descripcion(self, posicion: int) -> None:
+        """Dice la descripción guardada al llegar a la línea de una imagen.
+
+        Se hace al **cambiar de línea** y una sola vez por línea: si se dijera
+        en cada movimiento del cursor, recorrer con las flechas el párrafo de
+        una ilustración repetiría la descripción entera a cada paso.
+
+        Da igual cómo se haya llegado —con la tecla G, con las flechas o desde
+        el índice—: en cuanto el cursor entra en la línea de una imagen ya
+        descrita, se oye lo que hay en ella.
+        """
+        if self.documento is None:
+            return
+        # Mientras lee la voz del programa, el aviso lo daría el lector de
+        # pantalla **encima** de ella: dos voces a la vez diciendo lo mismo.
+        # La lectura en voz alta ya dice la descripción por su cuenta si está
+        # activada su opción.
+        if self.lectura_voz.leyendo:
+            return
+        linea = self.documento.linea_de(posicion)
+        if linea == self._linea_descrita:
+            return
+        self._linea_descrita = linea
+        descripcion = self._descripcion_guardada_en(posicion)
+        if descripcion:
+            self.anunciar(descripcion.strip(), inmediato=True)
+
+    def _actualizar_estado(self, posicion: int) -> None:
+        """Escribe en la barra de estado la posición de lectura."""
+        if self.documento is None:
+            return
+        try:
+            self.SetStatusText(navegacion.resumen_posicion(self.documento, posicion))
+        except RuntimeError:
+            pass  # la ventana se está destruyendo
+
+    # =======================================================================
+    # Cierre
+    # =======================================================================
+
+    def _al_revisar_encargos(self, evento) -> None:
+        """Atiende la petición de otra copia del programa que acaba de arrancar.
+
+        Cuando alguien abre un segundo libro con el programa ya en marcha, esa
+        segunda copia se cierra dejando aquí el archivo que quería abrir; esta
+        ventana lo recoge y lo abre ella misma.
+        """
+        encargo = instancia.recoger_encargo()
+        if encargo is None:
+            return
+        log.info("Encargo recibido de otra copia del programa: %r", encargo)
+        # Se restaura con el codigo propio y no solo forzando la ventana desde
+        # fuera: user32 la pone en pantalla, pero no sabe quitar el icono de la
+        # bandeja, devolver el foco al texto ni anunciarlo.  Eso solo puede
+        # hacerlo la ventana consigo misma.
+        self.traer_al_frente()
+        if encargo:
+            self.abrir_libro(encargo)
+
+    def al_primer_uso(self, evento) -> None:
+        """Abre el recorrido guiado de la primera vez."""
+        with dialogos_primer_uso.DialogoPrimerUso(self, self.configuracion) as dialogo:
+            dialogo.ShowModal()
+            dialogo.marcar_hecho()
+        self.lector.texto.SetFocus()
+
+    def al_exportar_audio(self, evento) -> None:
+        """Convierte el documento abierto en archivos de sonido.
+
+        La orden va apagada mientras no haya documento, igual que el resto de
+        las exportaciones, así que aquí solo queda comprobar que haya voz con
+        la que grabar.
+        """
+        if self.documento is None:
+            return
+        if not self.lectura_voz.disponible:
+            wx.MessageBox(
+                _("Este equipo no tiene ninguna voz del sistema instalada, así que no hay "
+                  "con qué grabar.\n\nLas voces se añaden en Configuración de Windows, en "
+                  "«Hora e idioma», «Voz»."),
+                _("Exportar a audio"), wx.OK | wx.ICON_INFORMATION, self)
+            return
+        with dialogos_audio.DialogoExportarAudio(self) as dialogo:
+            dialogo.ShowModal()
+
+    def al_ver_capitulo(self, evento) -> None:
+        """Muestra el capítulo donde está el cursor en el visor HTML.
+
+        El visor ya sabía enseñar una tabla, una lista o una cita sueltas.  Un
+        capítulo entero es lo mismo a mayor escala, y resuelve algo que la
+        conversión a texto no puede: dentro del visor vuelven a existir los
+        encabezados, las listas anidadas y las tablas **como tales**, así que
+        valen las órdenes de tabla y de encabezado del lector de pantalla.
+        """
+        if self.documento is None:
+            return
+        visor_html.mostrar_capitulo(self, self.documento, self.lector.posicion())
+
+    def al_leer_nota(self, evento) -> None:
+        """Dice la nota al pie de la llamada donde está el cursor, sin moverlo.
+
+        Es lo que hace falta leyendo: una nota al pie interrumpe la frase, y
+        tener que saltar a ella, leerla y volver rompe el hilo.  Aquí se oye la
+        nota y el cursor sigue exactamente donde estaba, listo para seguir.
+
+        Con Intro sobre la llamada se salta a la nota de verdad, y con
+        Alt+Izquierda se vuelve: para las notas largas, que son las que hay que
+        leer con calma.
+        """
+        if self.documento is None:
+            return
+        marca = self._llamada_de_nota_en_el_cursor()
+        if marca is None:
+            self.sonidos.reproducir("limite")
+            self.anunciar(_("Aquí no hay ninguna llamada de nota al pie. "
+                            "Usa la tecla O para ir a la siguiente."), inmediato=True)
+            return
+        texto = self._texto_de_la_nota(marca)
+        if not texto:
+            self.sonidos.reproducir("limite")
+            self.anunciar(_("No se ha encontrado el texto de esa nota."), inmediato=True)
+            return
+        self.sonidos.reproducir("nota")
+        self.anunciar(_("Nota: %s") % texto, inmediato=True)
+
+    def _llamada_de_nota_en_el_cursor(self):
+        """La llamada de nota que hay en la línea del cursor, si la hay."""
+        posicion = self.lector.posicion()
+        candidatas = [marca for marca in navegacion.elementos_en_linea(self.documento, posicion)
+                      if marca.tipo is TipoMarca.NOTA_PIE]
+        if not candidatas:
+            return None
+        # Si hay varias en la misma línea —lo normal en un párrafo anotado—,
+        # manda aquella dentro de la que esté el cursor; si no está dentro de
+        # ninguna, la primera de la línea.
+        for marca in candidatas:
+            if marca.posicion <= posicion < marca.posicion + max(marca.longitud, 1):
+                return marca
+        return candidatas[0]
+
+    def _texto_de_la_nota(self, marca) -> str:
+        """Saca el texto de la nota a la que apunta una llamada.
+
+        La nota es un trozo del mismo documento: se resuelve el destino del
+        enlace y se lee desde ahí hasta el final de su párrafo.  Se recorta a
+        una longitud razonable porque un aviso hablado no puede durar cinco
+        minutos; para una nota larguísima está el saltar a ella con Intro.
+        """
+        destino = self.documento.resolver_referencia(marca.referencia or "")
+        if destino < 0:
+            return ""
+        texto = self.documento.texto
+        fin = texto.find("\n\n", destino)
+        if fin < 0 or fin - destino > LARGO_NOTA:
+            fin = min(len(texto), destino + LARGO_NOTA)
+        trozo = " ".join(texto[destino:fin].split())
+        if len(trozo) >= LARGO_NOTA:
+            trozo += _("... (pulsa Intro sobre la llamada para leerla entera)")
+        return trozo
+
+    def al_resumir(self, evento) -> None:
+        """Pide a la IA un resumen del capítulo donde está el cursor."""
+        self._abrir_preguntas("resumen")
+
+    def al_preguntar(self, evento) -> None:
+        """Abre la ventana de preguntas sobre el documento."""
+        self._abrir_preguntas("libre")
+
+    def _abrir_preguntas(self, inicial: str) -> None:
+        """Abre la ventana de preguntas con una pregunta ya elegida.
+
+        Las dos órdenes —resumir y preguntar— llevan a la misma ventana: son la
+        misma operación con distinta pregunta de partida, y tener dos ventanas
+        casi iguales solo obligaría a aprenderse las dos.
+        """
+        if self.documento is None:
+            return
+        servicio = Servicio(self.configuracion)
+        motivo = servicio.motivo_no_disponible()
+        if motivo:
+            wx.MessageBox(motivo, _("Inteligencia artificial"),
+                          wx.OK | wx.ICON_INFORMATION, self)
+            return
+        with dialogos_preguntar.DialogoPreguntar(self, servicio, inicial) as dialogo:
+            dialogo.ShowModal()
+
+    def al_temporizador(self, evento) -> None:
+        """Pone o quita el temporizador de apagado.
+
+        La orden va apagada mientras no haya documento abierto: un temporizador
+        que apaga una lectura que no existe no significa nada.
+        """
+        if self.documento is None:
+            return
+        with DialogoTemporizador(self, self.temporizador) as dialogo:
+            if dialogo.ShowModal() == wx.ID_OK:
+                minutos = dialogo.minutos()
+                self.configuracion.establecer("voz_temporizador_minutos", minutos)
+                self.temporizador.poner(minutos)
+
+    def al_pronunciacion(self, evento) -> None:
+        """Abre el diccionario de pronunciación."""
+        with dialogos_pronunciacion.DialogoPronunciacion(self) as dialogo:
+            dialogo.ShowModal()
+
+    def _texto_y_posicion(self) -> tuple[str, int]:
+        """Texto sobre el que está el cursor y dónde está, haya libro o no.
+
+        Con un documento abierto se usa el suyo, que ya está en memoria: pedirle
+        el texto al control obligaría a copiar millones de caracteres.  Sin
+        documento se usa **lo que haya en el control**, que es la pantalla de
+        bienvenida: también es texto y también se puede consultar una palabra de
+        ahí, que es lo que uno espera al tener el cursor encima de una.
+        """
+        if self.documento is not None:
+            return self.documento.texto, self.lector.posicion()
+        return self.lector.texto.GetValue(), self.lector.texto.GetInsertionPoint()
+
+    def al_diccionario(self, evento) -> None:
+        """Define la palabra del cursor, la seleccionada, o la que se escriba.
+
+        Funciona también **sin documento abierto**, sobre el texto de la
+        pantalla de bienvenida.
+        """
+        texto, posicion = self._texto_y_posicion()
+        seleccion = self.lector.texto.GetStringSelection()
+        # Con algo seleccionado manda la selección: quien selecciona una
+        # locución de tres palabras quiere definir la locución, no la palabra
+        # suelta donde quedó el cursor.
+        palabra = (diccionario.limpiar(seleccion) if seleccion.strip()
+                   else diccionario.palabra_en(texto, posicion))
+        # El contexto solo tiene sentido con un documento delante: es lo que le
+        # deja a la IA saber en qué acepción se usa la palabra.  En la pantalla
+        # de bienvenida no hay nada que contextualizar.
+        contexto = diccionario.frase_en(texto, posicion) if self.documento is not None else ""
+        with dialogos_diccionario.DialogoDiccionario(
+                self, palabra, contexto, Servicio(self.configuracion),
+                self.configuracion) as dialogo:
+            dialogo.ShowModal()
+
+    # =======================================================================
+    # Actualizaciones
+    # =======================================================================
+
+    def _revisar_actualizacion_anterior(self) -> None:
+        """Avisa si la última actualización no llegó a copiarse del todo.
+
+        Sin esto, alguien se quedaría con una versión que cree actualizada y no
+        lo está, y sin ninguna pista de por qué: el guion trabaja con el
+        programa ya cerrado y nadie ve lo que pasa.
+        """
+        fallo = actualizaciones.error_de_la_ultima()
+        if not fallo:
+            return
+        log.warning("La última actualización no se aplicó del todo: %s", fallo)
+        wx.MessageBox(
+            _("La última actualización no se pudo aplicar del todo y el programa sigue "
+              "en la versión %(version)s.\n\nSuele pasar cuando algún archivo estaba en "
+              "uso. Vuelve a intentarlo desde Ayuda, Buscar actualizaciones.\n\n"
+              "Detalle: %(detalle)s") % {"version": VERSION, "detalle": fallo},
+            _("Actualización incompleta"), wx.OK | wx.ICON_WARNING, self)
+
+    def al_buscar_actualizaciones(self, evento) -> None:
+        """Comprueba a mano si hay versión nueva, diciendo siempre el resultado."""
+        self.anunciar(_("Comprobando si hay una versión nueva..."), inmediato=True)
+        self._comprobar_actualizaciones(True)
+
+    def _comprobar_actualizaciones(self, avisar_siempre: bool) -> None:
+        """Pregunta al servidor en otro hilo y ofrece la actualización si la hay.
+
+        :param avisar_siempre: Con ``True`` se dice también que ya se tiene la
+                               última versión o que no se ha podido comprobar.
+                               Con ``False`` —la comprobación del arranque— se
+                               calla: nadie quiere que el programa le hable de
+                               versiones cada vez que abre un libro.
+        """
+        if not actualizaciones.activadas():
+            if avisar_siempre:
+                wx.MessageBox(
+                    _("Este programa no tiene configurado ningún servidor de "
+                      "actualizaciones."),
+                    _("Buscar actualizaciones"), wx.OK | wx.ICON_INFORMATION, self)
+            return
+
+        def trabajo() -> None:
+            manifiesto = actualizaciones.consultar()
+            wx.CallAfter(self._con_manifiesto, manifiesto, avisar_siempre)
+
+        threading.Thread(target=trabajo, name="actualizaciones", daemon=True).start()
+
+    def _con_manifiesto(self, manifiesto, avisar_siempre: bool) -> None:
+        """Decide qué hacer con lo que ha dicho el servidor."""
+        if not manifiesto:
+            if avisar_siempre:
+                wx.MessageBox(
+                    _("No se ha podido comprobar si hay una versión nueva.\n\n"
+                      "Revisa la conexión a Internet y vuelve a intentarlo."),
+                    _("Buscar actualizaciones"), wx.OK | wx.ICON_INFORMATION, self)
+            return
+        version = str(manifiesto.get("version", "")).strip()
+        if not actualizaciones.es_mas_nueva(version):
+            if avisar_siempre:
+                wx.MessageBox(
+                    _("Ya tienes la última versión (%s).") % VERSION,
+                    _("Buscar actualizaciones"), wx.OK | wx.ICON_INFORMATION, self)
+            return
+        log.info("Hay una versión nueva: %s", version)
+        with dialogos_actualizacion.DialogoActualizacion(self, version, manifiesto) as dialogo:
+            dialogo.ShowModal()
+
+    def aplicar_actualizacion(self, guion) -> None:
+        """Guarda lo imprescindible, lanza el guion y sale de inmediato.
+
+        Hay que salir *ya*: el guion está esperando a que este proceso muera
+        para poder escribir encima de los archivos del programa, que mientras
+        tanto están en uso.  Por eso se termina con ``os._exit`` y no cerrando
+        la ventana: cualquier ventana que pidiera confirmación dejaría la
+        actualización a medias esperando una respuesta.
+        """
+        try:
+            self.guardar_sesion()
+            self.configuracion.guardar()
+        except Exception as error:
+            registrar_excepcion(log, "Error al guardar antes de actualizar", error)
+        try:
+            self.lectura_voz.detener()
+            self.reproductor_daisy.descargar()
+            audio.terminar()
+        except Exception:
+            pass
+        try:
+            actualizaciones.lanzar_guion(guion)
+        except Exception as error:
+            registrar_excepcion(log, "No se ha podido lanzar la actualización", error)
+            wx.MessageBox(_("No se ha podido iniciar la actualización. Inténtalo de nuevo."),
+                          _("Actualización"), wx.OK | wx.ICON_ERROR, self)
+            return
+        log.info("Aplicando la actualización y reiniciando")
+        instancia.olvidar_ventana()
+        os._exit(0)
+
+    def _al_cerrar_ventana(self, evento) -> None:
+        """Guarda la sesión y las preferencias antes de cerrar."""
+        try:
+            self.guardar_sesion()
+            self.configuracion.establecer("ventana_maximizada", self.IsMaximized())
+            if not self.IsMaximized():
+                ancho, alto = self.GetSize()
+                self.configuracion.establecer("ventana_ancho", ancho)
+                self.configuracion.establecer("ventana_alto", alto)
+            self.configuracion.guardar()
+            log.info("Cierre de la ventana principal")
+        except Exception as error:
+            registrar_excepcion(log, "Error al guardar la sesión al cerrar", error)
+        # La voz sigue hablando por su cuenta aunque la ventana desaparezca:
+        # hay que callarla antes de cerrar.
+        self.temporizador.quitar(anunciar=False)
+        self.lectura_voz.detener()
+        self.reproductor_daisy.descargar()
+        audio.terminar()
+        self.registro_global.soltar()
+        # Mientras exista el icono de la bandeja, wxPython considera que la
+        # aplicación tiene una ventana viva y no termina: hay que destruirlo o
+        # el programa se queda en memoria sin nada que mostrar.
+        if self.icono_bandeja is not None:
+            self.icono_bandeja.Destroy()
+            self.icono_bandeja = None
+        if self._dialogo_buscar is not None:
+            self._dialogo_buscar.Destroy()
+        if self.visor_registro is not None:
+            self.visor_registro.Destroy()
+        self._vigilante_encargos.Stop()
+        instancia.olvidar_ventana()
+        evento.Skip()

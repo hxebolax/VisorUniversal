@@ -1,0 +1,58 @@
+{
+  "id": "google_local",
+  "nombre": "Voces de Google, sin conexión",
+  "version": "1.0",
+  "contrato": 1,
+  "modulo": "motor_google_local",
+  "autor": "Google (las voces); el autor del visor (el adaptador)",
+  "origen": "El motor de síntesis que Chrome trae incorporado para leer páginas en voz alta, funcionando por su cuenta y sin el navegador.",
+  "licencia": "El adaptador es del proyecto. El motor y las voces son de Google y los pone quien tenga derecho a usarlos.",
+  "descripcion": "Voces neuronales que suenan a persona y que se generan DENTRO DEL EQUIPO: no hace falta internet y nada de lo que lees sale de aquí. Es lo que las hace distintas de las de Edge. Trae quince voces en español, de España y de América, y puede bajar hasta doscientas diecisiete en treinta y cuatro idiomas. A cambio, el paquete ocupa cuarenta y ocho megas y la primera frase tarda unos segundos en arrancar: para una novela entera compensa; para un aviso de dos palabras, la voz de Windows sigue siendo mejor idea.",
+  "conservar": [
+    "voces_google/voices"
+  ],
+  "ajustes": [
+    {
+      "clave": "que_voces",
+      "clase": "lista",
+      "etiqueta": "&Qué voces se ofrecen:",
+      "defecto": "instaladas",
+      "opciones": [
+        {
+          "valor": "instaladas",
+          "texto": "Solo las que ya están en el equipo"
+        },
+        {
+          "valor": "todos",
+          "texto": "Todas, de todos los idiomas, bajándolas al elegirlas"
+        }
+      ],
+      "ayuda": "Dentro del paquete vienen las quince voces de español, y viaja además el catálogo entero de Google: doscientos diecisiete hablantes en treinta y cuatro idiomas, entre ellos inglés, francés, alemán, italiano, portugués de Portugal y de Brasil, japonés, coreano y árabe.\n\nCON LAS INSTALADAS, la lista enseña lo que se puede usar ahora mismo. Es lo de fábrica, y lo que casi siempre se quiere.\n\nCON TODAS, la lista las enseña todas y la que elijas se baja en ese momento: entre cinco y veinte megas, unos segundos con conexión. Después funciona sin conexión como las que venían, y se queda en el equipo.\n\nAl bajar una voz hay que levantar el motor otra vez, así que esa vez tarda unos segundos más de lo normal. Pasa una sola vez por voz.\n\nCada paquete se comprueba al bajarlo —el tamaño y su firma—, que es lo mismo que hace Chrome con sus propias voces: si algo no cuadra, no se instala y se dice en el registro. Uno a medio bajar no llega a instalarse nunca.\n\nPara cambiar de voz al vuelo dentro de un libro —una cita en inglés en mitad de una novela— solo se usan las que ya están bajadas. Pararse a bajar quince megas en mitad de un párrafo no es lo que nadie espera: vale más leer la cita con acento. Si quieres que un idioma se lea con su voz, elígela una vez aquí y a partir de ahí ya está."
+    },
+    {
+      "clave": "tono",
+      "clase": "deslizador",
+      "etiqueta": "&Tono de la voz, de 0 a 100:",
+      "minimo": 0,
+      "maximo": 100,
+      "defecto": 50,
+      "ayuda": "Cómo de grave o de aguda suena, con 50 en el tono natural de cada voz.\n\nEstas voces están hechas a partir de grabaciones de personas, así que alejarse mucho del centro las hace sonar artificiales, que es justo lo que se venía a evitar. Entre 40 y 60 se nota el cambio sin que se estropee.\n\nEl tono se aplica al generar el sonido, no después, así que cambiarlo no degrada la voz como sí haría acelerarla."
+    },
+    {
+      "clave": "aceleracion",
+      "clase": "casilla",
+      "etiqueta": "Permitir &acelerar más allá del máximo del motor",
+      "defecto": false,
+      "ayuda": "Deja subir la velocidad por encima de lo que el motor admite, acelerando el sonido ya generado.\n\nApagado de fábrica. Estas voces llegan por sí solas hasta el doble de la velocidad normal; por encima de eso el sonido se acelera como una cinta puesta rápido, con el timbre subido.\n\nActívalo solo si vienes de leer con Eloquence a mucha velocidad y estas voces te resultan lentas."
+    },
+    {
+      "clave": "espera_maxima",
+      "clase": "deslizador",
+      "etiqueta": "&Espera máxima por frase, en segundos:",
+      "minimo": 2,
+      "maximo": 30,
+      "defecto": 10,
+      "ayuda": "Cuánto se espera a que una frase esté lista antes de darla por perdida y seguir con la siguiente.\n\nEstas voces no hablan al instante: primero generan el sonido de la frase entera y después lo reproducen. En un equipo normal eso son décimas de segundo; en uno lento, algo más.\n\nSi notas que la lectura se salta frases, sube este número."
+    }
+  ]
+}

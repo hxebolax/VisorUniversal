@@ -1,0 +1,241 @@
+{
+  "id": "eloquence",
+  "nombre": "Eloquence mediante puente de 32 bits",
+  "version": "1.0",
+  "contrato": 1,
+  "modulo": "motor",
+  "autor": "IBM (sintetizador) y el autor del visor (puente y adaptador)",
+  "origen": "Las bibliotecas de Eloquence las aporta quien instala el paquete. El puente de 32 bits está escrito en Rust para este proyecto.",
+  "licencia": "El puente y el adaptador son del proyecto. Las bibliotecas de Eloquence son de IBM y las pone quien tenga derecho a usarlas.",
+  "descripcion": "El sintetizador de IBM de 1993, que treinta años después sigue siendo el que más gente ciega elige para leer libros enteros. No suena bien y no lo pretende: aguanta velocidades a las que ninguna voz moderna se entiende, y pronuncia siempre igual, que es lo que permite leer deprisa. Su biblioteca es de 32 bits y el visor es de 64, así que habla con ella a través de un proceso aparte.",
+  "ajustes": [
+    {
+      "clave": "idioma",
+      "clase": "lista",
+      "etiqueta": "&Idioma de Eloquence:",
+      "defecto": "esp",
+      "ayuda": "El idioma con el que Eloquence pronuncia. No es lo mismo que el idioma del libro: es el juego de reglas de pronunciación que carga el motor.\n\nEloquence lee SIEMPRE con el idioma que tenga puesto aquí. No cambia solo al llegar a una cita en otra lengua, como sí hace la voz de Windows, porque cambiárselo obliga a reiniciar el proceso de 32 bits y eso se oiría como un corte en mitad de la frase. Si lees habitualmente en dos idiomas, la voz de Windows te servirá mejor para eso.\n\nEspañol de España y español latinoamericano se diferencian sobre todo en la ese y la ce. Prueba los dos: la costumbre pesa más que la teoría.",
+      "opciones": [
+        {
+          "valor": "esp",
+          "texto": "Español de España"
+        },
+        {
+          "valor": "esm",
+          "texto": "Español latinoamericano"
+        },
+        {
+          "valor": "enu",
+          "texto": "Inglés americano"
+        },
+        {
+          "valor": "eng",
+          "texto": "Inglés británico"
+        },
+        {
+          "valor": "fra",
+          "texto": "Francés"
+        },
+        {
+          "valor": "frc",
+          "texto": "Francés de Canadá"
+        },
+        {
+          "valor": "deu",
+          "texto": "Alemán"
+        },
+        {
+          "valor": "ita",
+          "texto": "Italiano"
+        },
+        {
+          "valor": "ptb",
+          "texto": "Portugués de Brasil"
+        },
+        {
+          "valor": "fin",
+          "texto": "Finlandés"
+        },
+        {
+          "valor": "chs",
+          "texto": "Chino"
+        },
+        {
+          "valor": "jpn",
+          "texto": "Japonés"
+        },
+        {
+          "valor": "kor",
+          "texto": "Coreano"
+        }
+      ]
+    },
+    {
+      "clave": "variante",
+      "clase": "lista",
+      "etiqueta": "&Variante de la voz:",
+      "defecto": 0,
+      "opciones": [
+        {
+          "valor": 0,
+          "texto": "La de la voz elegida"
+        },
+        {
+          "valor": 1,
+          "texto": "Variante 1"
+        },
+        {
+          "valor": 2,
+          "texto": "Variante 2"
+        },
+        {
+          "valor": 3,
+          "texto": "Variante 3"
+        },
+        {
+          "valor": 4,
+          "texto": "Variante 4"
+        },
+        {
+          "valor": 5,
+          "texto": "Variante 5"
+        },
+        {
+          "valor": 6,
+          "texto": "Variante 6"
+        },
+        {
+          "valor": 7,
+          "texto": "Variante 7"
+        }
+      ],
+      "ayuda": "Cambia el timbre por encima de la voz elegida. El motor lo usaba y no había forma de tocarlo desde aquí.\n\n«La de la voz elegida» deja el timbre con el que viene cada una, que es lo que quieres casi siempre: las ocho voces de Eloquence ya son ocho timbres distintos.\n\nLas variantes numeradas retocan ese timbre. No tienen nombre porque el propio motor no se lo da: son las que trae dentro, y la única forma de saber cuál te gusta es probarlas."
+    },
+    {
+      "clave": "frecuencia",
+      "clase": "lista",
+      "etiqueta": "&Frecuencia de muestreo:",
+      "defecto": 1,
+      "ayuda": "Cuántas veces por segundo se mide el sonido que sale. Más alta suena algo menos áspera y ocupa algo más de proceso.\n\n11 kHz es el valor de siempre y con el que Eloquence está afinada: es a lo que suena para quien la conoce. 8 kHz suena a teléfono. 22 kHz solo está disponible si tus bibliotecas lo admiten —las de IBM sí, las clásicas no— y la diferencia es sutil.\n\nSi no sabes cuál poner, deja 11 kHz.",
+      "opciones": [
+        {
+          "valor": 0,
+          "texto": "8 kHz"
+        },
+        {
+          "valor": 1,
+          "texto": "11 kHz (el de siempre)"
+        },
+        {
+          "valor": 2,
+          "texto": "22 kHz"
+        }
+      ]
+    },
+    {
+      "clave": "tono",
+      "clase": "deslizador",
+      "etiqueta": "&Tono de la voz, de 0 a 100:",
+      "minimo": 0,
+      "maximo": 100,
+      "defecto": 65,
+      "ayuda": "Cómo de grave o de aguda es la voz. Por debajo de 40 suena a hombre mayor; por encima de 80, a dibujo animado.\n\nNo es un capricho estético: leyendo muchas horas, un tono que te resulte cómodo cansa mucho menos. Y si vas a usar el cambio de tono en los diálogos, deja aquí un valor medio para que le quede sitio hacia arriba."
+    },
+    {
+      "clave": "entonacion",
+      "clase": "deslizador",
+      "etiqueta": "&Entonación, de 0 a 100:",
+      "minimo": 0,
+      "maximo": 100,
+      "defecto": 30,
+      "ayuda": "Cuánto sube y baja la voz dentro de la frase.\n\nEn 0 sale completamente plana, como un robot de película antigua. Es lo que muchos usuarios veteranos prefieren para leer deprisa: la entonación aporta poco a esa velocidad y cansa.\n\nSubiéndola, la voz marca las preguntas y los finales de frase. Para una novela leída despacio se agradece; para estudiar apuntes, estorba."
+    },
+    {
+      "clave": "tamano_cabeza",
+      "clase": "deslizador",
+      "etiqueta": "Tamaño de &cabeza, de 0 a 100:",
+      "minimo": 0,
+      "maximo": 100,
+      "defecto": 50,
+      "ayuda": "Cambia la resonancia, como si la voz saliera de una cabeza más grande o más pequeña. Junto con el tono es lo que más cambia el carácter de la voz.\n\nValores bajos dan una voz pequeña y nasal; valores altos, una voz cavernosa. El punto medio es el de fábrica y el que usan casi todos."
+    },
+    {
+      "clave": "carraspeo",
+      "clase": "deslizador",
+      "etiqueta": "Ca&rraspeo o aspereza, de 0 a 100:",
+      "minimo": 0,
+      "maximo": 100,
+      "defecto": 0,
+      "ayuda": "Añade aspereza al timbre, como una voz un poco tomada.\n\nDe fábrica está a cero. Sirve sobre todo para distinguir dos voces entre sí —una para el narrador y otra para las notas, por ejemplo— más que para mejorar ninguna."
+    },
+    {
+      "clave": "respiracion",
+      "clase": "deslizador",
+      "etiqueta": "Res&piración, de 0 a 100:",
+      "minimo": 0,
+      "maximo": 100,
+      "defecto": 0,
+      "ayuda": "Añade aire a la voz, como si susurrara un poco.\n\nDe fábrica está a cero. Subiéndolo mucho la voz pierde nitidez, que es justo lo contrario de lo que se busca en Eloquence."
+    },
+    {
+      "clave": "modo_pausas",
+      "clase": "lista",
+      "etiqueta": "Trato de las &pausas:",
+      "defecto": 2,
+      "ayuda": "Qué hace Eloquence con las pausas de la puntuación: la coma, el punto, el punto y aparte.\n\nNO ACORTAR las deja como las trae el motor, que son largas. Es lo más natural para escuchar sin prisa.\n\nACORTAR SOLO AL FINAL recorta la pausa de final de frase y deja las demás. Es un término medio.\n\nACORTAR TODAS quita casi todo el silencio. Leyendo deprisa las pausas largas se hacen eternas y se pierde el hilo, así que es lo que viene de fábrica.\n\nSi notas que la voz «atropella» las frases, sube al primero.",
+      "opciones": [
+        {
+          "valor": 0,
+          "texto": "No acortar"
+        },
+        {
+          "valor": 1,
+          "texto": "Acortar solo al final de frase"
+        },
+        {
+          "valor": 2,
+          "texto": "Acortar todas las pausas"
+        }
+      ]
+    },
+    {
+      "clave": "pausa_final_frase",
+      "clase": "deslizador",
+      "etiqueta": "Pausa al terminar la &frase, de 1 a 40:",
+      "minimo": 1,
+      "maximo": 40,
+      "defecto": 10,
+      "ayuda": "Cuánto silencio deja al acabar cada frase, en unidades del propio motor.\n\nCuenta poco si arriba has elegido acortar todas las pausas. Con 1 las frases se pegan unas a otras; con 40 hay tiempo de sobra para pensar entre una y otra, que es lo que hace falta al estudiar.\n\nLeyendo una novela del tirón, entre 8 y 12 suele estar bien."
+    },
+    {
+      "clave": "prediccion_frases",
+      "clase": "casilla",
+      "etiqueta": "Predicción de f&rases",
+      "defecto": true,
+      "ayuda": "Deja que Eloquence mire la frase entera antes de empezar a decirla, para entonarla mejor: sabe si es una pregunta antes de llegar al signo final.\n\nActivado de fábrica. Apagarlo hace que empiece a hablar una fracción de segundo antes, y a cambio la entonación se decide sobre la marcha y a veces se equivoca."
+    },
+    {
+      "clave": "numeros_como_anos",
+      "clase": "casilla",
+      "etiqueta": "Decir los números de cuatro cifras como &años",
+      "defecto": true,
+      "ayuda": "Hace que 1975 se diga «mil novecientos setenta y cinco» y no «uno nueve siete cinco».\n\nActivado de fábrica, porque en un libro casi todos los números de cuatro cifras son años. Si lees documentos con muchos códigos o referencias de cuatro dígitos, apágalo: ahí «mil novecientos» no significa nada."
+    },
+    {
+      "clave": "expandir_abreviaturas",
+      "clase": "casilla",
+      "etiqueta": "Desarrollar las a&breviaturas",
+      "defecto": false,
+      "ayuda": "Hace que «etc.» se diga «etcétera» y «Sr.» se diga «señor», cuando el paquete de idioma trae ese diccionario.\n\nApagado de fábrica y no por descuido: quien lleva años oyendo Eloquence ya entiende sus abreviaturas tal como las dice, y desarrollarlas alarga la lectura. Actívalo si vienes de otra voz y te suenan raras."
+    },
+    {
+      "clave": "espera_maxima",
+      "clase": "deslizador",
+      "etiqueta": "&Espera máxima por frase, en segundos:",
+      "minimo": 1,
+      "maximo": 15,
+      "defecto": 3,
+      "ayuda": "Cuánto se espera a que Eloquence empiece a decir una frase antes de darla por perdida y seguir con la siguiente.\n\nEloquence es rápida, pero habla a través de una tubería con un proceso de 32 bits, y la primera frase paga el arranque de ese proceso. Tres segundos sobran para todo.\n\nSi alguna vez notas que la lectura se salta frases, sube el número."
+    }
+  ]
+}

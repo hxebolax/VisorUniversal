@@ -1,0 +1,192 @@
+{
+  "id": "vocalizer",
+  "nombre": "Voces Vocalizer Expressive",
+  "version": "1.0",
+  "contrato": 1,
+  "modulo": "motor_vocalizer",
+  "autor": "Nuance Communications (el motor y las voces); el autor del visor (el adaptador)",
+  "origen": "El motor Vocalizer Expressive de Nuance, en su versión de 64 bits, con las voces españolas Jorge, Marisol y Mónica.",
+  "licencia": "Vocalizer y sus voces son de Nuance Communications y llevan su propia licencia: hay que tenerla para usarlas. El paquete trae el motor, no las voces. El adaptador es del proyecto.",
+  "descripcion": "El motor que llevan media docena de lectores de pantalla y casi todos los móviles. Suena a persona, va rápido, aguanta velocidades altas y no necesita conexión. Trae tres voces de España a 22 kHz: Jorge, Marisol y Mónica. Se le pueden añadir más copiándolas en su carpeta «voces» con la misma forma que las que ya están: se detectan solas al abrir esta ventana, sin registrar ni reinstalar nada.",
+  "conservar": [
+    "voces"
+  ],
+  "ajustes": [
+    {
+      "clave": "variante",
+      "clase": "lista",
+      "etiqueta": "&Calidad de la voz:",
+      "defecto": "",
+      "opciones": [
+        {
+          "valor": "",
+          "texto": "La mejor que tenga la voz"
+        },
+        {
+          "valor": "premium-high",
+          "texto": "Premium alta"
+        },
+        {
+          "valor": "premium",
+          "texto": "Premium"
+        },
+        {
+          "valor": "standard",
+          "texto": "Estándar"
+        },
+        {
+          "valor": "embedded-high",
+          "texto": "Compacta alta"
+        },
+        {
+          "valor": "embedded-pro",
+          "texto": "Compacta profesional"
+        },
+        {
+          "valor": "embedded",
+          "texto": "Compacta"
+        }
+      ],
+      "ayuda": "Una misma voz puede estar grabada en varias calidades, y no todas las voces tienen todas.\n\nLas premium son las grandes: suenan mejor y ocupan cientos de megas. Las compactas caben en un móvil y se nota, aunque a velocidad alta la diferencia se estrecha bastante.\n\nDe fábrica está «la mejor que tenga la voz», y es lo sensato: si pides una calidad que esa voz no tiene, se usa la que tenga en vez de quedarse muda. Las que hay ahora mismo son las que tus voces traigan; las demás opciones están para cuando añadas otras."
+    },
+    {
+      "clave": "frecuencia",
+      "clase": "lista",
+      "etiqueta": "&Frecuencia del sonido:",
+      "defecto": 22,
+      "opciones": [
+        {
+          "valor": 22,
+          "texto": "22 kHz, la buena"
+        },
+        {
+          "valor": 11,
+          "texto": "11 kHz, la mitad"
+        },
+        {
+          "valor": 8,
+          "texto": "8 kHz, como un teléfono"
+        }
+      ],
+      "ayuda": "Cuántas veces por segundo se mide el sonido. Cuanto más alta, más agudos se oyen y mejor suena.\n\nOJO: NO ES UN AJUSTE QUE LA VOZ OBEDEZCA, es un dato suyo. Cada voz viene grabada a una frecuencia concreta —las premium a 22 kHz— y no se puede convertir. Si pides una que esta voz no tiene, se usa la suya y se apunta en el registro: antes se quedaba muda sin decir por qué.\n\nSirve para las voces compactas y antiguas, que sí suelen venir en varias. Con las premium, déjalo en 22."
+    },
+    {
+      "clave": "tono",
+      "clase": "deslizador",
+      "etiqueta": "&Tono de la voz, de 0 a 100:",
+      "minimo": 0,
+      "maximo": 100,
+      "defecto": 50,
+      "ayuda": "Cómo de grave o de aguda es la voz.\n\nEl 50 es el tono con el que se grabó, y es donde mejor suena. Vocalizer aguanta moverlo bastante sin volverse metálico —bastante más que las voces de trozos grabados— pero llevándolo a los extremos se nota que hay una máquina cambiándolo.\n\nSi buscas una voz claramente más grave o más aguda, prueba antes con otra: Jorge, Marisol y Mónica son personas distintas y no se parecen en nada."
+    },
+    {
+      "clave": "factor_espera",
+      "clase": "deslizador",
+      "etiqueta": "&Duración de las pausas, de 0 a 9:",
+      "minimo": 0,
+      "maximo": 9,
+      "defecto": 1,
+      "ayuda": "Cuánto se alargan las pausas de las comas, los puntos y los finales de párrafo.\n\nEn 0 no hay pausa ninguna y el texto sale de corrido: se lee más deprisa y cuesta más seguir dónde termina cada frase. Subiéndolo se dan más aire, que ayuda mucho en textos densos, en poesía y en cualquier cosa que se lea despacio.\n\nEl 1 de fábrica es el de las voces tal como vienen. Si lees muy rápido, prueba a subirlo a 2 o 3: se pierde poco tiempo y se entiende bastante mejor."
+    },
+    {
+      "clave": "modo_lectura",
+      "clase": "lista",
+      "etiqueta": "&Qué lee de una vez:",
+      "defecto": 1,
+      "opciones": [
+        {
+          "valor": 1,
+          "texto": "Frases enteras"
+        },
+        {
+          "valor": 3,
+          "texto": "Palabra a palabra"
+        },
+        {
+          "valor": 4,
+          "texto": "Línea a línea"
+        },
+        {
+          "valor": 2,
+          "texto": "Letra a letra"
+        }
+      ],
+      "ayuda": "En qué trozos parte el texto para leerlo.\n\nFRASES ENTERAS es lo normal y lo que hay que dejar puesto para leer un libro: la entonación necesita la frase entera para saber dónde subir y dónde bajar.\n\nPALABRA A PALABRA y LETRA A LETRA sirven para revisar, no para leer: la voz separa cada unidad y la entonación desaparece. Para deletrear una palabra suelta van bien; para un capítulo, no.\n\nLÍNEA A LÍNEA está pensado para textos donde el salto de línea importa —versos, listas, código—, porque respeta el corte aunque la frase siga."
+    },
+    {
+      "clave": "modo_texto",
+      "clase": "lista",
+      "etiqueta": "Cómo interpreta lo que &lee:",
+      "defecto": 1,
+      "opciones": [
+        {
+          "valor": 1,
+          "texto": "Texto normal"
+        },
+        {
+          "valor": 2,
+          "texto": "Mensajes cortos, con abreviaturas"
+        }
+      ],
+      "ayuda": "TEXTO NORMAL es lo que quieres para un libro: las abreviaturas, los números y los signos se leen como corresponde en un texto escrito con cuidado.\n\nMENSAJES CORTOS es el modo pensado para SMS y chats: entiende las abreviaturas de escribir deprisa —«xq», «tb», «q»— y las lee como si estuvieran completas. En un libro estorba, porque interpreta como abreviatura cosas que no lo son.\n\nDéjalo en normal salvo que estés leyendo conversaciones."
+    },
+    {
+      "clave": "cambiar_voz_por_idioma",
+      "clase": "casilla",
+      "etiqueta": "&Cambiar de voz al detectar otro idioma dentro del texto",
+      "defecto": false,
+      "ayuda": "Vocalizer sabe reconocer en qué idioma está escrito un trozo y cambiar de voz solo, sin que nadie se lo diga.\n\nCon esto puesto, una cita en inglés en mitad de una novela se lee con voz inglesa si tienes alguna instalada. Si no la tienes, se lee con la que haya.\n\nApagado de fábrica, y por una razón: acierta casi siempre, pero cuando falla lo hace de forma llamativa. Un nombre propio extranjero, una palabra suelta en latín o una lista de términos técnicos pueden hacerle cambiar de voz a mitad de frase, y eso desconcierta más de lo que ayuda.\n\nSi lees mucho material en varios idiomas, pruébalo: es de lo mejor que tiene este motor. Si lees novela en español, déjalo apagado."
+    },
+    {
+      "clave": "idioma_forzado",
+      "clase": "casilla",
+      "etiqueta": "Al detectar el idioma, decidir por el te&xto y no por lo leído antes",
+      "defecto": false,
+      "ayuda": "Solo hace algo si tienes puesto el cambio de voz por idioma.\n\nAPAGADO, la detección tiene memoria: tiene en cuenta en qué idioma venía leyendo para decidir el trozo siguiente. Así una palabra suelta que se parezca a otro idioma no le hace cambiar de voz, que es lo que suele convenir.\n\nENCENDIDO, cada trozo se juzga por sí mismo, sin mirar lo anterior. Cambia antes y también se equivoca antes.\n\nDéjalo apagado salvo que tengas un texto que salte de idioma constantemente y notes que tarda en darse cuenta."
+    },
+    {
+      "clave": "alcance_idioma",
+      "clase": "lista",
+      "etiqueta": "Al detectar el idioma, mirar &cada:",
+      "defecto": 0,
+      "opciones": [
+        {
+          "valor": 0,
+          "texto": "El texto entero de una vez"
+        },
+        {
+          "valor": 1,
+          "texto": "Frase a frase"
+        },
+        {
+          "valor": 2,
+          "texto": "Palabra a palabra"
+        }
+      ],
+      "ayuda": "Cuánto texto mira de golpe para decidir en qué idioma está. Solo hace algo si tienes puesto el cambio de voz por idioma.\n\nEL TEXTO ENTERO acierta más, porque cuanto más texto se mire menos se equivoca: una frase suelta puede parecerse a otro idioma, un párrafo entero casi nunca. A cambio, no se entera de un cambio a mitad.\n\nFRASE A FRASE es lo que quieres si el documento salta de idioma constantemente: una cita, una nota al pie, un término técnico.\n\nPALABRA A PALABRA se equivoca mucho y casi nunca compensa: los nombres propios y los tecnicismos le hacen cambiar de voz a media frase. Está por si alguna vez hace falta."
+    },
+    {
+      "clave": "sin_silencio_final",
+      "clase": "casilla",
+      "etiqueta": "&Quitar el silencio del final de cada frase",
+      "defecto": false,
+      "ayuda": "Vocalizer deja un silencio corto al terminar cada frase, que en una lectura seguida se suma al de la siguiente.\n\nQuitándolo se encadenan las frases y se lee algo más deprisa. A velocidad alta se agradece; a velocidad normal hace que el texto suene apelotonado.\n\nNo afecta a las pausas de las comas y los puntos, que se ajustan con «duración de las pausas»: esto es solo el silencio de más que va al final."
+    },
+    {
+      "clave": "carpeta_extra",
+      "clase": "texto",
+      "etiqueta": "&Otra carpeta donde buscar voces:",
+      "defecto": "",
+      "ayuda": "Ruta completa de otra carpeta con voces, además de la del propio motor.\n\nEl motor ya trae a Jorge, Marisol y Mónica dentro. Esto es para añadir más sin copiarlas: si ya las tienes en otro sitio del disco, pon aquí esa carpeta y se usan desde ahí. Se mira la carpeta y también cada subcarpeta suya, así que vale tanto apuntar a una voz concreta como a la carpeta que las contiene todas.\n\nLa otra forma de añadir voces es copiarlas dentro, en la carpeta «voces» del motor, con la misma forma que las que ya están. Ahí hay un archivo LEEME que lo explica.\n\nSi la ruta no existe, se dice en el registro y se sigue con las que sí estén: una carpeta mal escrita no deja el programa sin voz."
+    },
+    {
+      "clave": "espera_maxima",
+      "clase": "deslizador",
+      "etiqueta": "&Espera máxima por frase, en segundos:",
+      "minimo": 1,
+      "maximo": 30,
+      "defecto": 8,
+      "ayuda": "Cuánto se espera a que una frase esté lista antes de darla por perdida y seguir con la siguiente.\n\nVocalizer sintetiza rápido, pero la primera frase después de elegir una voz carga su base de datos, y en las voces premium eso son cientos de megas leídos de disco. Esa primera vez tarda.\n\nOcho segundos dan de sobra. Súbelo si notas que la lectura se salta la primera frase al cambiar de voz, sobre todo si las voces están en un disco lento o en una unidad externa."
+    }
+  ]
+}

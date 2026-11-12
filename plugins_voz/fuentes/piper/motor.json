@@ -1,0 +1,73 @@
+{
+  "id": "piper",
+  "nombre": "Voces Piper, sin conexión",
+  "version": "1.0",
+  "contrato": 1,
+  "modulo": "motor_piper",
+  "autor": "Michael Hansen y los colaboradores de Piper; quienes grabaron y publicaron cada voz; el autor del visor (el adaptador)",
+  "origen": "El programa de Piper para Windows, del proyecto rhasspy/piper. Las voces, del repositorio rhasspy/piper-voices.",
+  "licencia": "Piper es software libre (MIT). Cada voz tiene la suya, casi todas de conjuntos de grabaciones públicos, y su ficha completa —el MODEL_CARD, con quién la grabó y bajo qué condiciones— viaja dentro del paquete al lado del modelo. El adaptador es del proyecto.",
+  "descripcion": "Voces neuronales generadas dentro del equipo. Suenan a persona leyendo, no a sintetizador, y nada de lo que leas sale de aquí: no hay conexión de por medio. Van rápido —tres segundos de audio en trece centésimas— y no piden tarjeta gráfica. Trae una voz de España y puede bajar las otras ocho de español y hasta ciento setenta y seis en más de treinta idiomas.",
+  "conservar": [
+    "voces"
+  ],
+  "ajustes": [
+    {
+      "clave": "que_voces",
+      "clase": "lista",
+      "etiqueta": "&Qué voces se ofrecen:",
+      "defecto": "instaladas",
+      "opciones": [
+        {
+          "valor": "instaladas",
+          "texto": "Solo las que ya están en el equipo"
+        },
+        {
+          "valor": "espanol",
+          "texto": "Todas las de español, bajándolas al elegirlas"
+        },
+        {
+          "valor": "todos",
+          "texto": "Todas, de todos los idiomas, bajándolas al elegirlas"
+        }
+      ],
+      "ayuda": "Piper tiene ciento setenta y seis voces en más de treinta idiomas, y nueve de ellas en español: cinco de España, dos de México y una de Argentina. En el paquete viene una, porque cada modelo son entre veinte y ciento diez megas y meterlas todas serían gigas.\n\nCON LAS INSTALADAS, la lista enseña lo que se puede usar ahora mismo. Es lo de fábrica, y lo que casi siempre se quiere: una lista de la que solo funciona una es una lista que engaña.\n\nCON LAS DE ESPAÑOL o CON TODAS, la lista las enseña todas y la que elijas se baja en ese momento. Tarda lo que tarde la descarga —hacen falta unos segundos y conexión— y a partir de ahí ya está en el equipo y funciona sin conexión como la que venía.\n\nLas que están se ponen siempre las primeras en la lista.\n\nSi una descarga falla, se dice en el registro y la voz se queda sin poner: no se borra ni se estropea nada, y puedes volver a intentarlo."
+    },
+    {
+      "clave": "variacion",
+      "clase": "deslizador",
+      "etiqueta": "&Variación de la voz, de 0 a 100:",
+      "minimo": 0,
+      "maximo": 100,
+      "defecto": 67,
+      "ayuda": "Cuánto se permite variar la voz de una vez a otra. Piper lo llama «ruido del generador».\n\nEn 0 la voz sale idéntica siempre, y suena algo plana y mecánica. Subiéndolo, las frases dejan de salir todas con el mismo molde y suena más a alguien leyendo.\n\nEl 67 de fábrica es el que trae Piper y es el que mejor queda para leer. Muy alto empieza a sonar inestable, con la voz cambiando de carácter dentro de un mismo párrafo, que en un libro largo cansa."
+    },
+    {
+      "clave": "variacion_fonemas",
+      "clase": "deslizador",
+      "etiqueta": "Variación en la &duración de los sonidos, de 0 a 100:",
+      "minimo": 0,
+      "maximo": 100,
+      "defecto": 80,
+      "ayuda": "Cuánto varía lo que dura cada sonido. Piper lo llama «anchura de fonema».\n\nEs lo que hace que no todas las sílabas duren exactamente lo mismo, que es como habla la gente. En 0 sale todo medido con regla y se nota.\n\nEl 80 de fábrica es el de Piper. Bajarlo hace la voz más regular y algo más fácil de seguir a velocidad alta; subirlo la hace más suelta y menos previsible."
+    },
+    {
+      "clave": "silencio_frases",
+      "clase": "deslizador",
+      "etiqueta": "&Silencio después de cada frase, en centésimas de segundo:",
+      "minimo": 0,
+      "maximo": 100,
+      "defecto": 20,
+      "ayuda": "La pausa que deja Piper al terminar una frase, antes de la siguiente.\n\nCuenta dos veces: dentro de un párrafo largo, Piper lo parte en frases y esta es la pausa entre ellas.\n\nVeinte centésimas —dos décimas de segundo— es lo de fábrica y suena natural. Subirlo da aire para pensar, que ayuda en textos densos; bajarlo a cero encadena las frases y se lee más deprisa, aunque cuesta más seguir dónde acaba una y empieza otra."
+    },
+    {
+      "clave": "espera_maxima",
+      "clase": "deslizador",
+      "etiqueta": "&Espera máxima por frase, en segundos:",
+      "minimo": 1,
+      "maximo": 30,
+      "defecto": 8,
+      "ayuda": "Cuánto se espera a que una frase esté lista antes de darla por perdida y seguir con la siguiente.\n\nCon el motor ya en marcha, una frase son centésimas de segundo. Lo que tarda es arrancarlo: medio segundo la primera vez, y otro medio cada vez que cambias de voz o de velocidad, porque las dos cosas obligan a levantarlo de nuevo.\n\nOcho segundos dan de sobra, y dejan sitio para un equipo lento o un modelo grande. Súbelo si notas que la lectura se salta frases justo después de cambiar de voz, y sobre todo si acabas de bajar una."
+    }
+  ]
+}

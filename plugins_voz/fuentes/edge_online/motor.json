@@ -1,0 +1,31 @@
+{
+  "id": "edge_online",
+  "nombre": "Voces de Edge, por internet",
+  "version": "1.0",
+  "contrato": 1,
+  "modulo": "motor_edge_online",
+  "autor": "Microsoft (las voces); el autor del visor (el adaptador)",
+  "origen": "El servicio de síntesis que el navegador Edge usa para leer páginas en voz alta.",
+  "licencia": "El adaptador es del proyecto. Las voces son de Microsoft y se usan a través de su servicio.",
+  "descripcion": "Voces neuronales que suenan a persona, muchas y en muchos idiomas, y el paquete no ocupa nada. La razón es que las voces no están aquí: CADA FRASE QUE LEAS VIAJA A UN SERVIDOR DE MICROSOFT. Sin conexión no hay voz. Para un libro publicado da igual; para un documento privado, conviene usar las voces locales o la de Windows.",
+  "ajustes": [
+    {
+      "clave": "tono",
+      "clase": "deslizador",
+      "etiqueta": "&Tono de la voz, de 0 a 100:",
+      "minimo": 0,
+      "maximo": 100,
+      "defecto": 50,
+      "ayuda": "Cómo de grave o de aguda suena, con 50 en el tono natural de cada voz.\n\nEstas voces están hechas a partir de grabaciones de personas, así que alejarse mucho del centro las hace sonar artificiales. Entre 40 y 60 se nota el cambio sin que se estropee.\n\nEl tono lo aplica el servidor al generar la frase, así que cambiarlo no degrada el sonido."
+    },
+    {
+      "clave": "espera_maxima",
+      "clase": "deslizador",
+      "etiqueta": "&Espera máxima por frase, en segundos:",
+      "minimo": 2,
+      "maximo": 30,
+      "defecto": 12,
+      "ayuda": "Cuánto se espera a que llegue una frase antes de darla por perdida y seguir con la siguiente.\n\nAquí depende de tu conexión, no de tu equipo: la frase se genera en un servidor y tiene que llegar. Con una conexión buena son décimas de segundo.\n\nSi la lectura se salta frases, sube el número. Si al caerse la conexión el programa se queda callado demasiado tiempo antes de avisar, bájalo."
+    }
+  ]
+}

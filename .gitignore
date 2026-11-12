@@ -1,0 +1,56 @@
+# Visor Universal: lo que NO se sube al repositorio.
+#
+# Regla general: entra el código, las pruebas, las herramientas, las
+# traducciones, los sonidos y la documentación.  No entra nada que se genere al
+# compilar, nada personal y nada de terceros que tenga su propia licencia.
+
+# --- entorno y compilación ---------------------------------------------------
+entorno/
+build/
+dist/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.venv/
+venv/
+
+# --- material de consulta y trabajo (normas, código ajeno, muestras) ----------
+adjuntos/
+
+# --- datos del usuario y binarios que se preparan con herramientas/ ---------
+# De «data» solo se sube lo que forma parte del programa: los idiomas (con el
+# manual) y los sonidos.  Ajustes, biblioteca, caché, registros, correcciones,
+# descripciones, motores de voz instalados, Tesseract y 7-Zip se quedan fuera.
+/data/*
+!/data/idiomas/
+!/data/sonidos/
+
+# --- claves de firma: NUNCA ----------------------------------------------------
+herramientas/claves/
+*.key
+*.pem
+
+# --- paquetes de voz: solo los adaptadores, no los motores ni las voces --------
+plugins_voz/*.motorvoz
+plugins_voz/fuentes/*/archivos/
+plugins_voz/fuentes/*/datos/
+plugins_voz/fuentes/*/biblioteca/
+plugins_voz/fuentes/acapela/*.md
+plugins_voz/fuentes/acapela/puente32_src/target/
+
+# --- restos de una actualización a medias ----------------------------------------
+_actualizacion.zip
+_actualizacion_temp/
+_actualizar.bat
+_actualizacion_error.log
+
+# --- sistema y editores ------------------------------------------------------------
+Thumbs.db
+desktop.ini
+.DS_Store
+*.swp
+*.tmp
+.vscode/
+.idea/
+.claude/

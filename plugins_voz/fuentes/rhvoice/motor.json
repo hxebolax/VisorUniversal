@@ -1,0 +1,58 @@
+{
+  "id": "rhvoice",
+  "nombre": "RHVoice, libre y con idiomas a la carta",
+  "version": "1.0",
+  "contrato": 1,
+  "modulo": "motor_rhvoice",
+  "autor": "Olga Yakovleva y los colaboradores de RHVoice; el autor del visor (el adaptador)",
+  "origen": "RHVoice, sintetizador libre. El motor y la voz española Mateo se descargan de sus repositorios oficiales.",
+  "licencia": "RHVoice es software libre (GPL v3). Las voces, cada una con la suya. El adaptador es del proyecto.",
+  "descripcion": "El sintetizador libre que suena mejor que eSpeak sin ser neuronal y sin necesitar conexión. Trae el español (voz Mateo) y ocupa poco, porque los idiomas se añaden uno a uno en vez de venir todos de golpe: cada uno son unos megas y se dejan en la carpeta del motor. Es el único de los que trae el visor que deja elegir qué idiomas quieres tener.",
+  "ajustes": [
+    {
+      "clave": "tono",
+      "clase": "deslizador",
+      "etiqueta": "&Tono de la voz, de 0 a 100:",
+      "minimo": 0,
+      "maximo": 100,
+      "defecto": 50,
+      "ayuda": "Cómo de grave o de aguda es la voz, con 50 en el tono con el que viene grabada.\n\nRHVoice usa grabaciones de personas, así que alejarse mucho del centro la hace sonar artificial. Entre 35 y 65 se nota el cambio sin que se estropee.\n\nSi lees muchas horas, merece la pena buscar el tono que te resulte cómodo: cansa bastante menos."
+    },
+    {
+      "clave": "puntuacion",
+      "clase": "lista",
+      "etiqueta": "Qué &puntuación se dice:",
+      "defecto": "normal",
+      "opciones": [
+        {"valor": "normal", "texto": "La normal al leer un texto"},
+        {"valor": "ninguna", "texto": "Ninguna"},
+        {"valor": "toda", "texto": "Toda"},
+        {"valor": "algunas", "texto": "Solo algunos signos"}
+      ],
+      "ayuda": "Si la voz dice en alto los signos de puntuación o solo los usa para hacer pausas.\n\nLA NORMAL es lo que quieres para leer un libro: la coma y el punto marcan pausas y no se dicen.\n\nTODA dice «coma», «punto», «paréntesis». Sirve para revisar un texto que estás escribiendo, no para leer una novela: en una página normal hay más de cien signos.\n\nNINGUNA se los salta incluso para las pausas. La lectura queda seguida y cuesta más seguirla.\n\nDéjalo en la normal salvo que estés corrigiendo algo."
+    },
+    {
+      "clave": "mayusculas",
+      "clase": "lista",
+      "etiqueta": "Qué se hace con las &mayúsculas:",
+      "defecto": "normal",
+      "opciones": [
+        {"valor": "normal", "texto": "Nada especial"},
+        {"valor": "subir_tono", "texto": "Subir el tono al leerlas"},
+        {"valor": "decir_mayuscula", "texto": "Decir «mayúscula» antes"},
+        {"valor": "sonido", "texto": "Hacer un sonido corto"},
+        {"valor": "nada", "texto": "Ignorarlas del todo"}
+      ],
+      "ayuda": "Si la voz avisa de que una letra va en mayúscula.\n\nPara leer un libro no hace falta: las mayúsculas están donde se espera y avisar de cada una alarga la lectura sin aportar nada.\n\nSirve al revisar un texto propio, donde una mayúscula perdida sí importa. SUBIR EL TONO es lo menos molesto de los tres avisos; DECIR «MAYÚSCULA» es lo más claro y lo más lento.\n\nDéjalo en «nada especial» para leer."
+    },
+    {
+      "clave": "espera_maxima",
+      "clase": "deslizador",
+      "etiqueta": "&Espera máxima por frase, en segundos:",
+      "minimo": 1,
+      "maximo": 20,
+      "defecto": 6,
+      "ayuda": "Cuánto se espera a que una frase esté lista antes de darla por perdida y seguir con la siguiente.\n\nRHVoice genera la frase entera antes de reproducirla, y tarda algo más que eSpeak porque su voz está hecha de grabaciones. En un equipo normal es menos de un segundo.\n\nSeis segundos sobran. Súbelo si notas que la lectura se salta frases."
+    }
+  ]
+}

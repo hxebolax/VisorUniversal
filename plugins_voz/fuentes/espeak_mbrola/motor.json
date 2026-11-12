@@ -1,0 +1,58 @@
+{
+  "id": "espeak_mbrola",
+  "nombre": "eSpeak NG con voces MBROLA",
+  "version": "1.0",
+  "contrato": 1,
+  "modulo": "motor_espeak_mbrola",
+  "autor": "Thierry Dutoit y el laboratorio TCTS de la Universidad de Mons (MBROLA y las voces); Jonathan Duddington y los colaboradores de eSpeak NG; el autor del visor (el adaptador)",
+  "origen": "eSpeak NG del instalador oficial del proyecto, que es la única versión de Windows compilada con MBROLA. La biblioteca de MBROLA de 64 bits, de la reconstrucción de código abierto de thiekus. Las voces, del repositorio de voces de numediart.",
+  "licencia": "eSpeak NG es software libre (GPL v3) y el código de MBROLA también (AGPL v3, liberado en 2018). Las voces son gratuitas con una condición: se pueden copiar y repartir libremente mientras no se cobre por ellas. Su aviso de licencia viaja dentro del paquete, al lado de las voces. El adaptador es del proyecto.",
+  "descripcion": "Voces de persona real, hechas de trozos grabados y pegados. eSpeak lee el texto y decide los sonidos; MBROLA los pone con la voz de alguien. Se nota que es de los noventa en las uniones, y aun así suena bastante más humano que eSpeak solo, sin conexión y ocupando poco. Siete voces en español: cuatro de España, dos de México y una de Venezuela, y más de setenta en otros idiomas que se pueden bajar desde aquí. A cambio no llega a las velocidades del paquete de eSpeak: la aceleración al triple es de la versión de NVDA y esta biblioteca no la trae.",
+  "conservar": [
+    "espeak-ng-data/mbrola"
+  ],
+  "ajustes": [
+    {
+      "clave": "variante",
+      "clase": "lista",
+      "etiqueta": "&Variante de la voz:",
+      "defecto": "none",
+      "opciones": [],
+      "ayuda": "Cambia el timbre por encima de la voz grabada: la misma voz española suena más aguda, más grave o susurrando. Son las mismas variantes que en NVDA y con los mismos nombres.\n\nAquí hacen menos que en eSpeak solo, y con razón: allí modelan una voz que se genera entera, y aquí retocan una grabación de una persona. Movidas mucho suenan raro, porque la voz de debajo sigue siendo la de alguien concreto.\n\n«Sin variante» es la voz tal como la grabaron, y es lo que suele quedar mejor con este motor."
+    },
+    {
+      "clave": "tono",
+      "clase": "deslizador",
+      "etiqueta": "&Tono de la voz, de 0 a 100:",
+      "minimo": 0,
+      "maximo": 100,
+      "defecto": 50,
+      "ayuda": "Cómo de grave o de aguda es la voz.\n\nCon MBROLA conviene moverlo poco. La voz está grabada de una persona, y llevarla lejos de su tono natural la vuelve metálica: es el mismo efecto que acelerar una cinta. En eSpeak solo esto no pasa, porque allí la voz se calcula desde cero.\n\nSi lo que buscas es una voz más grave o más aguda, prueba antes con otra de las siete: son personas distintas."
+    },
+    {
+      "clave": "entonacion",
+      "clase": "deslizador",
+      "etiqueta": "&Entonación, de 0 a 100:",
+      "minimo": 0,
+      "maximo": 100,
+      "defecto": 75,
+      "ayuda": "Cuánto sube y baja la voz dentro de la frase. En NVDA este ajuste se llama «inflexión».\n\nLa entonación la pone eSpeak, que es quien lee el texto y decide dónde va cada acento, así que este ajuste funciona igual que allí: en 0 sale plana y subiéndola marca las preguntas, las comas y los finales.\n\nCon voces grabadas, una entonación viva es lo que más ayuda a que suene a alguien leyendo y no a alguien deletreando."
+    },
+    {
+      "clave": "mas_idiomas",
+      "clase": "casilla",
+      "etiqueta": "Ofrecer también las voces de &otros idiomas y bajarlas al elegirlas",
+      "defecto": false,
+      "ayuda": "MBROLA tiene más de setenta voces: alemán, francés, italiano, inglés, portugués de Brasil, árabe, japonés y otras muchas. En el paquete vienen solo las siete de español, porque son entre uno y seis megas cada una y meterlas todas serían doscientos.\n\nCon esto puesto, la lista de voces las enseña todas. La primera vez que elijas una que no esté, se baja —hacen falta unos segundos y conexión— y a partir de ahí ya está en el equipo y funciona sin conexión como las demás.\n\nApagado de fábrica, y a propósito: sin esto la lista enseña lo que de verdad se puede usar ahora mismo, que es lo que casi siempre se quiere.\n\nSi una descarga falla, se dice en el registro y la voz se queda sin poner: no se borra ni se estropea nada."
+    },
+    {
+      "clave": "espera_maxima",
+      "clase": "deslizador",
+      "etiqueta": "&Espera máxima por frase, en segundos:",
+      "minimo": 1,
+      "maximo": 20,
+      "defecto": 6,
+      "ayuda": "Cuánto se espera a que una frase esté lista antes de darla por perdida y seguir con la siguiente.\n\nMBROLA tarda algo más que eSpeak solo: hay que ir a buscar al disco los trozos grabados y pegarlos. Siguen siendo décimas de segundo, pero la primera frase después de cambiar de voz carga la voz entera —varios megas— y esa sí se nota.\n\nSeis segundos sobran para todo. Súbelo solo si notas que la lectura se salta frases, y sobre todo si acabas de bajar una voz nueva."
+    }
+  ]
+}

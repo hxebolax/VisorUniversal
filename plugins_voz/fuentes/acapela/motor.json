@@ -1,0 +1,251 @@
+{
+  "id": "acapela",
+  "nombre": "Acapela portátil (SDK oficial, 32 o 64 bits)",
+  "version": "1.0",
+  "contrato": 1,
+  "modulo": "motor",
+  "autor": "Adaptador y puente: proyecto Visor Universal. Motor y voces: Acapela Group",
+  "origen": "El paquete contiene únicamente el adaptador Python y un puente x86 propio. No contiene DLL, voces, activadores ni claves de Acapela; debe indicarse la ruta de un runtime oficial aportado por quien tenga derecho a usarlo.",
+  "licencia": "El adaptador y el puente pertenecen al proyecto. Acapela es software propietario: su SDK de desarrollo y la distribución o integración en una aplicación requieren las licencias que determine Acapela Group.",
+  "descripcion": "Integra directamente la API BabTTS sin registrar SAPI ni ejecutar instaladores. Un runtime x64 se carga de forma nativa; uno x86 se aísla en un proceso de 32 bits. Antes de cargar nada comprueba arquitectura y versiones y rechaza carpetas que contengan componentes de activación alterados.",
+  "ajustes": [
+    {
+      "clave": "ruta_motor",
+      "clase": "texto",
+      "etiqueta": "Carpeta o &DLL oficial de Acapela:",
+      "defecto": "",
+      "ayuda": "Ruta completa a la carpeta de un runtime Acapela autorizado o directamente a AcaTts.dll/AcaTts.64.dll.\n\nNo hace falta registrar la DLL ni instalar SAPI. Si se indica una carpeta, el modo automático elige la biblioteca adecuada. El paquete no copia el runtime porque es propietario."
+    },
+    {
+      "clave": "ruta_datos",
+      "clase": "texto",
+      "etiqueta": "Carpeta de &datos y voces:",
+      "defecto": "",
+      "ayuda": "Ruta completa a la raíz de datos entregada con el mismo SDK/runtime. Es la carpeta que suele contener «bin» y «data». Si se deja vacía, el adaptador usa como raíz la carpeta indicada en el ajuste anterior y busca también el runtime en bin, bin/x64, x64, bin/x86 o x86.\n\nLas voces y los módulos internos deben ser de la misma generación y arquitectura que el kernel. Señalar una carpeta distinta no convierte sus archivos: el motor la comprueba antes de abrirlos."
+    },
+    {
+      "clave": "arquitectura",
+      "clase": "lista",
+      "etiqueta": "&Arquitectura del motor:",
+      "defecto": "auto",
+      "ayuda": "Cómo conecta el visor de 64 bits con Acapela.\n\n«Automática» mira la cabecera PE de la DLL y de los módulos de voz sin ejecutarlos. Una DLL x64 se carga dentro del visor; una x86 se abre mediante el proceso aislado de 32 bits incluido. Fuerza un modo únicamente para diagnosticar un paquete que tenga nombres de archivo poco habituales.",
+      "opciones": [
+        {"valor": "auto", "texto": "Automática (recomendada)"},
+        {"valor": "nativo64", "texto": "Nativa de 64 bits"},
+        {"valor": "puente32", "texto": "Puente aislado de 32 bits"}
+      ]
+    },
+    {
+      "clave": "runtime_portatil_autorizado",
+      "clase": "casilla",
+      "etiqueta": "Confirmo que es un runtime &oficial, autorizado y portátil",
+      "defecto": false,
+      "ayuda": "Es el seguro que impide cargar por accidente binarios de origen dudoso o un runtime que dependa del Registro.\n\nActívalo solamente cuando hayas comprobado que tu licencia permite integrarlo en esta aplicación y que esa distribución de Acapela está preparada por el proveedor para configuración local o «bundling», sin instalador ni claves de Registro. Sin esta confirmación el motor analiza las voces, pero no ejecuta la DLL."
+    },
+    {
+      "clave": "permitir_version_distinta",
+      "clase": "casilla",
+      "etiqueta": "Intentar una mezcla de &versiones distintas",
+      "defecto": false,
+      "ayuda": "Permite intentar el arranque cuando los módulos de las voces tienen una versión principal posterior al kernel.\n\nDéjalo apagado: una diferencia de generación suele terminar en datos incompatibles o en un cierre del proceso. Esta opción no hace compatibles los archivos; únicamente levanta el bloqueo preventivo para un runtime cuya documentación garantice esa combinación."
+    },
+    {
+      "clave": "tono",
+      "clase": "deslizador",
+      "etiqueta": "&Tono base de Acapela, de 30 a 500:",
+      "minimo": 30,
+      "maximo": 500,
+      "defecto": 110,
+      "ayuda": "Valor bruto BABTTS_PARAM_PITCH. Los valores bajos producen una voz grave y los altos una voz aguda.\n\n110 es el valor usado por el driver estudiado. Cada voz tiene su propio tono natural, por lo que conviene empezar ahí y ajustar de oído."
+    },
+    {
+      "clave": "tono_minimo",
+      "clase": "deslizador",
+      "etiqueta": "Tono &mínimo permitido, de 30 a 500:",
+      "minimo": 30,
+      "maximo": 500,
+      "defecto": 30,
+      "ayuda": "Límite inferior que el motor puede usar al entonar una frase. Si supera al máximo, el adaptador intercambia ambos valores para no enviar una combinación imposible.\n\nDéjalo en 30 salvo que una voz se vuelva demasiado grave en finales de frase."
+    },
+    {
+      "clave": "tono_maximo",
+      "clase": "deslizador",
+      "etiqueta": "Tono má&ximo permitido, de 30 a 500:",
+      "minimo": 30,
+      "maximo": 500,
+      "defecto": 500,
+      "ayuda": "Límite superior de la entonación. Reducirlo evita picos demasiado agudos, especialmente cuando está activo el cambio de tono para diálogos.\n\n500 deja toda la amplitud disponible del driver analizado."
+    },
+    {
+      "clave": "tracto_vocal",
+      "clase": "deslizador",
+      "etiqueta": "Tamaño del tracto &vocal, de 0 a 200:",
+      "minimo": 0,
+      "maximo": 200,
+      "defecto": 100,
+      "ayuda": "Valor bruto BABTTS_PARAM_VOCALTRACT. Modifica la resonancia y el tamaño aparente de la voz sin ser lo mismo que el tono.\n\n100 es el punto neutro. Algunas versiones antiguas no ofrecen este parámetro; en ese caso se omite y queda anotado en el registro de actividad."
+    },
+    {
+      "clave": "formato_onda",
+      "clase": "lista",
+      "etiqueta": "&Formato de onda interno:",
+      "defecto": 1,
+      "ayuda": "Formato que se pide a BabTTS. PCM lineal de 16 bits es el apropiado para lectura y conserva toda la calidad.\n\nLos demás formatos están para interoperabilidad con runtimes antiguos o telefónicos. No mejoran la voz y el dispositivo de sonido puede rechazarlos.",
+      "opciones": [
+        {"valor": 1, "texto": "PCM lineal de 16 bits (recomendado)"},
+        {"valor": 0, "texto": "PCM lineal de 8 bits"},
+        {"valor": 6, "texto": "A-law"},
+        {"valor": 7, "texto": "Mu-law"},
+        {"valor": 10, "texto": "OKI ADPCM"}
+      ]
+    },
+    {
+      "clave": "dispositivo",
+      "clase": "texto",
+      "etiqueta": "Número de &dispositivo de sonido:",
+      "defecto": "4294967295",
+      "ayuda": "Identificador numérico que BabTTS pasa a waveOut. 4294967295 equivale a «usar el dispositivo predeterminado» y es la opción portátil.\n\nCámbialo solo si conoces el número estable del dispositivo. Windows puede renumerarlos al conectar o quitar auriculares."
+    },
+    {
+      "clave": "modo_lectura",
+      "clase": "lista",
+      "etiqueta": "Modo de &lectura:",
+      "defecto": 0,
+      "ayuda": "Unidad con la que el motor procesa el texto. Frases es lo natural para libros; palabra y letra sirven para revisar ortografía o códigos.\n\nEste ajuste corresponde a BABTTS_PARAM_READINGMODE y no al segmentado del propio visor.",
+      "opciones": [
+        {"valor": 0, "texto": "Frases y texto normal"},
+        {"valor": 1, "texto": "Palabra a palabra"},
+        {"valor": 2, "texto": "Letra a letra"}
+      ]
+    },
+    {
+      "clave": "silencio_inicial",
+      "clase": "deslizador",
+      "etiqueta": "Silencio al &empezar, de 0 a 5000:",
+      "minimo": 0,
+      "maximo": 5000,
+      "defecto": 0,
+      "ayuda": "Valor bruto BABTTS_PARAM_LEADINGSILENCE que deja margen antes de cada fragmento. La unidad exacta depende de la generación del SDK.\n\nCero evita retrasos al leer de forma continua. Súbelo solo si el dispositivo se come el principio de las frases."
+    },
+    {
+      "clave": "silencio_final",
+      "clase": "deslizador",
+      "etiqueta": "Silencio al &terminar, de 0 a 5000:",
+      "minimo": 0,
+      "maximo": 5000,
+      "defecto": 0,
+      "ayuda": "Valor bruto BABTTS_PARAM_TRAILINGSILENCE. Añade margen al final del fragmento antes de que el visor envíe el siguiente.\n\nDéjalo en cero para lectura continua; úsalo si un controlador de sonido corta la última sílaba."
+    },
+    {
+      "clave": "pausa_puntuacion",
+      "clase": "lista",
+      "etiqueta": "Pausa de &punto y puntuación general:",
+      "defecto": 0,
+      "ayuda": "Duración que el motor aplica a la puntuación general. «La de la voz» conserva la prosodia preparada por Acapela.\n\nAl leer muy deprisa se puede acortar; para narrativa suele sonar mejor el valor predeterminado.",
+      "opciones": [
+        {"valor": 0, "texto": "La de la voz"}, {"valor": 1, "texto": "Muy corta"},
+        {"valor": 2, "texto": "Corta"}, {"valor": 3, "texto": "Media"},
+        {"valor": 4, "texto": "Larga"}, {"valor": 5, "texto": "Muy larga"}
+      ]
+    },
+    {
+      "clave": "pausa_punto_coma",
+      "clase": "lista",
+      "etiqueta": "Pausa de punto y &coma:",
+      "defecto": 0,
+      "ayuda": "Duración específica para el punto y coma. Permite distinguirlo de la coma sin alargar todos los signos.\n\n«La de la voz» respeta las reglas españolas incluidas en los datos lingüísticos.",
+      "opciones": [
+        {"valor": 0, "texto": "La de la voz"}, {"valor": 1, "texto": "Muy corta"},
+        {"valor": 2, "texto": "Corta"}, {"valor": 3, "texto": "Media"},
+        {"valor": 4, "texto": "Larga"}, {"valor": 5, "texto": "Muy larga"}
+      ]
+    },
+    {
+      "clave": "pausa_coma",
+      "clase": "lista",
+      "etiqueta": "Pausa de la &coma:",
+      "defecto": 0,
+      "ayuda": "Duración de la pausa en comas. Una pausa larga ayuda a seguir frases complejas, pero a mucha velocidad corta demasiado el ritmo.\n\nEmpieza con «La de la voz» y usa «Corta» si la lectura parece entrecortada.",
+      "opciones": [
+        {"valor": 0, "texto": "La de la voz"}, {"valor": 1, "texto": "Muy corta"},
+        {"valor": 2, "texto": "Corta"}, {"valor": 3, "texto": "Media"},
+        {"valor": 4, "texto": "Larga"}, {"valor": 5, "texto": "Muy larga"}
+      ]
+    },
+    {
+      "clave": "pausa_parentesis",
+      "clase": "lista",
+      "etiqueta": "Pausa de paréntesis y &corchetes:",
+      "defecto": 0,
+      "ayuda": "Duración al entrar o salir de un inciso entre paréntesis o corchetes. Subirla hace más visibles por oído los límites del inciso.\n\nPara novelas, la pausa predeterminada suele bastar; para textos jurídicos o académicos puede ayudar una pausa media.",
+      "opciones": [
+        {"valor": 0, "texto": "La de la voz"}, {"valor": 1, "texto": "Muy corta"},
+        {"valor": 2, "texto": "Corta"}, {"valor": 3, "texto": "Media"},
+        {"valor": 4, "texto": "Larga"}, {"valor": 5, "texto": "Muy larga"}
+      ]
+    },
+    {
+      "clave": "pausa_deletreo",
+      "clase": "lista",
+      "etiqueta": "Pausa al &deletrear:",
+      "defecto": 0,
+      "ayuda": "Separación entre letras cuando se usa el modo de deletreo. Una pausa mayor mejora la identificación de códigos; una menor permite revisarlos deprisa.\n\nNo afecta a la lectura normal por frases.",
+      "opciones": [
+        {"valor": 0, "texto": "La de la voz"}, {"valor": 1, "texto": "Muy corta"},
+        {"valor": 2, "texto": "Corta"}, {"valor": 3, "texto": "Media"},
+        {"valor": 4, "texto": "Larga"}, {"valor": 5, "texto": "Muy larga"}
+      ]
+    },
+    {
+      "clave": "etiquetas_sapi",
+      "clase": "casilla",
+      "etiqueta": "Interpretar etiquetas de &tono de Acapela",
+      "defecto": true,
+      "ayuda": "Permite que el modo diálogo del visor envíe las etiquetas antiguas de BabTTS para cambiar el tono dentro de una frase.\n\nApágalo si tu versión lee las barras y los nombres de las etiquetas en voz alta. El texto seguirá oyéndose, pero diálogo y narración tendrán el mismo tono."
+    },
+    {
+      "clave": "usar_filtro",
+      "clase": "casilla",
+      "etiqueta": "Activar el &filtro de voz avanzado",
+      "defecto": false,
+      "ayuda": "Activa los cuatro valores de filtro expuestos por BabTTS. Son parámetros internos que cambian de significado entre sintetizadores y generaciones.\n\nDéjalo apagado salvo que la documentación de tu SDK indique expresamente qué valores corresponden a esa voz."
+    },
+    {
+      "clave": "filtro_1",
+      "clase": "texto",
+      "etiqueta": "Valor de filtro &1:",
+      "defecto": "0",
+      "ayuda": "Primer valor bruto del filtro de BabTTS. Solo se usa si «Activar el filtro» está marcado.\n\nIntroduce un entero indicado por la documentación de tu SDK; cero evita inventar una ecualización que la voz no conozca."
+    },
+    {
+      "clave": "filtro_2",
+      "clase": "texto",
+      "etiqueta": "Valor de filtro &2:",
+      "defecto": "0",
+      "ayuda": "Segundo valor bruto del filtro. Su escala no está descrita en el driver de NVDA analizado y puede variar por sintetizador.\n\nDéjalo en cero salvo que Acapela documente otro valor para tu runtime."
+    },
+    {
+      "clave": "filtro_3",
+      "clase": "texto",
+      "etiqueta": "Valor de filtro &3:",
+      "defecto": "0",
+      "ayuda": "Tercer valor bruto del filtro. Se envía directamente y cualquier rechazo queda en el registro de actividad sin derribar el motor.\n\nCero es el valor conservador."
+    },
+    {
+      "clave": "filtro_4",
+      "clase": "texto",
+      "etiqueta": "Valor de filtro &4:",
+      "defecto": "0",
+      "ayuda": "Cuarto valor bruto del filtro. Forma parte de la API, pero el código recibido no explica su escala.\n\nÚsalo únicamente con la ficha técnica de la misma versión de Acapela."
+    },
+    {
+      "clave": "espera_maxima",
+      "clase": "deslizador",
+      "etiqueta": "&Espera máxima por frase, en segundos:",
+      "minimo": 1,
+      "maximo": 15,
+      "defecto": 5,
+      "ayuda": "Tiempo que el visor concede al motor para empezar a hablar antes de continuar con la siguiente frase.\n\nCinco segundos cubren el primer arranque del proceso x86. Un runtime x64 local suele necesitar mucho menos; súbelo si un disco lento hace que se salten las primeras frases."
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "id": "onecore",
+  "nombre": "Voces de Windows 10 y 11 (OneCore)",
+  "version": "1.0",
+  "contrato": 1,
+  "modulo": "motor_onecore",
+  "autor": "Microsoft (las voces); el autor del visor (el adaptador)",
+  "origen": "Las voces que Windows instala con cada idioma. Ya están en tu equipo: este paquete solo sabe dónde buscarlas.",
+  "licencia": "Las voces son de Microsoft y ya están instaladas en Windows. El adaptador es del proyecto.",
+  "descripcion": "Windows guarda sus voces en tres sitios y los programas normalmente ven solo uno. Las que faltan son las modernas —Helena, Laura y Pablo en español— y suenan bastante mejor que las clásicas. Ya están en tu equipo: este paquete no descarga nada y no ocupa nada. Para añadir voces de otros idiomas, Configuración de Windows, «Hora e idioma», «Voz».",
+  "ajustes": [
+    {
+      "clave": "usar_onecore",
+      "clase": "casilla",
+      "etiqueta": "Incluir las voces modernas de &Windows 10 y 11",
+      "defecto": true,
+      "ayuda": "Las voces que Windows instala con cada idioma: en español son Helena, Laura y Pablo.\n\nEstán en tu equipo y funcionan, pero NO SALEN en la lista normal de voces del sistema: los programas que piden las voces del modo corriente solo ven las clásicas. Este paquete existe sobre todo para esto.\n\nSuenan bastante mejor que las clásicas, sobre todo si tu Windows solo trae una. Déjalo activado salvo que quieras ver únicamente las de siempre.\n\nPara conseguir más, en Configuración de Windows: Hora e idioma, Voz, y añade un idioma. Aparecerán aquí al reiniciar el programa."
+    },
+    {
+      "clave": "usar_clasicas",
+      "clase": "casilla",
+      "etiqueta": "Incluir también las voces &clásicas de SAPI 5",
+      "defecto": true,
+      "ayuda": "Las voces de siempre, las mismas que ves eligiendo «SAPI 5 de Windows» como motor.\n\nActivado de fábrica para que este motor te sirva para todo y no tengas que ir cambiando: con esto ves todas las voces del equipo en una sola lista.\n\nApágalo si solo quieres las modernas y las clásicas te estorban en la lista."
+    },
+    {
+      "clave": "usar_servidor",
+      "clase": "casilla",
+      "etiqueta": "Incluir las voces de &servidor, si las hay",
+      "defecto": false,
+      "ayuda": "Un tercer sitio donde a veces quedan voces instaladas: las de Microsoft Speech Server, que dejan algunos productos de Microsoft.\n\nApagado de fábrica porque en la mayoría de los equipos no hay ninguna, y si las hay suelen ser las mismas que ya salen. Actívalo si echas en falta alguna voz que sabes que instalaste."
+    },
+    {
+      "clave": "decir_de_donde",
+      "clase": "casilla",
+      "etiqueta": "Decir de qué &grupo es cada voz en la lista",
+      "defecto": false,
+      "ayuda": "Añade al final del nombre de dónde sale: «Microsoft Helena [Windows 10/11]».\n\nApagado de fábrica porque alarga los nombres y en la lista se recorren de oído. Actívalo si tienes voces con nombres parecidos en dos grupos y quieres saber cuál estás eligiendo."
+    }
+  ]
+}
