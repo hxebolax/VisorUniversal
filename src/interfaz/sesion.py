@@ -35,7 +35,7 @@ class Sesion:
 
     __slots__ = ("panel", "documento", "ruta", "cronometro", "buscador", "marcadores",
                  "descripciones", "libro_daisy", "ultima_busqueda", "linea_descrita",
-                 "_estadisticas", "huella_archivo")
+                 "_estadisticas", "huella_archivo", "ruta_pendiente", "titulo_pendiente")
 
     def __init__(self, panel) -> None:
         self.panel = panel
@@ -58,11 +58,23 @@ class Sesion:
         #: repetirla a cada movimiento del cursor dentro del mismo párrafo.
         self.linea_descrita = -1
         self._estadisticas = None
+        #: Documento de la sesión anterior que esta pestaña tiene **reservado**
+        #: pero todavía no ha abierto.  Al arrancar solo se abre el que estaba
+        #: delante; los demás esperan aquí a que se entre en su pestaña.  Abrir
+        #: siete libros de golpe —analizarlos, cargar su texto, rehacer el
+        #: árbol y anunciar cada uno— era lo que hacía pesado el arranque.
+        self.ruta_pendiente = ""
+        #: Cómo se llama ese documento, para el rótulo de la pestaña.
+        self.titulo_pendiente = ""
 
     @property
     def vacia(self) -> bool:
-        """Indica si la pestaña no tiene ningún documento dentro."""
-        return self.documento is None
+        """Indica si la pestaña no tiene ningún documento dentro.
+
+        Una pestaña con un documento reservado (:attr:`ruta_pendiente`) no está
+        vacía: ese documento se abrirá en ella en cuanto se visite.
+        """
+        return self.documento is None and not self.ruta_pendiente
 
     @property
     def recuentos(self):
@@ -91,6 +103,8 @@ class Sesion:
         palabra que dice que la pestaña está libre.
         """
         if self.documento is None:
+            if self.ruta_pendiente:
+                return self.titulo_pendiente or Path(self.ruta_pendiente).stem
             return _("(Vacía)")
         titulo = (self.documento.metadatos.titulo or "").strip()
         if not titulo and self.ruta:

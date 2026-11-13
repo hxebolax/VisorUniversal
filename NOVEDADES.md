@@ -13,6 +13,45 @@ va debajo hasta el siguiente `## ` es lo que se publica.
 
 ---
 
+## 1.3.9
+
+Esta versión va de que el programa **pese menos**: que arranque, abra sus
+ventanas y se cierre sin hacer esperar.
+
+**Arrancar con la sesión anterior, sin esperas.** Antes se abrían de golpe todos
+los documentos que había abiertos al cerrar, y con varios libros grandes la
+ventana se quedaba varios segundos sin atender. Ahora cada documento recupera su
+pestaña con su nombre, pero solo se abre el que estaba delante; los demás se
+abren al entrar en su pestaña. La sesión se guarda igual de completa que antes.
+
+**Opciones se abre al momento.** El diálogo de Opciones montaba sus catorce
+pestañas antes de enseñarse y tardaba más de un segundo. Ahora se abre al
+instante y las pestañas se van montando solas mientras no se pulsa nada, de
+modo que al llegar a cualquiera ya está lista, con las flechas, con
+Control+Tab o con el ratón. Al aceptar solo se guarda lo de las pestañas
+visitadas: las demás no han podido cambiar.
+
+**Sin bloqueos con la IA local instalada.** Si la IA local estaba instalada
+pero parada, el programa se quedaba unos dos segundos esperando cada vez que
+comprobaba si estaba en marcha: al cerrar y, varias veces, al pasar a las
+pestañas de inteligencia artificial de Opciones, donde llegaba a bloquearse
+más de seis segundos. Ahora lo averigua al instante, y el programa se cierra
+en cuanto se le pide.
+
+**Adiós a los cierres de golpe al salir.** A veces el programa terminaba de
+golpe al cerrarlo con documentos abiertos, y quedaba un informe de caída en la
+carpeta de registros. La causa eran unos relojes internos —el que vigila el
+cursor de cada pestaña, entre otros— que seguían en marcha después de cerrarse
+su ventana. Ahora se paran todos al cerrarla.
+
+**Más ligero en el día a día.**
+
+- Si hay un lector de pantalla en marcha, ya no se prepara además la voz de
+  Windows al arrancar, que no se iba a usar.
+- Las pestañas que no se ven dejan de vigilar el cursor.
+- Los menús de documentos recientes y de pestañas solo se rehacen cuando
+  cambian, y ya no van acumulando trabajo a lo largo de la sesión.
+
 ## 1.3.8
 
 **La ficha de un libro, con los datos que tú elijas.** Dentro de la ficha hay un

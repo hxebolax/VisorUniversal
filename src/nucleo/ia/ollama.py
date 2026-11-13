@@ -562,10 +562,21 @@ class Ollama:
         Se comprueba **qué programa** es y no solo que conteste: adoptar un
         servidor ajeno sería usar sus modelos sin permiso, y matarlo, peor.
         """
+        # Primero se mira en la tabla de conexiones de Windows si alguien
+        # escucha en el puerto, que es instantáneo.  Preguntar directamente
+        # no sirve para eso: en Windows, conectar a un puerto de este equipo
+        # donde no escucha nadie no falla al momento, sino tras unos dos
+        # segundos de reintentos.  Eso es lo que costaba, con la IA local
+        # instalada y parada, cerrar el programa y montar las pestañas de IA
+        # en Opciones.
+        pid = self._pid_escuchando(PUERTO)
+        if pid == 0:
+            return EstadoServidor()
         datos = self._consultar("/api/version", espera=2.0)
         if not datos:
             return EstadoServidor()
-        pid = self._pid_en_el_puerto()
+        if pid is None:
+            pid = self._pid_en_el_puerto()
         ruta = self._ruta_del_proceso(pid) if pid else ""
         propio = bool(ruta) and self._misma_ruta(ruta, str(ejecutable()))
         return EstadoServidor(True, str(datos.get("version", "")), pid, ruta, propio)
@@ -580,6 +591,53 @@ class Ollama:
         except OSError:
             return os.path.normcase(os.path.abspath(una)) == \
                 os.path.normcase(os.path.abspath(otra))
+
+    @staticmethod
+    def _pid_escuchando(puerto: int) -> int | None:
+        """Qué proceso escucha en un puerto de este equipo, mirando la tabla de Windows.
+
+        Devuelve el identificador del proceso, ``0`` si no escucha nadie y
+        ``None`` si no se ha podido saber (fuera de Windows, o si la llamada
+        falla); con ``None`` hay que averiguarlo de la forma lenta.
+        """
+        if os.name != "nt":
+            return None
+        try:
+            import ctypes
+            import socket
+            from ctypes import wintypes
+
+            AF_INET = 2
+            TCP_TABLE_OWNER_PID_LISTENER = 3
+            ERROR_INSUFFICIENT_BUFFER = 122
+            obtener = ctypes.windll.iphlpapi.GetExtendedTcpTable
+            tamano = wintypes.DWORD(0)
+            obtener(None, ctypes.byref(tamano), False, AF_INET,
+                    TCP_TABLE_OWNER_PID_LISTENER, 0)
+            # La tabla puede crecer entre la pregunta por el tamaño y la
+            # lectura: se reintenta un par de veces con el tamaño nuevo.
+            for _intento in range(3):
+                bufer = ctypes.create_string_buffer(max(tamano.value, 4))
+                resultado = obtener(bufer, ctypes.byref(tamano), False, AF_INET,
+                                    TCP_TABLE_OWNER_PID_LISTENER, 0)
+                if resultado == 0:
+                    break
+                if resultado != ERROR_INSUFFICIENT_BUFFER:
+                    return None
+            else:
+                return None
+            # MIB_TCPTABLE_OWNER_PID: el número de filas y, detrás, cada fila
+            # con seis enteros —estado, dirección y puerto locales, dirección y
+            # puerto remotos y proceso—; el puerto va en orden de red.
+            cantidad = ctypes.c_uint32.from_buffer(bufer, 0).value
+            filas = (ctypes.c_uint32 * (6 * cantidad)).from_buffer(bufer, 4)
+            for fila in range(cantidad):
+                if socket.ntohs(filas[fila * 6 + 2] & 0xFFFF) == puerto:
+                    return int(filas[fila * 6 + 5])
+            return 0
+        except Exception:
+            log.debug("No se ha podido leer la tabla de conexiones", exc_info=True)
+            return None
 
     @staticmethod
     def _pid_en_el_puerto() -> int:

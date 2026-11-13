@@ -26,6 +26,7 @@ from typing import Callable
 
 import wx
 
+from interfaz.temporizadores import parar_al_destruir
 from interfaz.accesible import etiquetar
 from interfaz.bienvenida import texto_breve, texto_de_bienvenida
 from interfaz.ventanas_win32 import suprimir_menu_contextual
@@ -122,6 +123,7 @@ class PanelLectura(wx.Panel):
         self.Bind(wx.EVT_SIZE, self._al_cambiar_tamano)
 
         self._vigilante = wx.Timer(self)
+        parar_al_destruir(self, self._vigilante)
         self.Bind(wx.EVT_TIMER, self._al_vigilar, self._vigilante)
 
     # -- creación del control ------------------------------------------------
@@ -785,6 +787,10 @@ class PanelLectura(wx.Panel):
         barra de desplazamiento.
         """
         if self.documento is None or self._cargando:
+            return
+        # Una pestaña de fondo no se mueve sola: no hace falta preguntarle al
+        # control cada pocas centésimas por un cursor que nadie está moviendo.
+        if not self.IsShown():
             return
         posicion = self.posicion()
         if posicion == self._ultima_posicion:

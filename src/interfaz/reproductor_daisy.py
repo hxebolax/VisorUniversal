@@ -47,6 +47,7 @@ from pathlib import Path
 
 import wx
 
+from interfaz.temporizadores import parar_al_destruir
 from interfaz.dialogos import ayuda_opcion
 from interfaz.accesible import etiquetar, fila_etiquetada
 from interfaz.anuncios import Voz
@@ -117,6 +118,7 @@ class ReproductorDaisy:
         self._extraidos: dict[str, Path] = {}
         self._temporal: str | None = None
         self._temporizador = wx.Timer(ventana)
+        parar_al_destruir(ventana, self._temporizador)
         ventana.Bind(wx.EVT_TIMER, self._al_latir, self._temporizador)
 
     # -- carga ---------------------------------------------------------------
@@ -817,6 +819,7 @@ class DialogoReproductor(wx.Dialog):
         self.Bind(wx.EVT_CHAR_HOOK, self._al_pulsar_tecla)
         self.Bind(wx.EVT_CLOSE, self._al_cerrar)
         self._refresco = wx.Timer(self)
+        parar_al_destruir(self, self._refresco)
         self.Bind(wx.EVT_TIMER, lambda evento: self._refrescar(), self._refresco)
         self._refresco.Start(500)
         self._refrescar()

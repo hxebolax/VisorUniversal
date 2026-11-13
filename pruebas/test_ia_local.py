@@ -298,6 +298,44 @@ def test_la_via_de_respaldo_dice_lo_mismo():
         ollama.Ollama._ruta_del_proceso(os.getpid()))
 
 
+@pytest.mark.skipif(os.name != "nt", reason="la tabla de conexiones es de Windows")
+def test_se_sabe_quien_escucha_en_un_puerto_sin_conectarse():
+    """La tabla de Windows dice qué proceso escucha, y nadie cuando se cierra."""
+    import socket
+
+    escucha = socket.socket()
+    escucha.bind(("127.0.0.1", 0))
+    escucha.listen()
+    puerto = escucha.getsockname()[1]
+    try:
+        assert ollama.Ollama._pid_escuchando(puerto) == os.getpid()
+    finally:
+        escucha.close()
+    assert ollama.Ollama._pid_escuchando(puerto) == 0
+
+
+@pytest.mark.skipif(os.name != "nt", reason="la tabla de conexiones es de Windows")
+def test_con_el_servidor_parado_no_se_pregunta_y_no_se_espera(monkeypatch):
+    """Preguntar a un puerto donde no escucha nadie tarda dos segundos en Windows.
+
+    Con la IA local instalada y parada, eso se pagaba al cerrar el programa y
+    dos veces al montar las pestañas de IA en Opciones.
+    """
+    import time
+
+    gestor = ollama.Ollama()
+    monkeypatch.setattr(gestor, "_pid_escuchando", lambda puerto: 0)
+
+    def no_hay_que_preguntar(*argumentos, **opciones):
+        raise AssertionError("se ha preguntado a un servidor que no existe")
+
+    monkeypatch.setattr(gestor, "_consultar", no_hay_que_preguntar)
+    inicio = time.perf_counter()
+    assert not gestor.estado().activo
+    assert gestor.detener(forzar=True) == "no_habia"
+    assert time.perf_counter() - inicio < 0.5
+
+
 @pytest.mark.parametrize("pid", [0, 999999999])
 def test_un_proceso_que_no_existe_deja_la_duda_y_no_se_toca(pid):
     """Vacío significa «no se sabe», y sin saberlo no se adopta ni se mata."""

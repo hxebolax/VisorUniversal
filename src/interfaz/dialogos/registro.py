@@ -33,6 +33,7 @@ import threading
 
 import wx
 
+from interfaz.temporizadores import parar_al_destruir
 from interfaz.accesible import etiquetar, fila_etiquetada
 from interfaz.anuncios import Voz
 from interfaz.dialogos import ayuda_opcion
@@ -177,6 +178,7 @@ class DialogoRegistro(wx.Dialog):
 
         self._construir()
         self._temporizador = wx.Timer(self)
+        parar_al_destruir(self, self._temporizador)
         self.Bind(wx.EVT_TIMER, self._al_latir, self._temporizador)
         self.Bind(wx.EVT_CHAR_HOOK, self._al_pulsar)
         self.Bind(wx.EVT_CLOSE, self._al_cerrar)

@@ -19,7 +19,7 @@ NOMBRE = "Visor Universal"
 NOMBRE_ARCHIVO = "VisorUniversal"
 
 #: Versión del programa.  Es lo único que hay que tocar al publicar una nueva.
-VERSION = "1.3.8"
+VERSION = "1.3.9"
 
 #: Autor del programa.
 AUTOR = "Héctor J. Benítez Corredera"

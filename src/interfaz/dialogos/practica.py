@@ -21,6 +21,7 @@ from __future__ import annotations
 
 import wx
 
+from interfaz.temporizadores import parar_al_destruir
 from interfaz.dialogos import ayuda_opcion
 from interfaz.accesible import etiquetar
 from nucleo import practica
@@ -94,6 +95,7 @@ class DialogoPractica(wx.Dialog):
         self.Bind(wx.EVT_CLOSE, self._al_cerrar_ventana)
 
         self.reloj = wx.Timer(self)
+        parar_al_destruir(self, self.reloj)
         self.Bind(wx.EVT_TIMER, lambda evento: self._comprobar(), self.reloj)
 
         self._pintar()

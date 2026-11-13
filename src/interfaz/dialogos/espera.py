@@ -27,6 +27,7 @@ import threading
 
 import wx
 
+from interfaz.temporizadores import parar_al_destruir
 from interfaz.dialogos import ayuda_opcion
 from interfaz.anuncios import Voz
 from nucleo.idioma import _
@@ -68,6 +69,7 @@ class DialogoEspera(wx.Dialog):
         Voz(self).decir(mensaje)
         # La barra en modo indeterminado necesita que alguien la mueva.
         self._latido = wx.Timer(self)
+        parar_al_destruir(self, self._latido)
         self.Bind(wx.EVT_TIMER, lambda evento: self.barra.Pulse(), self._latido)
         self._latido.Start(120)
         # Control+F1 explica el control que tenga el foco.

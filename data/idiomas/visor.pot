@@ -10,7 +10,7 @@ msgstr ""
 "Language: \n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/interfaz/dialogos/registro.py:447
+#: src/interfaz/dialogos/registro.py:449
 msgid "\n\nEs el de la sesión en curso: se seguirán añadiendo entradas nuevas a partir de ahora."
 msgstr ""
 
@@ -38,7 +38,7 @@ msgstr ""
 msgid "\n\n¿Quieres descargarla e instalarla ahora? El programa se cerrará y volverá a abrirse ya actualizado."
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:1007
+#: src/interfaz/dialogos/ia.py:1009
 msgid "\nSe deja de insistir: han fallado %d imágenes seguidas.\n"
 msgstr ""
 
@@ -54,7 +54,7 @@ msgstr ""
 msgid "   Sinónimos: %s."
 msgstr ""
 
-#: src/interfaz/dialogos/registro.py:288
+#: src/interfaz/dialogos/registro.py:290
 msgid "  (la de ahora)"
 msgstr ""
 
@@ -110,7 +110,7 @@ msgstr ""
 msgid " (fórmula demasiado anidada) "
 msgstr ""
 
-#: src/interfaz/ventana.py:2508
+#: src/interfaz/ventana.py:2619
 msgid " (imagen %(cual)d de %(cuantas)d de esta línea)"
 msgstr ""
 
@@ -122,15 +122,15 @@ msgstr ""
 msgid " (recortado: es solo el principio, no cabía entero)"
 msgstr ""
 
-#: src/interfaz/ventana.py:1791
+#: src/interfaz/ventana.py:1902
 msgid " Con datos, Control+H."
 msgstr ""
 
-#: src/interfaz/lectura_voz.py:564
+#: src/interfaz/lectura_voz.py:566
 msgid " Descripción de la imagen. "
 msgstr ""
 
-#: src/interfaz/ventana.py:1793
+#: src/interfaz/ventana.py:1904
 msgid " Descripción guardada: %s"
 msgstr ""
 
@@ -429,11 +429,11 @@ msgstr ""
 msgid " y "
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:828
+#: src/interfaz/dialogos/opciones.py:1000
 msgid " y %d más"
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:1029
+#: src/interfaz/dialogos/ia.py:1031
 msgid " y %d no se han podido describir."
 msgstr ""
 
@@ -445,7 +445,7 @@ msgstr ""
 msgid " ángulo "
 msgstr ""
 
-#: src/interfaz/ventana.py:3716
+#: src/interfaz/ventana.py:3827
 msgid "%(apartado)s (%(cuantos)d pantallas)"
 msgstr ""
 
@@ -503,7 +503,7 @@ msgstr ""
 msgid "%(palabra)s — %(fuente)s"
 msgstr ""
 
-#: src/nucleo/ia/ollama.py:1101
+#: src/nucleo/ia/ollama.py:1159
 msgid "%(que)s Lleva %(cuanto)d segundos sin avanzar; puede ser la conexión."
 msgstr ""
 
@@ -534,11 +534,11 @@ msgid "%d %%"
 msgstr ""
 
 #: src/nucleo/ia/modelos_vision.py:225
-#: src/nucleo/ia/ollama.py:1264
+#: src/nucleo/ia/ollama.py:1322
 msgid "%d GB"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:2614
+#: src/interfaz/dialogos/opciones.py:2816
 #: src/nucleo/biblioteca.py:248
 msgid "%d KB"
 msgstr ""
@@ -601,7 +601,7 @@ msgstr ""
 msgid "%d enlaces"
 msgstr ""
 
-#: src/interfaz/dialogos/registro.py:378
+#: src/interfaz/dialogos/registro.py:380
 msgid "%d entradas de %d"
 msgstr ""
 
@@ -697,12 +697,12 @@ msgstr ""
 msgid "%d marcadores"
 msgstr ""
 
-#: src/interfaz/temporizador.py:191
+#: src/interfaz/temporizador.py:193
 #: src/nucleo/audio.py:357
 msgid "%d minutos"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1298
+#: src/interfaz/dialogos/opciones.py:1474
 msgid "%d modelos disponibles para describir imágenes. Quedan guardados, así que no hace falta volver a pedirlos: el primero es %s."
 msgstr ""
 
@@ -718,13 +718,13 @@ msgstr ""
 msgid "%d palabras, %d líneas, %d bloques, %d tablas"
 msgstr ""
 
-#: src/interfaz/reproductor_daisy.py:688
+#: src/interfaz/reproductor_daisy.py:690
 #: src/nucleo/cuaderno.py:100
 #: src/nucleo/resaltados.py:147
 msgid "%d por ciento"
 msgstr ""
 
-#: src/interfaz/ventana.py:1872
+#: src/interfaz/ventana.py:1983
 msgid "%d por ciento del documento."
 msgstr ""
 
@@ -733,7 +733,7 @@ msgid "%d página"
 msgstr ""
 
 #: src/formatos/pdf_diagnostico.py:277
-#: src/interfaz/ventana.py:3558
+#: src/interfaz/ventana.py:3669
 #: src/nucleo/accesibilidad.py:128
 msgid "%d páginas"
 msgstr ""
@@ -771,7 +771,7 @@ msgstr ""
 msgid "%d ya no están en el disco."
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:995
+#: src/interfaz/dialogos/ia.py:997
 msgid "%d. %s: NO se ha podido describir (%s)\n"
 msgstr ""
 
@@ -791,7 +791,7 @@ msgstr ""
 msgid "%s\nInstalados: %d idiomas, %.1f MB."
 msgstr ""
 
-#: src/interfaz/ventana.py:497
+#: src/interfaz/ventana.py:503
 #: src/interfaz/dialogos/idiomas_ocr.py:181
 msgid "%s (%d de %d)"
 msgstr ""
@@ -811,21 +811,21 @@ msgstr ""
 msgid "%s (nivel %d)"
 msgstr ""
 
-#: src/interfaz/ventana.py:1460
+#: src/interfaz/ventana.py:1521
 msgid "%s Duración de la grabación: %s. Control+Espacio para escucharla, Control+Alt+R para los mandos."
 msgstr ""
 
 #: src/nucleo/ia/modelos_vision.py:226
 #: src/nucleo/ia/modelos_vision.py:218
-#: src/nucleo/ia/ollama.py:1265
+#: src/nucleo/ia/ollama.py:1323
 msgid "%s GB"
 msgstr ""
 
-#: src/interfaz/dialogos/registro.py:286
+#: src/interfaz/dialogos/registro.py:288
 msgid "%s de %s"
 msgstr ""
 
-#: src/nucleo/ia/ollama.py:1243
+#: src/nucleo/ia/ollama.py:1301
 msgid "%s de memoria, %s libres ahora"
 msgstr ""
 
@@ -845,7 +845,7 @@ msgstr ""
 msgid "%s no vale. %s"
 msgstr ""
 
-#: src/interfaz/ventana.py:3556
+#: src/interfaz/ventana.py:3667
 msgid "%s palabras"
 msgstr ""
 
@@ -853,11 +853,11 @@ msgstr ""
 msgid "%s y %s"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:853
+#: src/interfaz/dialogos/opciones.py:1025
 msgid "%s ya era la tecla de la otra orden, que se queda sin tecla."
 msgstr ""
 
-#: src/nucleo/ia/ollama.py:936
+#: src/nucleo/ia/ollama.py:994
 msgid "%s ya estaba en el almacén: no hace falta copiarlo."
 msgstr ""
 
@@ -865,7 +865,7 @@ msgstr ""
 msgid "%s — %s. Descarga %s, necesita %s de memoria libre."
 msgstr ""
 
-#: src/interfaz/ventana.py:1440
+#: src/interfaz/ventana.py:1500
 msgid "%s%s. %d por ciento leído."
 msgstr ""
 
@@ -873,7 +873,7 @@ msgstr ""
 msgid "%s, versión %s\n\nAutor: %s\n%s\nLicencia: %s\n\nVisor de documentos pensado para usarse con el teclado y con lectores\nde pantalla. Convierte el documento entero en texto y permite recorrerlo\npor encabezados, enlaces, imágenes, tablas, listas y más, con un sonido\ndistinto para cada tipo de elemento. Lo lee en voz alta, reproduce las\ngrabaciones de los libros DAISY y describe sus imágenes con inteligencia\nartificial.\n\nFormatos admitidos: EPUB, PDF (con OCR de las páginas escaneadas), Word,\nLibreOffice, DAISY 2.02 y 3, FictionBook, RTF, HTML, Markdown y texto.\n\nCarpeta del programa: %s\nCarpeta de datos: %s\n\nTodo lo que genera el programa (ajustes, registros, caché y sonidos)\nse guarda en la carpeta de datos, de modo que puedes llevártelo todo\ncopiando simplemente la carpeta del programa.\n\nSi el programa te resulta útil, en «Ayuda → Invítame a un café si te\ngusta mi trabajo» tienes la página de donaciones."
 msgstr ""
 
-#: src/interfaz/ventana.py:3469
+#: src/interfaz/ventana.py:3580
 #: src/nucleo/esquemas.py:263
 msgid "%s."
 msgstr ""
@@ -909,9 +909,9 @@ msgstr ""
 
 #: src/interfaz/dialogos/biblioteca.py:1274
 #: src/interfaz/dialogos/biblioteca_gestor.py:343
-#: src/interfaz/dialogos/ia.py:152
+#: src/interfaz/dialogos/ia.py:153
 #: src/interfaz/dialogos/idiomas_ocr.py:98
-#: src/interfaz/dialogos/opciones.py:183
+#: src/interfaz/dialogos/opciones.py:247
 #: src/interfaz/dialogos/pronunciacion.py:77
 #: src/interfaz/dialogos/voz.py:120
 msgid "&Aceptar"
@@ -929,7 +929,7 @@ msgstr ""
 msgid "&Agregar o quitar motores..."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:343
+#: src/interfaz/dialogos/opciones.py:515
 msgid "&Ajustar las líneas al ancho de la ventana (si se desactiva, cada línea es un párrafo completo)"
 msgstr ""
 
@@ -946,11 +946,11 @@ msgstr ""
 msgid "&Aplicar el diccionario de pronunciación"
 msgstr ""
 
-#: src/interfaz/dialogos/estructura.py:88
+#: src/interfaz/dialogos/estructura.py:90
 msgid "&Aplicar las marcadas"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:514
+#: src/interfaz/dialogos/opciones.py:686
 msgid "&Aprovechar la estructura de los PDF accesibles"
 msgstr ""
 
@@ -958,11 +958,11 @@ msgstr ""
 msgid "&Apuntes:"
 msgstr ""
 
-#: src/interfaz/ventana.py:686
+#: src/interfaz/ventana.py:720
 msgid "&Archivo"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1391
+#: src/interfaz/dialogos/opciones.py:1567
 msgid "&Arrancar"
 msgstr ""
 
@@ -970,7 +970,7 @@ msgstr ""
 msgid "&Asignar"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1375
+#: src/interfaz/dialogos/opciones.py:1551
 msgid "&Asistente: instalar la IA local paso a paso..."
 msgstr ""
 
@@ -982,7 +982,7 @@ msgstr ""
 msgid "&Atajos disponibles:"
 msgstr ""
 
-#: src/interfaz/reproductor_daisy.py:748
+#: src/interfaz/reproductor_daisy.py:750
 msgid "&Atrás 10 s"
 msgstr ""
 
@@ -1002,7 +1002,7 @@ msgstr ""
 msgid "&Biblioteca..."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:2050
+#: src/interfaz/dialogos/opciones.py:2226
 msgid "&Bibliotecas y carpetas..."
 msgstr ""
 
@@ -1010,7 +1010,7 @@ msgstr ""
 msgid "&Bibliotecas y carpetas:"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1418
+#: src/interfaz/dialogos/opciones.py:1594
 msgid "&Borrar el modelo elegido"
 msgstr ""
 
@@ -1054,25 +1054,25 @@ msgstr ""
 msgid "&Buscar:"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:2250
+#: src/interfaz/dialogos/opciones.py:2426
 msgid "&Cambiar la tecla..."
 msgstr ""
 
 #: src/interfaz/listas.py:315
-#: src/interfaz/temporizador.py:213
+#: src/interfaz/temporizador.py:215
 #: src/interfaz/dialogos/actualizacion.py:178
 #: src/interfaz/dialogos/biblioteca.py:1277
 #: src/interfaz/dialogos/biblioteca_gestor.py:346
 #: src/interfaz/dialogos/citar.py:91
 #: src/interfaz/dialogos/contenido.py:380
 #: src/interfaz/dialogos/daisy_exportar.py:100
-#: src/interfaz/dialogos/ia.py:77
-#: src/interfaz/dialogos/ia.py:155
+#: src/interfaz/dialogos/ia.py:78
+#: src/interfaz/dialogos/ia.py:156
 #: src/interfaz/dialogos/idiomas_ocr.py:101
 #: src/interfaz/dialogos/importar_modelo.py:88
 #: src/interfaz/dialogos/navegacion.py:42
 #: src/interfaz/dialogos/navegacion.py:385
-#: src/interfaz/dialogos/opciones.py:186
+#: src/interfaz/dialogos/opciones.py:250
 #: src/interfaz/dialogos/progreso.py:84
 #: src/interfaz/dialogos/pronunciacion.py:80
 #: src/interfaz/dialogos/pronunciacion.py:161
@@ -1082,7 +1082,7 @@ msgid "&Cancelar"
 msgstr ""
 
 #: src/interfaz/atajos.py:137
-#: src/interfaz/reproductor_daisy.py:809
+#: src/interfaz/reproductor_daisy.py:811
 #: src/interfaz/dialogos/actualizacion.py:256
 #: src/interfaz/dialogos/ayuda.py:45
 #: src/interfaz/dialogos/ayuda.py:111
@@ -1097,15 +1097,15 @@ msgstr ""
 #: src/interfaz/dialogos/contenido.py:273
 #: src/interfaz/dialogos/cuaderno.py:92
 #: src/interfaz/dialogos/datos.py:160
-#: src/interfaz/dialogos/estructura.py:92
-#: src/interfaz/dialogos/ia.py:379
-#: src/interfaz/dialogos/ia.py:836
+#: src/interfaz/dialogos/estructura.py:94
+#: src/interfaz/dialogos/ia.py:381
+#: src/interfaz/dialogos/ia.py:838
 #: src/interfaz/dialogos/perfiles.py:70
 #: src/interfaz/dialogos/visor_html.py:89
 msgid "&Cerrar"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1390
+#: src/interfaz/dialogos/opciones.py:1566
 msgid "&Comprobar"
 msgstr ""
 
@@ -1143,7 +1143,7 @@ msgstr ""
 msgid "&Copiar la lista de esta rama"
 msgstr ""
 
-#: src/interfaz/dialogos/registro.py:242
+#: src/interfaz/dialogos/registro.py:244
 msgid "&Copiar lo mostrado"
 msgstr ""
 
@@ -1151,7 +1151,7 @@ msgstr ""
 msgid "&Corregir este elemento..."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:556
+#: src/interfaz/dialogos/opciones.py:728
 msgid "&Cómo se reconocen las páginas escaneadas:"
 msgstr ""
 
@@ -1179,7 +1179,7 @@ msgstr ""
 msgid "&Decir la descripción guardada al llegar a una imagen"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:528
+#: src/interfaz/dialogos/opciones.py:700
 msgid "&Deducir la estructura de los PDF que no la traen"
 msgstr ""
 
@@ -1195,7 +1195,7 @@ msgstr ""
 msgid "&Descargar el motor"
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:365
+#: src/interfaz/dialogos/ia.py:367
 msgid "&Describir con IA"
 msgstr ""
 
@@ -1216,7 +1216,7 @@ msgid "&Describir todas las que falten con IA"
 msgstr ""
 
 #: src/interfaz/dialogos/contenido.py:72
-#: src/interfaz/dialogos/ia.py:341
+#: src/interfaz/dialogos/ia.py:342
 msgid "&Descripción:"
 msgstr ""
 
@@ -1224,11 +1224,11 @@ msgstr ""
 msgid "&Descubrir (Espacio)"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:2361
+#: src/interfaz/dialogos/opciones.py:2537
 msgid "&Detalle del registro de actividad:"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1392
+#: src/interfaz/dialogos/opciones.py:1568
 msgid "&Detener"
 msgstr ""
 
@@ -1237,11 +1237,11 @@ msgstr ""
 msgid "&Detener la lectura"
 msgstr ""
 
-#: src/interfaz/temporizador.py:193
+#: src/interfaz/temporizador.py:195
 msgid "&Detener la lectura dentro de:"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1039
+#: src/interfaz/dialogos/opciones.py:1215
 msgid "&Dirección del servidor:"
 msgstr ""
 
@@ -1249,7 +1249,7 @@ msgstr ""
 msgid "&Documentos (se pueden elegir varios):"
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:143
+#: src/interfaz/dialogos/ia.py:144
 msgid "&Duplicar"
 msgstr ""
 
@@ -1262,11 +1262,11 @@ msgid "&Editar la nota..."
 msgstr ""
 
 #: src/interfaz/dialogos/biblioteca_gestor.py:410
-#: src/interfaz/dialogos/ia.py:144
+#: src/interfaz/dialogos/ia.py:145
 msgid "&Editar..."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:2142
+#: src/interfaz/dialogos/opciones.py:2318
 msgid "&Elegir carpeta..."
 msgstr ""
 
@@ -1278,7 +1278,7 @@ msgstr ""
 msgid "&Elegir otra carpeta..."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:2014
+#: src/interfaz/dialogos/opciones.py:2190
 msgid "&Elegir programas predeterminados..."
 msgstr ""
 
@@ -1293,19 +1293,19 @@ msgstr ""
 msgid "&Eliminar"
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:833
+#: src/interfaz/dialogos/ia.py:835
 msgid "&Empezar"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:783
+#: src/interfaz/dialogos/opciones.py:955
 msgid "&Empezar a reproducir en cuanto se abre un libro DAISY grabado"
 msgstr ""
 
-#: src/interfaz/dialogos/registro.py:217
+#: src/interfaz/dialogos/registro.py:219
 msgid "&Entradas del registro:"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1950
+#: src/interfaz/dialogos/opciones.py:2126
 msgid "&Escuchar un sonido para reconocerlo:"
 msgstr ""
 
@@ -1322,7 +1322,7 @@ msgstr ""
 msgid "&Etiquetas, separadas por comas:"
 msgstr ""
 
-#: src/interfaz/ventana.py:683
+#: src/interfaz/ventana.py:717
 #: src/interfaz/dialogos/daisy_exportar.py:97
 msgid "&Exportar"
 msgstr ""
@@ -1339,19 +1339,19 @@ msgstr ""
 msgid "&Formato:"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:2095
+#: src/interfaz/dialogos/opciones.py:2271
 msgid "&Formatos preferidos, por orden:"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1986
+#: src/interfaz/dialogos/opciones.py:2162
 msgid "&Formatos:"
 msgstr ""
 
-#: src/interfaz/reproductor_daisy.py:750
+#: src/interfaz/reproductor_daisy.py:752
 msgid "&Frase anterior"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1849
+#: src/interfaz/dialogos/opciones.py:2025
 msgid "&Fuente del texto:"
 msgstr ""
 
@@ -1363,7 +1363,7 @@ msgstr ""
 msgid "&Generar"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1085
+#: src/interfaz/dialogos/opciones.py:1261
 msgid "&Gestor de prompts..."
 msgstr ""
 
@@ -1372,7 +1372,7 @@ msgid "&Grupo:"
 msgstr ""
 
 #: src/interfaz/dialogos/contenido.py:377
-#: src/interfaz/dialogos/ia.py:74
+#: src/interfaz/dialogos/ia.py:75
 #: src/interfaz/dialogos/pronunciacion.py:157
 msgid "&Guardar"
 msgstr ""
@@ -1387,7 +1387,7 @@ msgstr ""
 msgid "&Guardar como:"
 msgstr ""
 
-#: src/interfaz/dialogos/registro.py:230
+#: src/interfaz/dialogos/registro.py:232
 msgid "&Guardar en disco a partir de:"
 msgstr ""
 
@@ -1404,7 +1404,7 @@ msgstr ""
 msgid "&Guardar la lista en un archivo..."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1106
+#: src/interfaz/dialogos/opciones.py:1282
 msgid "&Guardar las descripciones y recuperarlas al volver a abrir el documento"
 msgstr ""
 
@@ -1416,15 +1416,15 @@ msgstr ""
 msgid "&Hacerlo"
 msgstr ""
 
-#: src/interfaz/ventana.py:846
+#: src/interfaz/ventana.py:880
 msgid "&Herramientas"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:222
+#: src/interfaz/dialogos/opciones.py:394
 msgid "&Idioma de la interfaz:"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:573
+#: src/interfaz/dialogos/opciones.py:745
 msgid "&Idiomas del reconocimiento..."
 msgstr ""
 
@@ -1448,15 +1448,15 @@ msgstr ""
 msgid "&Instalar ahora"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1414
+#: src/interfaz/dialogos/opciones.py:1590
 msgid "&Instalar otro modelo..."
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:61
+#: src/interfaz/dialogos/ia.py:62
 msgid "&Instrucción para la inteligencia artificial:"
 msgstr ""
 
-#: src/interfaz/ventana.py:767
+#: src/interfaz/ventana.py:801
 msgid "&Inteligencia artificial"
 msgstr ""
 
@@ -1472,7 +1472,7 @@ msgstr ""
 msgid "&Ir"
 msgstr ""
 
-#: src/interfaz/ventana.py:727
+#: src/interfaz/ventana.py:761
 msgid "&Ir a"
 msgstr ""
 
@@ -1480,7 +1480,7 @@ msgstr ""
 msgid "&Ir a la pestaña"
 msgstr ""
 
-#: src/interfaz/reproductor_daisy.py:800
+#: src/interfaz/reproductor_daisy.py:802
 msgid "&Ir a:"
 msgstr ""
 
@@ -1508,7 +1508,7 @@ msgstr ""
 msgid "&Lista de pestañas..."
 msgstr ""
 
-#: src/interfaz/dialogos/estructura.py:70
+#: src/interfaz/dialogos/estructura.py:71
 msgid "&Lo que se propone corregir:"
 msgstr ""
 
@@ -1524,11 +1524,11 @@ msgstr ""
 msgid "&Marcadores y notas..."
 msgstr ""
 
-#: src/interfaz/ventana.py:752
+#: src/interfaz/ventana.py:786
 msgid "&Marcar y citar"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1405
+#: src/interfaz/dialogos/opciones.py:1581
 msgid "&Modelo con el que se trabaja:"
 msgstr ""
 
@@ -1548,7 +1548,7 @@ msgstr ""
 msgid "&Motor de voz:"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:639
+#: src/interfaz/dialogos/opciones.py:811
 msgid "&Motor interno de Tesseract:"
 msgstr ""
 
@@ -1560,7 +1560,7 @@ msgstr ""
 msgid "&Nada: es un encabezado o un pie de página que sobra"
 msgstr ""
 
-#: src/interfaz/reproductor_daisy.py:760
+#: src/interfaz/reproductor_daisy.py:762
 msgid "&Navegar por:"
 msgstr ""
 
@@ -1568,11 +1568,11 @@ msgstr ""
 msgid "&Nivel del título:"
 msgstr ""
 
-#: src/interfaz/dialogos/registro.py:201
+#: src/interfaz/dialogos/registro.py:203
 msgid "&Nivel mínimo:"
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:58
+#: src/interfaz/dialogos/ia.py:59
 msgid "&Nombre (para reconocerlo en la lista):"
 msgstr ""
 
@@ -1600,15 +1600,15 @@ msgstr ""
 msgid "&Nueva..."
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:142
+#: src/interfaz/dialogos/ia.py:143
 msgid "&Nuevo..."
 msgstr ""
 
-#: src/interfaz/ventana.py:1855
+#: src/interfaz/ventana.py:1966
 msgid "&Número de línea (de 1 a %d):"
 msgstr ""
 
-#: src/interfaz/ventana.py:1886
+#: src/interfaz/ventana.py:1997
 msgid "&Número de página (de 1 a %d):"
 msgstr ""
 
@@ -1616,7 +1616,7 @@ msgstr ""
 msgid "&Número del elemento de «%(lista)s» (del 1 al %(total)d):"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1083
+#: src/interfaz/dialogos/opciones.py:1259
 msgid "&Obtener los modelos disponibles"
 msgstr ""
 
@@ -1624,7 +1624,7 @@ msgstr ""
 msgid "&Olvidar la corrección de este elemento"
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:372
+#: src/interfaz/dialogos/ia.py:374
 msgid "&Olvidar la guardada"
 msgstr ""
 
@@ -1652,7 +1652,7 @@ msgstr ""
 msgid "&Pasajes resaltados:"
 msgstr ""
 
-#: src/interfaz/reproductor_daisy.py:936
+#: src/interfaz/reproductor_daisy.py:939
 msgid "&Pausa"
 msgstr ""
 
@@ -1664,7 +1664,7 @@ msgstr ""
 msgid "&Perfiles de lectura..."
 msgstr ""
 
-#: src/interfaz/ventana.py:707
+#: src/interfaz/ventana.py:741
 msgid "&Pestañas"
 msgstr ""
 
@@ -1672,11 +1672,11 @@ msgstr ""
 msgid "&Pestañas abiertas:"
 msgstr ""
 
-#: src/interfaz/temporizador.py:206
+#: src/interfaz/temporizador.py:208
 msgid "&Poner"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:2100
+#: src/interfaz/dialogos/opciones.py:2276
 msgid "&Poner al día las bibliotecas de calibre al abrir la biblioteca"
 msgstr ""
 
@@ -1688,7 +1688,7 @@ msgstr ""
 msgid "&Poner este perfil"
 msgstr ""
 
-#: src/interfaz/ventana.py:1868
+#: src/interfaz/ventana.py:1979
 msgid "&Porcentaje del documento (de 0 a 100):"
 msgstr ""
 
@@ -1712,15 +1712,15 @@ msgstr ""
 msgid "&Probarlo"
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:817
+#: src/interfaz/dialogos/ia.py:819
 msgid "&Progreso:"
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:130
+#: src/interfaz/dialogos/ia.py:131
 msgid "&Prompts disponibles:"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:579
+#: src/interfaz/dialogos/opciones.py:751
 msgid "&Páginas que se reconocen como mucho (0 = sin tope):"
 msgstr ""
 
@@ -1732,15 +1732,15 @@ msgstr ""
 msgid "&Quitar de la biblioteca..."
 msgstr ""
 
-#: src/interfaz/temporizador.py:209
+#: src/interfaz/temporizador.py:211
 msgid "&Quitar el temporizador"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1486
+#: src/interfaz/dialogos/opciones.py:1662
 msgid "&Quitar la IA local y sus modelos del disco"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:2251
+#: src/interfaz/dialogos/opciones.py:2427
 msgid "&Quitar la tecla"
 msgstr ""
 
@@ -1772,16 +1772,16 @@ msgstr ""
 msgid "&Qué se escribe:"
 msgstr ""
 
-#: src/interfaz/dialogos/registro.py:241
+#: src/interfaz/dialogos/registro.py:243
 msgid "&Recargar"
 msgstr ""
 
 #: src/interfaz/atajos.py:135
-#: src/interfaz/ventana.py:658
+#: src/interfaz/ventana.py:692
 msgid "&Recientes"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:376
+#: src/interfaz/dialogos/opciones.py:548
 msgid "&Recordar la posición de lectura de cada documento"
 msgstr ""
 
@@ -1797,24 +1797,24 @@ msgstr ""
 msgid "&Referencias:"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1393
+#: src/interfaz/dialogos/opciones.py:1569
 msgid "&Reiniciar"
 msgstr ""
 
-#: src/interfaz/dialogos/practica.py:79
+#: src/interfaz/dialogos/practica.py:80
 msgid "&Repetir el enunciado"
 msgstr ""
 
-#: src/interfaz/reproductor_daisy.py:745
-#: src/interfaz/reproductor_daisy.py:937
+#: src/interfaz/reproductor_daisy.py:747
+#: src/interfaz/reproductor_daisy.py:940
 msgid "&Reproducir"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1954
+#: src/interfaz/dialogos/opciones.py:2130
 msgid "&Reproducir el sonido elegido"
 msgstr ""
 
-#: src/interfaz/ventana.py:845
+#: src/interfaz/ventana.py:879
 msgid "&Reproductor"
 msgstr ""
 
@@ -1830,7 +1830,7 @@ msgstr ""
 msgid "&Resaltar lo seleccionado"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:672
+#: src/interfaz/dialogos/opciones.py:844
 msgid "&Resolución que se le declara a Tesseract (0 = que la deduzca):"
 msgstr ""
 
@@ -1838,7 +1838,7 @@ msgstr ""
 msgid "&Restaurar %s"
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:824
+#: src/interfaz/dialogos/ia.py:826
 msgid "&Resultado:"
 msgstr ""
 
@@ -1846,7 +1846,7 @@ msgstr ""
 msgid "&Resumen:"
 msgstr ""
 
-#: src/interfaz/dialogos/estructura.py:84
+#: src/interfaz/dialogos/estructura.py:86
 msgid "&Revisar"
 msgstr ""
 
@@ -1859,7 +1859,7 @@ msgstr ""
 msgid "&Salir"
 msgstr ""
 
-#: src/interfaz/dialogos/practica.py:81
+#: src/interfaz/dialogos/practica.py:82
 msgid "&Saltar este"
 msgstr ""
 
@@ -1867,11 +1867,11 @@ msgstr ""
 msgid "&Seguir el enlace"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1100
+#: src/interfaz/dialogos/opciones.py:1276
 msgid "&Segundos de espera a la respuesta:"
 msgstr ""
 
-#: src/interfaz/dialogos/registro.py:198
+#: src/interfaz/dialogos/registro.py:200
 msgid "&Sesión:"
 msgstr ""
 
@@ -1882,7 +1882,7 @@ msgstr ""
 msgid "&Siguiente"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:2143
+#: src/interfaz/dialogos/opciones.py:2319
 msgid "&Sincronizar ahora"
 msgstr ""
 
@@ -1898,15 +1898,15 @@ msgstr ""
 msgid "&Sonidos de navegación"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1856
+#: src/interfaz/dialogos/opciones.py:2032
 msgid "&Tamaño de la letra:"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:901
+#: src/interfaz/dialogos/opciones.py:1073
 msgid "&Tecla para ir a un elemento por su número:"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:2241
+#: src/interfaz/dialogos/opciones.py:2417
 msgid "&Teclas asignadas:"
 msgstr ""
 
@@ -1919,7 +1919,7 @@ msgid "&Temporizador de apagado..."
 msgstr ""
 
 #: src/interfaz/dialogos/asistente_ia.py:195
-#: src/interfaz/dialogos/practica.py:84
+#: src/interfaz/dialogos/practica.py:85
 #: src/interfaz/dialogos/primer_uso.py:419
 msgid "&Terminar"
 msgstr ""
@@ -1928,11 +1928,11 @@ msgstr ""
 msgid "&Texto de la nota:"
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:786
+#: src/interfaz/dialogos/ia.py:788
 msgid "&Tipo de descripción para todas:"
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:334
+#: src/interfaz/dialogos/ia.py:335
 msgid "&Tipo de descripción:"
 msgstr ""
 
@@ -1948,15 +1948,15 @@ msgstr ""
 msgid "&Tu pregunta:"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:614
+#: src/interfaz/dialogos/opciones.py:786
 msgid "&Umbral del blanco y negro (0 a 255):"
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:141
+#: src/interfaz/dialogos/ia.py:142
 msgid "&Usar este por omisión"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:2231
+#: src/interfaz/dialogos/opciones.py:2407
 msgid "&Usar teclas globales para manejar la lectura en voz alta"
 msgstr ""
 
@@ -1964,31 +1964,31 @@ msgstr ""
 msgid "&Vaciar"
 msgstr ""
 
-#: src/interfaz/dialogos/registro.py:244
+#: src/interfaz/dialogos/registro.py:246
 msgid "&Vaciar esta sesión"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:2390
+#: src/interfaz/dialogos/opciones.py:2566
 msgid "&Vaciar la caché"
 msgstr ""
 
-#: src/interfaz/ventana.py:972
+#: src/interfaz/ventana.py:1013
 msgid "&Vaciar la lista"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:2252
+#: src/interfaz/dialogos/opciones.py:2428
 msgid "&Valores de fábrica"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:752
+#: src/interfaz/dialogos/opciones.py:924
 msgid "&Velocidad de la grabación, en por ciento (100 es la del narrador):"
 msgstr ""
 
-#: src/interfaz/reproductor_daisy.py:782
+#: src/interfaz/reproductor_daisy.py:784
 msgid "&Velocidad, en por ciento (%d es la del narrador):"
 msgstr ""
 
-#: src/interfaz/ventana.py:759
+#: src/interfaz/ventana.py:793
 msgid "&Ver el elemento"
 msgstr ""
 
@@ -2004,7 +2004,7 @@ msgstr ""
 msgid "&Ver registro de la aplicación"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1937
+#: src/interfaz/dialogos/opciones.py:2113
 msgid "&Volumen de los sonidos, de 0 a 100:"
 msgstr ""
 
@@ -2016,7 +2016,7 @@ msgstr ""
 msgid "&Volver a mirar"
 msgstr ""
 
-#: src/interfaz/ventana.py:821
+#: src/interfaz/ventana.py:855
 msgid "&Voz"
 msgstr ""
 
@@ -2069,7 +2069,7 @@ msgstr ""
 msgid "(No hay datos que enseñar.)"
 msgstr ""
 
-#: src/interfaz/ventana.py:957
+#: src/interfaz/ventana.py:997
 msgid "(No hay documentos recientes)"
 msgstr ""
 
@@ -2126,7 +2126,7 @@ msgstr ""
 msgid "(Sin datos con los que buscar)"
 msgstr ""
 
-#: src/interfaz/sesion.py:98
+#: src/interfaz/sesion.py:112
 msgid "(Sin título)"
 msgstr ""
 
@@ -2134,7 +2134,7 @@ msgstr ""
 msgid "(Todavía no hay ninguna; usa «Añadir carpeta o calibre»)"
 msgstr ""
 
-#: src/interfaz/sesion.py:94
+#: src/interfaz/sesion.py:108
 msgid "(Vacía)"
 msgstr ""
 
@@ -2142,7 +2142,7 @@ msgstr ""
 msgid "(Ya no queda ningún resaltado)"
 msgstr ""
 
-#: src/interfaz/dialogos/registro.py:198
+#: src/interfaz/dialogos/registro.py:200
 msgid "(cargando)"
 msgstr ""
 
@@ -2154,7 +2154,7 @@ msgstr ""
 msgid "(hoja vacía)"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1550
+#: src/interfaz/dialogos/opciones.py:1726
 msgid "(ninguno todavía)"
 msgstr ""
 
@@ -2201,7 +2201,7 @@ msgstr ""
 #: src/formatos/djvu.py:579
 #: src/formatos/ensamblador.py:96
 #: src/interfaz/arbol.py:223
-#: src/interfaz/reproductor_daisy.py:720
+#: src/interfaz/reproductor_daisy.py:722
 #: src/interfaz/dialogos/navegacion.py:127
 #: src/nucleo/bibliografia.py:259
 #: src/nucleo/daisy.py:674
@@ -2210,12 +2210,12 @@ msgstr ""
 msgid "(sin título)"
 msgstr ""
 
-#: src/interfaz/dialogos/registro.py:290
+#: src/interfaz/dialogos/registro.py:292
 msgid "(todavía no hay ningún registro)"
 msgstr ""
 
 #: src/interfaz/dialogos/asistente_ia.py:259
-#: src/interfaz/dialogos/opciones.py:1515
+#: src/interfaz/dialogos/opciones.py:1691
 msgid "(versión desconocida)"
 msgstr ""
 
@@ -2223,7 +2223,7 @@ msgstr ""
 msgid "(y %d más: búscalos con F7)"
 msgstr ""
 
-#: src/interfaz/ventana.py:1441
+#: src/interfaz/ventana.py:1501
 msgid ", de %s"
 msgstr ""
 
@@ -2231,7 +2231,7 @@ msgstr ""
 msgid ", doble pasada"
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:181
+#: src/interfaz/dialogos/ia.py:182
 msgid ", por omisión"
 msgstr ""
 
@@ -2239,27 +2239,27 @@ msgstr ""
 msgid ".\n\n¿Restaurarla?"
 msgstr ""
 
-#: src/interfaz/ventana.py:3817
+#: src/interfaz/ventana.py:3928
 msgid "... (pulsa Intro sobre la llamada para leerla entera)"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:653
+#: src/interfaz/dialogos/opciones.py:825
 msgid "2 aumentos: rápido, vale para un escaneado limpio"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:654
+#: src/interfaz/dialogos/opciones.py:826
 msgid "2,5 aumentos"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:655
+#: src/interfaz/dialogos/opciones.py:827
 msgid "3 aumentos: lo que mejor resultado dio en las pruebas"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:656
+#: src/interfaz/dialogos/opciones.py:828
 msgid "3,5 aumentos"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:657
+#: src/interfaz/dialogos/opciones.py:829
 msgid "4 aumentos: lento, y de aquí en adelante no mejora"
 msgstr ""
 
@@ -2283,7 +2283,7 @@ msgstr ""
 msgid "A medias"
 msgstr ""
 
-#: src/interfaz/dialogos/registro.py:468
+#: src/interfaz/dialogos/registro.py:470
 msgid "A partir de ahora se guardará desde el nivel %s."
 msgstr ""
 
@@ -2307,7 +2307,7 @@ msgstr ""
 msgid "A&delante"
 msgstr ""
 
-#: src/interfaz/reproductor_daisy.py:749
+#: src/interfaz/reproductor_daisy.py:751
 msgid "A&delante 10 s"
 msgstr ""
 
@@ -2315,11 +2315,11 @@ msgstr ""
 msgid "A&hora no"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:355
+#: src/interfaz/dialogos/opciones.py:527
 msgid "A&ncho máximo del renglón, en caracteres (0 = todo el ancho):"
 msgstr ""
 
-#: src/interfaz/reproductor_daisy.py:767
+#: src/interfaz/reproductor_daisy.py:769
 msgid "A&nterior"
 msgstr ""
 
@@ -2327,19 +2327,19 @@ msgstr ""
 msgid "A&trás"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1906
+#: src/interfaz/dialogos/opciones.py:2082
 msgid "A&visar de los elementos por los que pasa el cursor:"
 msgstr ""
 
-#: src/interfaz/ventana.py:866
+#: src/interfaz/ventana.py:900
 msgid "A&yuda"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:2398
+#: src/interfaz/dialogos/opciones.py:2574
 msgid "ACTUALIZACIONES"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:626
+#: src/interfaz/dialogos/opciones.py:798
 msgid "AFINAR EL RECONOCIMIENTO"
 msgstr ""
 
@@ -2347,7 +2347,7 @@ msgstr ""
 msgid "APA 7.ª edición"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1470
+#: src/interfaz/dialogos/opciones.py:1646
 msgid "ARRANQUE Y CIERRE"
 msgstr ""
 
@@ -2459,19 +2459,19 @@ msgstr ""
 msgid "Abre un documento en una pestaña nueva, sin cerrar el que estés leyendo."
 msgstr ""
 
-#: src/interfaz/ventana.py:2117
+#: src/interfaz/ventana.py:2228
 msgid "Abre un documento para poder citarlo."
 msgstr ""
 
-#: src/interfaz/lectura_voz.py:412
+#: src/interfaz/lectura_voz.py:414
 msgid "Abre un documento para poder leerlo en voz alta."
 msgstr ""
 
-#: src/interfaz/ventana.py:2915
+#: src/interfaz/ventana.py:3026
 msgid "Abre un documento para saber cuánto queda."
 msgstr ""
 
-#: src/interfaz/ventana.py:3616
+#: src/interfaz/ventana.py:3727
 msgid "Abre un documento y vuelve a intentarlo: se practica sobre el que estés leyendo."
 msgstr ""
 
@@ -2487,15 +2487,15 @@ msgstr ""
 msgid "Abre una ventana donde se pulsa la combinación que se quiera. Se recoge tal cual se pulse, así que no hay que escribirla."
 msgstr ""
 
-#: src/interfaz/ventana.py:1243
+#: src/interfaz/ventana.py:1291
 msgid "Abriendo %s. Espera un momento."
 msgstr ""
 
-#: src/interfaz/ventana.py:1255
+#: src/interfaz/ventana.py:1303
 msgid "Abriendo %s..."
 msgstr ""
 
-#: src/interfaz/ventana.py:1255
+#: src/interfaz/ventana.py:1303
 msgid "Abriendo el documento"
 msgstr ""
 
@@ -2507,11 +2507,11 @@ msgstr ""
 msgid "Abriendo los libros a los que les faltan datos: %(hecho)d de %(total)d. %(titulo)s"
 msgstr ""
 
-#: src/interfaz/ventana.py:1242
+#: src/interfaz/ventana.py:1290
 msgid "Abriendo «%s»..."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:242
+#: src/interfaz/dialogos/opciones.py:414
 msgid "Abrir cada documento en su propia &pestaña"
 msgstr ""
 
@@ -2553,7 +2553,7 @@ msgid "Abrir la &tabla"
 msgstr ""
 
 #: src/interfaz/dialogos/biblioteca_gestor.py:418
-#: src/interfaz/dialogos/registro.py:243
+#: src/interfaz/dialogos/registro.py:245
 msgid "Abrir la ca&rpeta"
 msgstr ""
 
@@ -2561,7 +2561,7 @@ msgstr ""
 msgid "Abrir la carpeta"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:2394
+#: src/interfaz/dialogos/opciones.py:2570
 msgid "Abrir la carpeta de &datos"
 msgstr ""
 
@@ -2585,7 +2585,7 @@ msgstr ""
 msgid "Abrir la lista de &resaltados..."
 msgstr ""
 
-#: src/interfaz/ventana.py:1504
+#: src/interfaz/ventana.py:1566
 msgid "Abrir libro DAISY"
 msgstr ""
 
@@ -2605,7 +2605,7 @@ msgstr ""
 msgid "Abrir un documento."
 msgstr ""
 
-#: src/interfaz/ventana.py:3661
+#: src/interfaz/ventana.py:3772
 msgid "Abrir una dirección"
 msgstr ""
 
@@ -2613,30 +2613,30 @@ msgstr ""
 msgid "Abrir una dirección de &internet..."
 msgstr ""
 
-#: src/interfaz/ventana.py:3647
-#: src/interfaz/ventana.py:3671
-#: src/interfaz/ventana.py:3678
+#: src/interfaz/ventana.py:3758
+#: src/interfaz/ventana.py:3782
+#: src/interfaz/ventana.py:3789
 msgid "Abrir una dirección de internet"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:274
+#: src/interfaz/dialogos/opciones.py:446
 msgid "Abrirlo siempre en la pestaña de delante"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:273
+#: src/interfaz/dialogos/opciones.py:445
 msgid "Abrirlo siempre en una pestaña nueva"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1413
+#: src/interfaz/dialogos/opciones.py:1589
 msgid "Ac&tualizar la lista"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:166
+#: src/interfaz/dialogos/opciones.py:211
 #: src/nucleo/documento.py:100
 msgid "Accesibilidad"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:2246
+#: src/interfaz/dialogos/opciones.py:2422
 msgid "Acción"
 msgstr ""
 
@@ -2668,7 +2668,7 @@ msgstr ""
 msgid "Actualiza todas las fuentes de la lista, una detrás de otra, y al final enseña el resumen de todas."
 msgstr ""
 
-#: src/interfaz/ventana.py:3997
+#: src/interfaz/ventana.py:4108
 #: src/interfaz/dialogos/actualizacion.py:253
 msgid "Actualización"
 msgstr ""
@@ -2677,7 +2677,7 @@ msgstr ""
 msgid "Actualización cancelada. El programa sigue como estaba."
 msgstr ""
 
-#: src/interfaz/ventana.py:3920
+#: src/interfaz/ventana.py:4031
 msgid "Actualización incompleta"
 msgstr ""
 
@@ -2689,7 +2689,7 @@ msgstr ""
 msgid "Actualizada"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1637
+#: src/interfaz/dialogos/opciones.py:1813
 msgid "Actualizando Ollama"
 msgstr ""
 
@@ -2766,11 +2766,11 @@ msgstr ""
 msgid "Ajustar las líneas al ancho de la ventana"
 msgstr ""
 
-#: src/interfaz/ventana.py:3023
+#: src/interfaz/ventana.py:3134
 msgid "Ajuste de línea activado."
 msgstr ""
 
-#: src/interfaz/ventana.py:3023
+#: src/interfaz/ventana.py:3134
 msgid "Ajuste de línea desactivado."
 msgstr ""
 
@@ -2785,7 +2785,7 @@ msgstr ""
 msgid "Ajustes y ayuda"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:2219
+#: src/interfaz/dialogos/opciones.py:2395
 msgid "Al &minimizar, dejar el programa solo en la bandeja del sistema"
 msgstr ""
 
@@ -2797,11 +2797,11 @@ msgstr ""
 msgid "Al abrir el programa se pregunta al servidor si hay una versión más moderna que la instalada.\n\nEs una consulta diminuta —unos cientos de bytes— que se hace en segundo plano y no retrasa la apertura del documento. Si no hay versión nueva, o si no hay conexión, no dice nada: solo habla cuando hay algo que decir.\n\nSi aparece una versión nueva se te ofrece instalarla, con un botón para dejarlo para otro rato. La instalación no toca tus ajustes, tus marcadores ni tus documentos.\n\nRecomendado: activado. Enterarse de que hay una corrección esperando es la diferencia entre tenerla y no tenerla."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:257
+#: src/interfaz/dialogos/opciones.py:429
 msgid "Al abrir el programa, volver a abrir los &documentos que quedaron abiertos"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:277
+#: src/interfaz/dialogos/opciones.py:449
 msgid "Al abrir un &documento con otro ya abierto:"
 msgstr ""
 
@@ -2817,11 +2817,11 @@ msgstr ""
 msgid "Al añadir una biblioteca de calibre"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:2064
+#: src/interfaz/dialogos/opciones.py:2240
 msgid "Al añadir una carpeta que es una biblioteca de ca&libre:"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:261
+#: src/interfaz/dialogos/opciones.py:433
 msgid "Al cerrar se apunta qué documentos tenías abiertos y en cuál estabas, y al volver\na abrir el programa se recuperan tal cual, cada uno por donde ibas. Se abren de\nuno en uno, así que con varios tarda un poco en estar todo.\n\nSi abres el programa haciendo doble clic en un libro, se abre ese y no se recupera\nnada: en ese momento querías ese libro. Los que ya no estén en su sitio se saltan\nsin decir nada."
 msgstr ""
 
@@ -2833,7 +2833,7 @@ msgstr ""
 msgid "Al leer"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:375
+#: src/interfaz/dialogos/opciones.py:547
 msgid "Al llegar al final, &continuar la navegación desde el principio"
 msgstr ""
 
@@ -2925,7 +2925,7 @@ msgstr ""
 msgid "Antes hay que descargar el motor. Vuelve al paso anterior."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:982
+#: src/interfaz/dialogos/opciones.py:1158
 msgid "Anthropic Claude"
 msgstr ""
 
@@ -2945,7 +2945,7 @@ msgstr ""
 msgid "Apaga la IA local al cerrar el lector.\n\nRecomendado: activado. Dejar un servidor de inteligencia artificial corriendo después de cerrar el programa no es lo que nadie espera, y sigue ocupando memoria hasta que se apaga el equipo.\n\nDesactívalo solo si usas ese mismo servidor desde otro programa y quieres que siga en marcha.\n\nSolo se cierra el servidor de este programa: si tienes Ollama instalado por tu cuenta, el tuyo no se toca nunca."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:2004
+#: src/interfaz/dialogos/opciones.py:2180
 msgid "Aparecer en el «&Abrir con» de Windows"
 msgstr ""
 
@@ -2953,12 +2953,12 @@ msgstr ""
 msgid "Aparición anterior"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:172
+#: src/interfaz/dialogos/opciones.py:217
 msgid "Apariencia"
 msgstr ""
 
-#: src/interfaz/ventana.py:1371
-#: src/interfaz/ventana.py:1375
+#: src/interfaz/ventana.py:1430
+#: src/interfaz/ventana.py:1434
 msgid "Apertura cancelada."
 msgstr ""
 
@@ -2986,11 +2986,11 @@ msgstr ""
 msgid "Aquí está todo lo que el programa ha guardado de cada libro. Elige los libros,\nmarca qué quieres quitarles y pulsa «Borrar lo marcado»."
 msgstr ""
 
-#: src/interfaz/ventana.py:3777
+#: src/interfaz/ventana.py:3888
 msgid "Aquí no hay ninguna llamada de nota al pie. Usa la tecla O para ir a la siguiente."
 msgstr ""
 
-#: src/interfaz/ventana.py:2837
+#: src/interfaz/ventana.py:2948
 msgid "Aquí no hay ninguna tabla, lista, cita, fórmula, bloque de código ni imagen descrita que ver como HTML. Usa la tecla T, L, Q, E, X o I para ir al siguiente."
 msgstr ""
 
@@ -3017,15 +3017,15 @@ msgstr ""
 msgid "Archivo"
 msgstr ""
 
-#: src/interfaz/ventana.py:2563
+#: src/interfaz/ventana.py:2674
 msgid "Archivo de la imagen dentro del documento: %s"
 msgstr ""
 
-#: src/interfaz/dialogos/registro.py:460
+#: src/interfaz/dialogos/registro.py:462
 msgid "Archivo de registro vaciado."
 msgstr ""
 
-#: src/interfaz/ventana.py:2446
+#: src/interfaz/ventana.py:2557
 msgid "Archivo de texto (*.txt)|*.txt"
 msgstr ""
 
@@ -3093,11 +3093,11 @@ msgstr ""
 
 #: src/interfaz/dialogos/asistente_ia.py:477
 #: src/interfaz/dialogos/asistente_ia.py:489
-#: src/interfaz/dialogos/opciones.py:1585
+#: src/interfaz/dialogos/opciones.py:1761
 msgid "Arrancando el servidor..."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1473
+#: src/interfaz/dialogos/opciones.py:1649
 msgid "Arrancar el servidor al a&brir el programa"
 msgstr ""
 
@@ -3137,11 +3137,11 @@ msgstr ""
 msgid "Atención rápida"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1463
+#: src/interfaz/dialogos/opciones.py:1639
 msgid "Atención rápida (ahorra memoria en las tarjetas que la admiten)"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1520
+#: src/interfaz/dialogos/opciones.py:1696
 msgid "Atención: en el puerto %d contesta otro servidor de Ollama que no es el de este programa. No se va a usar ni a cerrar."
 msgstr ""
 
@@ -3149,7 +3149,7 @@ msgstr ""
 msgid "Atrás diez se&gundos"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:660
+#: src/interfaz/dialogos/opciones.py:832
 msgid "Au&mento de la página:"
 msgstr ""
 
@@ -3194,7 +3194,7 @@ msgstr ""
 msgid "Av Pág"
 msgstr ""
 
-#: src/interfaz/reproductor_daisy.py:740
+#: src/interfaz/reproductor_daisy.py:742
 #: src/interfaz/dialogos/biblioteca_gestor.py:189
 msgid "Avance"
 msgstr ""
@@ -3211,7 +3211,7 @@ msgstr ""
 msgid "Avanza diez segundos de grabación."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:179
+#: src/interfaz/dialogos/opciones.py:224
 msgid "Avanzado"
 msgstr ""
 
@@ -3219,7 +3219,7 @@ msgstr ""
 msgid "Avanzar diez segundos"
 msgstr ""
 
-#: src/interfaz/dialogos/registro.py:160
+#: src/interfaz/dialogos/registro.py:161
 msgid "Avisos (WARNING) o superior"
 msgstr ""
 
@@ -3296,7 +3296,7 @@ msgstr ""
 msgid "Añadir el idioma"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1998
+#: src/interfaz/dialogos/opciones.py:2174
 msgid "Añadir «Abrir con %s» al &menú del botón derecho"
 msgstr ""
 
@@ -3312,7 +3312,7 @@ msgstr ""
 msgid "B&ibliografía..."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:320
+#: src/interfaz/dialogos/opciones.py:492
 msgid "BARRA DE ESTADO"
 msgstr ""
 
@@ -3386,7 +3386,7 @@ msgstr ""
 msgid "Biblioteca o carpeta"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:174
+#: src/interfaz/dialogos/opciones.py:219
 msgid "Biblioteca y sincronización"
 msgstr ""
 
@@ -3457,20 +3457,20 @@ msgstr ""
 msgid "Borra los registros guardados. No afecta a nada más del programa."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1733
+#: src/interfaz/dialogos/opciones.py:1909
 msgid "Borrando el modelo..."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1346
+#: src/interfaz/dialogos/opciones.py:1522
 msgid "Borrando las descripciones guardadas..."
 msgstr ""
 
 #: src/interfaz/dialogos/datos.py:269
-#: src/interfaz/dialogos/opciones.py:1748
+#: src/interfaz/dialogos/opciones.py:1924
 msgid "Borrando..."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1117
+#: src/interfaz/dialogos/opciones.py:1293
 msgid "Borrar &todas las descripciones guardadas"
 msgstr ""
 
@@ -3484,7 +3484,7 @@ msgstr ""
 msgid "Borrar el marcador"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1725
+#: src/interfaz/dialogos/opciones.py:1901
 msgid "Borrar el modelo"
 msgstr ""
 
@@ -3492,8 +3492,8 @@ msgstr ""
 msgid "Borrar el modelo elegido"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1340
-#: src/interfaz/dialogos/opciones.py:1349
+#: src/interfaz/dialogos/opciones.py:1516
+#: src/interfaz/dialogos/opciones.py:1525
 msgid "Borrar las descripciones"
 msgstr ""
 
@@ -3572,7 +3572,7 @@ msgstr ""
 
 #: src/interfaz/atajos.py:192
 #: src/interfaz/dialogos/buscar.py:70
-#: src/interfaz/dialogos/registro.py:211
+#: src/interfaz/dialogos/registro.py:213
 msgid "Buscar &anterior"
 msgstr ""
 
@@ -3581,13 +3581,13 @@ msgstr ""
 msgid "Buscar &siguiente"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1394
+#: src/interfaz/dialogos/opciones.py:1570
 msgid "Buscar &versión nueva"
 msgstr ""
 
-#: src/interfaz/ventana.py:3943
-#: src/interfaz/ventana.py:3959
-#: src/interfaz/ventana.py:3966
+#: src/interfaz/ventana.py:4054
+#: src/interfaz/ventana.py:4070
+#: src/interfaz/ventana.py:4077
 msgid "Buscar actualizaciones"
 msgstr ""
 
@@ -3635,18 +3635,18 @@ msgstr ""
 msgid "Buscar la palabra"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:2414
+#: src/interfaz/dialogos/opciones.py:2590
 msgid "Buscar las actualizaciones &en:"
 msgstr ""
 
-#: src/interfaz/dialogos/registro.py:212
+#: src/interfaz/dialogos/registro.py:214
 msgid "Buscar si&guiente"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1619
-#: src/interfaz/dialogos/opciones.py:1628
-#: src/interfaz/dialogos/opciones.py:1634
-#: src/interfaz/dialogos/opciones.py:1624
+#: src/interfaz/dialogos/opciones.py:1795
+#: src/interfaz/dialogos/opciones.py:1804
+#: src/interfaz/dialogos/opciones.py:1810
+#: src/interfaz/dialogos/opciones.py:1800
 msgid "Buscar versión nueva"
 msgstr ""
 
@@ -3679,11 +3679,11 @@ msgstr ""
 msgid "Cada &frase en un renglón"
 msgstr ""
 
-#: src/interfaz/ventana.py:3040
+#: src/interfaz/ventana.py:3151
 msgid "Cada frase en un renglón."
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:127
+#: src/interfaz/dialogos/ia.py:128
 msgid "Cada libro se describe mejor con una instrucción distinta: no se cuenta igual una\nlámina de botánica que una viñeta de cómic. Elige aquí cuál se usa por omisión."
 msgstr ""
 
@@ -3703,11 +3703,11 @@ msgstr ""
 msgid "Cada perfil es un juego completo de preferencias con un nombre. Sirven para cambiar de golpe entre «estudiar» —con las llamadas de nota puestas y la voz lenta— y «escuchar una novela», sin ir tocando ajustes de uno en uno."
 msgstr ""
 
-#: src/interfaz/ventana.py:3041
+#: src/interfaz/ventana.py:3152
 msgid "Cada párrafo en un renglón."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1959
+#: src/interfaz/dialogos/opciones.py:2135
 msgid "Cada tipo de elemento tiene su propio sonido: los encabezados son un tono\ncuya altura baja según el nivel, las imágenes dos toques ascendentes, las\ntablas un acorde grave, las listas tres toques breves, y los separadores y\nlas páginas un roce de papel."
 msgstr ""
 
@@ -3812,7 +3812,7 @@ msgid "Cancela&r"
 msgstr ""
 
 #: src/interfaz/dialogos/asistente_ia.py:413
-#: src/interfaz/dialogos/opciones.py:1823
+#: src/interfaz/dialogos/opciones.py:1999
 msgid "Cancelado. Lo descargado se conserva."
 msgstr ""
 
@@ -3859,7 +3859,7 @@ msgstr ""
 msgid "Capítulo siguiente."
 msgstr ""
 
-#: src/interfaz/reproductor_daisy.py:178
+#: src/interfaz/reproductor_daisy.py:180
 msgid "Capítulos"
 msgstr ""
 
@@ -3884,7 +3884,7 @@ msgstr ""
 msgid "Carpeta"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:2137
+#: src/interfaz/dialogos/opciones.py:2313
 msgid "Carpeta &compartida (déjala vacía para no sincronizar):"
 msgstr ""
 
@@ -3912,7 +3912,7 @@ msgstr ""
 msgid "Carpeta donde dejar el libro DAISY"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:2191
+#: src/interfaz/dialogos/opciones.py:2367
 msgid "Carpeta que sincronizas por tu cuenta"
 msgstr ""
 
@@ -3928,7 +3928,7 @@ msgstr ""
 msgid "Casi siempre conviene: sin esto, cambiar «Ana» por «Anna» convertiría\n«mañana» en «mañAnna»."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:734
+#: src/interfaz/dialogos/opciones.py:906
 msgid "Casi todo lo que prestan las bibliotecas para personas ciegas viene en DAISY, y\nla mayoría son grabaciones con voz humana en vez de texto. Aquí se ajusta cómo\nsuenan y cómo se navegan."
 msgstr ""
 
@@ -3939,7 +3939,7 @@ msgstr ""
 msgid "Ce&rrar"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1479
+#: src/interfaz/dialogos/opciones.py:1655
 msgid "Cerrar el servidor al &salir del programa"
 msgstr ""
 
@@ -3987,27 +3987,27 @@ msgstr ""
 msgid "Clave del servicio"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:965
+#: src/interfaz/dialogos/opciones.py:1141
 msgid "Claves &API, una por línea. Si pones varias y una agota su cuota,\nse pasa sola a la siguiente:"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:985
+#: src/interfaz/dialogos/opciones.py:1161
 msgid "Claves A&PI de Anthropic, una por línea. Se sacan en console.anthropic.com:"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:989
+#: src/interfaz/dialogos/opciones.py:1165
 msgid "Claves API de Anthropic"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:968
+#: src/interfaz/dialogos/opciones.py:1144
 msgid "Claves API de Gemini"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1025
+#: src/interfaz/dialogos/opciones.py:1201
 msgid "Claves API del servicio compatible con OpenAI"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1022
+#: src/interfaz/dialogos/opciones.py:1198
 msgid "Claves API, &una por línea:"
 msgstr ""
 
@@ -4037,11 +4037,11 @@ msgstr ""
 msgid "Coloca o quita un marcador en la posición actual."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1869
+#: src/interfaz/dialogos/opciones.py:2045
 msgid "Color de la &letra:"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1872
+#: src/interfaz/dialogos/opciones.py:2048
 msgid "Color del f&ondo:"
 msgstr ""
 
@@ -4057,12 +4057,12 @@ msgstr ""
 msgid "Columna anterior o siguiente de esa fila"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:2115
+#: src/interfaz/dialogos/opciones.py:2291
 msgid "Columnas de la lis&ta de libros:"
 msgstr ""
 
 #: src/interfaz/ayuda_control.py:1650
-#: src/interfaz/dialogos/opciones.py:2118
+#: src/interfaz/dialogos/opciones.py:2294
 msgid "Columnas de la lista de libros"
 msgstr ""
 
@@ -4070,7 +4070,7 @@ msgstr ""
 msgid "Columnas propias de calibre"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:2253
+#: src/interfaz/dialogos/opciones.py:2429
 msgid "Com&probar todas"
 msgstr ""
 
@@ -4102,7 +4102,7 @@ msgstr ""
 msgid "Comprimiendo: %s"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:2352
+#: src/interfaz/dialogos/opciones.py:2528
 msgid "Comprobación de las teclas globales"
 msgstr ""
 
@@ -4110,7 +4110,7 @@ msgstr ""
 msgid "Comprobando %(que)s: %(cuanto)d por ciento."
 msgstr ""
 
-#: src/interfaz/ventana.py:2984
+#: src/interfaz/ventana.py:3095
 msgid "Comprobando el libro exportado..."
 msgstr ""
 
@@ -4122,15 +4122,15 @@ msgstr ""
 msgid "Comprobando que %s ha llegado entero..."
 msgstr ""
 
-#: src/nucleo/ia/ollama.py:1136
+#: src/nucleo/ia/ollama.py:1194
 msgid "Comprobando que ha llegado entero..."
 msgstr ""
 
-#: src/interfaz/ventana.py:3924
+#: src/interfaz/ventana.py:4035
 msgid "Comprobando si hay una versión nueva..."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:2400
+#: src/interfaz/dialogos/opciones.py:2576
 msgid "Comprobar al arrancar si hay una versión &nueva"
 msgstr ""
 
@@ -4142,7 +4142,7 @@ msgstr ""
 msgid "Comprobar el libro EPUB al exportarlo"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:488
+#: src/interfaz/dialogos/opciones.py:660
 msgid "Comprobar la accesibilidad del libro &EPUB al exportarlo"
 msgstr ""
 
@@ -4170,7 +4170,7 @@ msgstr ""
 msgid "Compás de %(arriba)d por %(abajo)d"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1443
+#: src/interfaz/dialogos/opciones.py:1619
 msgid "Con &qué calcula:"
 msgstr ""
 
@@ -4186,7 +4186,7 @@ msgstr ""
 msgid "Con esta regla eso no se dice."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:245
+#: src/interfaz/dialogos/opciones.py:417
 msgid "Con esto puedes tener varios documentos abiertos a la vez, cada uno con su\nposición de lectura, sus marcadores y su historial: al volver a una pestaña la\nencuentras justo como la dejaste. Es lo que hace falta para estudiar o para\ncomparar dos textos.\n\nSe manejan como en un navegador: Control+N abre un documento en una pestaña\nnueva, Control+W cierra la actual, Control+Tabulador pasa a la siguiente y\nControl+F6 enseña la lista para saltar a cualquiera. Con F6 se va de una zona a\notra de la ventana y con Mayús+F6 se vuelve."
 msgstr ""
 
@@ -4194,11 +4194,11 @@ msgstr ""
 msgid "Con esto, abrir un segundo libro no cierra el primero: los dos quedan abiertos y se cambia entre ellos con Control+Tabulador o con Control+Mayús+P.\n\nRecomendado: activado si estudias, porque comparar dos libros es la mitad del trabajo; apagado si lees una novela cada vez y prefieres no tener que pensar en pestañas."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:2223
+#: src/interfaz/dialogos/opciones.py:2399
 msgid "Con esto, al minimizar la ventana desaparece de la barra de tareas y del\nAlt+Tab, y queda un icono en la bandeja. La lectura en voz alta sigue sonando.\nPara volver: doble clic en el icono, su menú, o la tecla global de mostrar."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:776
+#: src/interfaz/dialogos/opciones.py:948
 msgid "Con esto, en cualquier momento puedes consultar con el lector de pantalla lo\nque se está oyendo. En un libro de solo audio es además la única forma de\nsaber por dónde va."
 msgstr ""
 
@@ -4246,15 +4246,15 @@ msgstr ""
 msgid "Con qué instrucción describirlas"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1900
+#: src/interfaz/dialogos/opciones.py:2076
 msgid "Con un sonido"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1902
+#: src/interfaz/dialogos/opciones.py:2078
 msgid "Con un sonido y diciéndolos"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:678
+#: src/interfaz/dialogos/opciones.py:850
 msgid "Con&fianza mínima para quedarse con una palabra, de 0 a 90:"
 msgstr ""
 
@@ -4262,15 +4262,15 @@ msgstr ""
 msgid "Con&tar"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:602
+#: src/interfaz/dialogos/opciones.py:774
 msgid "Con&traste, de 10 a 60 (10 es el normal, 30 el recomendado):"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1320
+#: src/interfaz/dialogos/opciones.py:1496
 msgid "Conexión correcta"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1318
+#: src/interfaz/dialogos/opciones.py:1494
 msgid "Conexión correcta con %s.\n\nHa respondido: %s"
 msgstr ""
 
@@ -4278,20 +4278,20 @@ msgstr ""
 msgid "Confianza mínima para quedarse con una palabra"
 msgstr ""
 
-#: src/interfaz/ventana.py:787
+#: src/interfaz/ventana.py:821
 msgid "Cons&ultar"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1261
+#: src/interfaz/dialogos/opciones.py:1437
 msgid "Consultando los modelos disponibles. Puede tardar unos segundos..."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1169
-#: src/interfaz/dialogos/opciones.py:1175
+#: src/interfaz/dialogos/opciones.py:1345
+#: src/interfaz/dialogos/opciones.py:1351
 msgid "Consumo de la inteligencia artificial"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1174
+#: src/interfaz/dialogos/opciones.py:1350
 msgid "Contador puesto a cero."
 msgstr ""
 
@@ -4343,7 +4343,7 @@ msgstr ""
 msgid "Control+Alt+O abre las opciones. Son nueve pestañas y te mueves entre ellas con Control+Tabulador.\n\nHay una cosa que conviene saber: **Control+F1 sobre cualquier ajuste** abre una ventana que explica qué es, qué consigue y qué conviene poner. No hace falta adivinar para qué sirve nada.\n\nPruébalo: pulsa Control+Alt+O."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1995
+#: src/interfaz/dialogos/opciones.py:2171
 msgid "Control+E marca todos y Control+D los desmarca."
 msgstr ""
 
@@ -4448,7 +4448,7 @@ msgstr ""
 msgid "Convirtiendo %d de %d"
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:371
+#: src/interfaz/dialogos/ia.py:373
 msgid "Cop&iar"
 msgstr ""
 
@@ -4517,7 +4517,7 @@ msgstr ""
 msgid "Copia únicamente la referencia, sin el pasaje. Es lo que hace falta cuando la frase ya la has escrito tú con tus palabras y solo hay que decir de dónde sale."
 msgstr ""
 
-#: src/interfaz/dialogos/registro.py:432
+#: src/interfaz/dialogos/registro.py:434
 msgid "Copiadas %d entradas al portapapeles."
 msgstr ""
 
@@ -4525,16 +4525,16 @@ msgstr ""
 msgid "Copiado con la cita."
 msgstr ""
 
-#: src/interfaz/ventana.py:2430
+#: src/interfaz/ventana.py:2541
 #: src/interfaz/dialogos/preguntar.py:149
 msgid "Copiado."
 msgstr ""
 
-#: src/interfaz/ventana.py:2430
+#: src/interfaz/ventana.py:2541
 msgid "Copiado: %d líneas."
 msgstr ""
 
-#: src/nucleo/ia/ollama.py:991
+#: src/nucleo/ia/ollama.py:1049
 msgid "Copiando %(que)s al almacén: %(cuanto)d por ciento."
 msgstr ""
 
@@ -4611,7 +4611,7 @@ msgstr ""
 msgid "Copiar solo la referencia"
 msgstr ""
 
-#: src/interfaz/ventana.py:775
+#: src/interfaz/ventana.py:809
 msgid "Corre&gir el documento"
 msgstr ""
 
@@ -4623,7 +4623,7 @@ msgstr ""
 msgid "Correcciones propuestas"
 msgstr ""
 
-#: src/interfaz/ventana.py:2673
+#: src/interfaz/ventana.py:2784
 msgid "Corrección guardada. Volviendo a leer el documento."
 msgstr ""
 
@@ -4663,7 +4663,7 @@ msgstr ""
 msgid "Creados tres perfiles de ejemplo. Elige uno y pulsa «Poner este perfil»."
 msgstr ""
 
-#: src/nucleo/ia/ollama.py:945
+#: src/nucleo/ia/ollama.py:1003
 msgid "Creando el modelo en Ollama..."
 msgstr ""
 
@@ -4782,7 +4782,7 @@ msgstr ""
 msgid "Cuánto tiempo se seguirá leyendo antes de callar. Sirve para dormirse escuchando sin que el libro siga sonando toda la noche.\n\nUn minuto antes del final se avisa con voz, y durante los últimos segundos el sonido se va apagando poco a poco en vez de cortarse de golpe.\n\nManda igual sobre la voz sintética y sobre las grabaciones de un libro DAISY, así que no hay que acordarse de cuál está sonando.\n\nRecomendado: 30 minutos, que es lo que suele tardarse en dormir."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1436
+#: src/interfaz/dialogos/opciones.py:1612
 msgid "CÓMO TRABAJA EL MOTOR"
 msgstr ""
 
@@ -4812,7 +4812,7 @@ msgstr ""
 msgid "Cómo hay que decirlo"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:630
+#: src/interfaz/dialogos/opciones.py:802
 msgid "Cómo se &segmenta la página:"
 msgstr ""
 
@@ -4872,7 +4872,7 @@ msgstr ""
 msgid "D"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:169
+#: src/interfaz/dialogos/opciones.py:214
 msgid "DAISY"
 msgstr ""
 
@@ -4910,9 +4910,9 @@ msgstr ""
 msgid "Datos del documento"
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:540
-#: src/interfaz/dialogos/ia.py:969
-#: src/interfaz/dialogos/ia.py:666
+#: src/interfaz/dialogos/ia.py:542
+#: src/interfaz/dialogos/ia.py:971
+#: src/interfaz/dialogos/ia.py:668
 #: src/nucleo/html_elementos.py:735
 msgid "Datos del gráfico"
 msgstr ""
@@ -4933,11 +4933,11 @@ msgstr ""
 msgid "Datos leídos del gráfico:"
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:601
+#: src/interfaz/dialogos/ia.py:603
 msgid "Datos leídos y guardados. %s Pulsa «Ver la tabla»."
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:605
+#: src/interfaz/dialogos/ia.py:607
 msgid "Datos leídos. %s"
 msgstr ""
 
@@ -4969,11 +4969,11 @@ msgstr ""
 msgid "De dónde sale: %s"
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:588
+#: src/interfaz/dialogos/ia.py:590
 msgid "De esta imagen no se han podido sacar datos."
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:584
+#: src/interfaz/dialogos/ia.py:586
 msgid "De esta imagen no se han podido sacar datos: no parece un gráfico con valores ni un diagrama con estructura."
 msgstr ""
 
@@ -4985,7 +4985,7 @@ msgstr ""
 msgid "De este documento"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:666
+#: src/interfaz/dialogos/opciones.py:838
 msgid "De fábrica se rasteriza a 3 aumentos para Tesseract y a 2 para los demás. Subirlo\nmás no mejora: el desenfoque pesa más que el detalle que aporta."
 msgstr ""
 
@@ -5005,7 +5005,7 @@ msgstr ""
 msgid "De qué sesión"
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:835
+#: src/interfaz/dialogos/ia.py:837
 msgid "De&tener"
 msgstr ""
 
@@ -5013,11 +5013,11 @@ msgstr ""
 msgid "Decide si sale un archivo por capítulo o uno solo con todo el documento.\n\nUn archivo por capítulo es lo cómodo para escuchar en el móvil o en el coche: se salta de capítulo con los botones del reproductor y cada uno recuerda por dónde iba.\n\nUn solo archivo va mejor para un documento corto, o si vas a pasarlo a un aparato que no ordena bien las listas.\n\nRecomendado: por capítulos en un libro; un solo archivo en un documento de unas pocas páginas."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:875
+#: src/interfaz/dialogos/opciones.py:1047
 msgid "Decir el &número de fila («Fila 3 de 20»)"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:2107
+#: src/interfaz/dialogos/opciones.py:2283
 msgid "Decir el a&vance cada (segundos; 0 para no decirlo):"
 msgstr ""
 
@@ -5025,7 +5025,7 @@ msgstr ""
 msgid "Decir el avance"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:879
+#: src/interfaz/dialogos/opciones.py:1051
 msgid "Decir el conteni&do de la celda"
 msgstr ""
 
@@ -5037,7 +5037,7 @@ msgstr ""
 msgid "Decir el nombre de cada elemento: «hidrógeno 2 azufre oxígeno 4»"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:877
+#: src/interfaz/dialogos/opciones.py:1049
 msgid "Decir el nombre de la &columna («Tipo», «Contenido»...)"
 msgstr ""
 
@@ -5053,7 +5053,7 @@ msgstr ""
 msgid "Decir la descripción al llegar a una imagen"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1111
+#: src/interfaz/dialogos/opciones.py:1287
 msgid "Decir la descripción guardada al &llegar a una imagen"
 msgstr ""
 
@@ -5065,7 +5065,7 @@ msgstr ""
 msgid "Decir por dónde voy."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:396
+#: src/interfaz/dialogos/opciones.py:568
 msgid "Decir «&nota» en las llamadas de nota (requiere volver a abrir el libro)"
 msgstr ""
 
@@ -5126,11 +5126,11 @@ msgstr ""
 msgid "Deja escribir una pregunta cualquiera en vez de elegir una de las preparadas."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:291
+#: src/interfaz/dialogos/opciones.py:463
 msgid "Deja siempre a la vista el índice del documento y sus elementos —encabezados,\nenlaces, imágenes, tablas, listas...— en un árbol que se pliega y se despliega,\nque es lo mismo que enseña F7 pero sin tener que abrir y cerrar un diálogo cada\nvez. Se va a él con F6 y al llegar ya está colocado por donde vas leyendo; con\nIntro se salta a lo que elijas. También se enciende y se apaga con Control+Alt+B."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:610
+#: src/interfaz/dialogos/opciones.py:782
 msgid "Dejar la página en &blanco y negro puro"
 msgstr ""
 
@@ -5158,7 +5158,7 @@ msgstr ""
 msgid "Deletrear los símbolos: «hache 2 ese o 4»"
 msgstr ""
 
-#: src/interfaz/dialogos/registro.py:159
+#: src/interfaz/dialogos/registro.py:160
 msgid "Depuración (DEBUG) o superior"
 msgstr ""
 
@@ -5179,7 +5179,7 @@ msgstr ""
 msgid "Descarga un modelo más de la biblioteca de Ollama y lo deja listo para usar.\n\nSe ofrece la misma lista corta que en el asistente, con lo que ocupa cada uno y para qué es bueno, más la posibilidad de escribir el nombre de cualquier otro modelo de la biblioteca si sabes cuál quieres.\n\nPuedes tener varios instalados y cambiar de uno a otro cuando quieras."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1677
+#: src/interfaz/dialogos/opciones.py:1853
 msgid "Descargando %s"
 msgstr ""
 
@@ -5199,7 +5199,7 @@ msgstr ""
 msgid "Descargando el modelo"
 msgstr ""
 
-#: src/nucleo/ia/ollama.py:1149
+#: src/nucleo/ia/ollama.py:1207
 msgid "Descargando el modelo: %d por ciento, %s de %s."
 msgstr ""
 
@@ -5231,7 +5231,7 @@ msgstr ""
 msgid "Descargar la versión &precisa (más grande y lenta, acierta más)"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:704
+#: src/interfaz/dialogos/opciones.py:876
 msgid "Descartar los &adornos y símbolos sueltos (flechas, marcos, iconos)"
 msgstr ""
 
@@ -5268,15 +5268,15 @@ msgstr ""
 msgid "Describe esta imagen en una o dos frases, quedándote solo con lo esencial. Sirve para hacerse una idea rápida sin interrumpir la lectura."
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:358
+#: src/interfaz/dialogos/ia.py:359
 msgid "Describiendo"
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:985
+#: src/interfaz/dialogos/ia.py:987
 msgid "Describiendo la imagen %d de %d: %s"
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:474
+#: src/interfaz/dialogos/ia.py:476
 msgid "Describiendo la imagen con %s. Puede tardar un poco..."
 msgstr ""
 
@@ -5300,10 +5300,10 @@ msgstr ""
 msgid "Describir la imagen"
 msgstr ""
 
-#: src/interfaz/ventana.py:2769
-#: src/interfaz/ventana.py:2777
-#: src/interfaz/dialogos/ia.py:764
-#: src/interfaz/dialogos/ia.py:893
+#: src/interfaz/ventana.py:2880
+#: src/interfaz/ventana.py:2888
+#: src/interfaz/dialogos/ia.py:766
+#: src/interfaz/dialogos/ia.py:895
 msgid "Describir todas las imágenes"
 msgstr ""
 
@@ -5316,60 +5316,60 @@ msgstr ""
 msgid "Descripción"
 msgstr ""
 
-#: src/interfaz/ventana.py:2620
+#: src/interfaz/ventana.py:2731
 msgid "Descripción con inteligencia artificial"
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:695
+#: src/interfaz/dialogos/ia.py:697
 msgid "Descripción copiada al portapapeles."
 msgstr ""
 
 #: src/interfaz/ayuda_control.py:1040
 #: src/interfaz/ayuda_control.py:1055
 #: src/interfaz/dialogos/contenido.py:76
-#: src/interfaz/dialogos/ia.py:345
-#: src/interfaz/dialogos/ia.py:312
+#: src/interfaz/dialogos/ia.py:346
+#: src/interfaz/dialogos/ia.py:313
 msgid "Descripción de la imagen"
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:1025
+#: src/interfaz/dialogos/ia.py:1027
 msgid "Descripción detenida"
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:406
+#: src/interfaz/dialogos/ia.py:408
 msgid "Descripción guardada · %s. Pulsa «Describir con IA» para pedir otra."
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:506
+#: src/interfaz/dialogos/ia.py:508
 msgid "Descripción hecha y guardada · %s"
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:508
+#: src/interfaz/dialogos/ia.py:510
 msgid "Descripción hecha · %s"
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:1020
+#: src/interfaz/dialogos/ia.py:1022
 msgid "Descripción interrumpida"
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:511
+#: src/interfaz/dialogos/ia.py:513
 msgid "Descripción lista. "
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:707
 #: src/interfaz/dialogos/ia.py:709
+#: src/interfaz/dialogos/ia.py:711
 msgid "Descripción olvidada."
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:328
+#: src/interfaz/dialogos/ia.py:329
 msgid "Descripción que trae el documento: %s"
 msgstr ""
 
-#: src/interfaz/ventana.py:2560
+#: src/interfaz/ventana.py:2671
 msgid "Descripción que trae el propio documento: %s"
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:1031
+#: src/interfaz/dialogos/ia.py:1033
 msgid "Descripción terminada"
 msgstr ""
 
@@ -5381,7 +5381,7 @@ msgstr ""
 msgid "Descubrir el pasaje"
 msgstr ""
 
-#: src/interfaz/reproductor_daisy.py:733
+#: src/interfaz/reproductor_daisy.py:735
 msgid "Desde cualquier punto de esta ventana: Control+Espacio reproduce o pausa,\nControl+Izquierda y Control+Derecha se mueven por el nivel elegido, y\nControl+Arriba y Control+Abajo cambian de nivel. En los botones, la barra\nespaciadora y la tecla Intro los pulsan, como en cualquier otra ventana."
 msgstr ""
 
@@ -5393,7 +5393,7 @@ msgstr ""
 msgid "Desmarca todas las propuestas, para ir eligiendo una a una."
 msgstr ""
 
-#: src/interfaz/dialogos/estructura.py:87
+#: src/interfaz/dialogos/estructura.py:89
 msgid "Desmarcar t&odas"
 msgstr ""
 
@@ -5431,7 +5431,7 @@ msgstr ""
 msgid "Detenido."
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:1022
+#: src/interfaz/dialogos/ia.py:1024
 msgid "Detenido. Se han descrito %d imágenes y quedan %d por describir; puedes volver a lanzarlo y seguirá por donde iba."
 msgstr ""
 
@@ -5439,11 +5439,11 @@ msgstr ""
 msgid "Detenido: hay %(hechas)d referencias de %(total)d libros."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1598
+#: src/interfaz/dialogos/opciones.py:1774
 msgid "Deteniendo el servidor..."
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:1052
+#: src/interfaz/dialogos/ia.py:1054
 msgid "Deteniendo. Se parará al terminar la imagen en curso."
 msgstr ""
 
@@ -5451,7 +5451,7 @@ msgstr ""
 msgid "Deteniendo..."
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:1051
+#: src/interfaz/dialogos/ia.py:1053
 msgid "Deteniendo: se parará al terminar la imagen en curso..."
 msgstr ""
 
@@ -5475,16 +5475,16 @@ msgstr ""
 msgid "Di qué personas o personajes aparecen en el texto y qué papel tiene cada uno, en una línea por cada uno. Si no aparece ninguno, dilo."
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:663
+#: src/interfaz/dialogos/ia.py:665
 #: src/nucleo/html_elementos.py:638
 msgid "Diagrama"
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:593
+#: src/interfaz/dialogos/ia.py:595
 msgid "Diagrama leído y guardado. %s Pulsa «Ver el esquema»."
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:598
+#: src/interfaz/dialogos/ia.py:600
 msgid "Diagrama leído. %s"
 msgstr ""
 
@@ -5552,15 +5552,15 @@ msgstr ""
 msgid "Dice si la IA local está instalada, si su servidor está en marcha, en qué dirección escucha y cuánto ocupan los modelos que tienes descargados.\n\nTambién es donde aparecen los avisos de los botones de al lado: al arrancar, al detener o al instalar un modelo, el resultado se escribe aquí arriba para que lo puedas leer con las flechas.\n\nSi dice que en el puerto contesta otro servidor que no es el de este programa, es que tienes Ollama instalado por tu cuenta y algo lo ha puesto en nuestro puerto. El programa no lo va a usar ni a cerrar: ciérralo tú."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1901
+#: src/interfaz/dialogos/opciones.py:2077
 msgid "Diciéndolos con la voz"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:2420
+#: src/interfaz/dialogos/opciones.py:2596
 msgid "Dirección &personalizada:"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1017
+#: src/interfaz/dialogos/opciones.py:1193
 msgid "Dirección del ser&vidor:"
 msgstr ""
 
@@ -5593,7 +5593,7 @@ msgid "Diálogos"
 msgstr ""
 
 #: src/interfaz/arbol.py:163
-#: src/interfaz/ventana.py:2441
+#: src/interfaz/ventana.py:2552
 #: src/interfaz/dialogos/datos.py:110
 #: src/nucleo/audio_libro.py:137
 #: src/nucleo/audio_libro.py:120
@@ -5606,11 +5606,11 @@ msgstr ""
 msgid "Documento DjVu escaneado"
 msgstr ""
 
-#: src/interfaz/ventana.py:1443
+#: src/interfaz/ventana.py:1503
 msgid "Documento abierto: %s"
 msgstr ""
 
-#: src/interfaz/ventana.py:1541
+#: src/interfaz/ventana.py:1603
 msgid "Documento cerrado."
 msgstr ""
 
@@ -5619,15 +5619,15 @@ msgstr ""
 msgid "Documento del %s"
 msgstr ""
 
-#: src/interfaz/ventana.py:3000
+#: src/interfaz/ventana.py:3111
 msgid "Documento exportado a EPUB. %s"
 msgstr ""
 
-#: src/interfaz/ventana.py:2970
+#: src/interfaz/ventana.py:3081
 msgid "Documento exportado correctamente a %s."
 msgstr ""
 
-#: src/interfaz/ventana.py:2990
+#: src/interfaz/ventana.py:3101
 msgid "Documento exportado correctamente a EPUB."
 msgstr ""
 
@@ -5648,7 +5648,7 @@ msgid "Documentos PDF"
 msgstr ""
 
 #: src/interfaz/ayuda_control.py:917
-#: src/interfaz/pestanas.py:83
+#: src/interfaz/pestanas.py:87
 #: src/interfaz/dialogos/navegacion.py:326
 msgid "Documentos abiertos"
 msgstr ""
@@ -5673,11 +5673,11 @@ msgstr ""
 msgid "Duplicar la instrucción"
 msgstr ""
 
-#: src/interfaz/reproductor_daisy.py:724
+#: src/interfaz/reproductor_daisy.py:726
 msgid "Duración: %s"
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:813
+#: src/interfaz/dialogos/ia.py:815
 msgid "Déjalo en 0 salvo que el proveedor se queje de cuota: la capa gratuita de Gemini\nlimita las peticiones por minuto, y esperar unos segundos entre imágenes lo evita."
 msgstr ""
 
@@ -5709,7 +5709,7 @@ msgstr ""
 msgid "Dónde se dejan los archivos de audio.\n\nSe propone la carpeta del documento, o la última que usaste. Conviene una carpeta vacía o propia del libro: si eliges un archivo por capítulo pueden salir decenas de archivos.\n\nAl terminar se te ofrece abrirla, para copiarlos al móvil sin buscarlos."
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:145
+#: src/interfaz/dialogos/ia.py:146
 msgid "E&liminar"
 msgstr ""
 
@@ -5718,7 +5718,7 @@ msgstr ""
 msgid "E&xportar fichas..."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1381
+#: src/interfaz/dialogos/opciones.py:1557
 msgid "EL SERVIDOR"
 msgstr ""
 
@@ -5730,7 +5730,7 @@ msgstr ""
 msgid "ESTE MOTOR TOCA EL REGISTRO DE WINDOWS."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:512
+#: src/interfaz/dialogos/opciones.py:684
 msgid "ESTRUCTURA"
 msgstr ""
 
@@ -5739,7 +5739,7 @@ msgstr ""
 msgid "Editar"
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:52
+#: src/interfaz/dialogos/ia.py:53
 msgid "Editar el prompt"
 msgstr ""
 
@@ -5768,7 +5768,7 @@ msgstr ""
 msgid "Ejecuta el paso que toca: descargar, instalar o comprobar. Se puede parar y seguir después por donde iba."
 msgstr ""
 
-#: src/interfaz/dialogos/practica.py:143
+#: src/interfaz/dialogos/practica.py:145
 msgid "Ejercicio %(numero)d de %(total)d"
 msgstr ""
 
@@ -6037,7 +6037,7 @@ msgstr ""
 msgid "El archivo usa una ventana de compresión que no se admite."
 msgstr ""
 
-#: src/interfaz/ventana.py:1224
+#: src/interfaz/ventana.py:1272
 msgid "El archivo ya no existe:\n%s"
 msgstr ""
 
@@ -6053,7 +6053,7 @@ msgstr ""
 msgid "El aviso de versión no viene firmado, así que no se instalará."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:618
+#: src/interfaz/dialogos/opciones.py:790
 msgid "El blanco y negro puro viene apagado a propósito: rompe la letra fina y en las\npruebas salió peor que el gris con contraste. Puede ayudar en un escaneado muy\nsucio o con manchas."
 msgstr ""
 
@@ -6065,7 +6065,7 @@ msgstr ""
 msgid "El braille que se exporta es, por omisión, integral: una celda por letra. El contraído usa abreviaturas —«bien» es una sola celda, «importante» son tres— y ocupa alrededor de un tercio menos, que en papel es un tercio menos de tomos.\n\nSe sigue el documento B 16-1 de la Comisión Braille Española, la revisión de 2025: la lista de palabras abreviadas y sus variantes, los principios, los finales, las secuencias y las contracciones, aplicados en el orden que manda la norma.\n\nLo que conviene saber antes de encenderlo: **quien no haya estudiado el braille contraído no entiende un texto contraído**. Y la transcripción se ha comprobado contra los ejemplos resueltos del propio documento, donde acierta en las palabras de la lista y en sus variantes y falla en alrededor de una de cada diez de las que hay que abreviar sobre la marcha. Para leer, sirve; para algo que vaya a imprimirse y repartirse, conviene repasarlo.\n\nSolo afecta al BRF y al PEF. Las fórmulas no se contraen nunca.\n\nRecomendado: apagado, salvo que leas contraído."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:232
+#: src/interfaz/dialogos/opciones.py:404
 msgid "El cambio de idioma se aplica al reiniciar el programa."
 msgstr ""
 
@@ -6109,7 +6109,7 @@ msgstr ""
 msgid "El del sistema"
 msgstr ""
 
-#: src/interfaz/ventana.py:2895
+#: src/interfaz/ventana.py:3006
 msgid "El destino de este enlace no está en el documento."
 msgstr ""
 
@@ -6237,7 +6237,7 @@ msgstr ""
 msgid "El documento trae todos los datos de la cita."
 msgstr ""
 
-#: src/interfaz/dialogos/practica.py:75
+#: src/interfaz/dialogos/practica.py:76
 msgid "El ejercicio"
 msgstr ""
 
@@ -6353,7 +6353,7 @@ msgstr ""
 msgid "El libro no trae resumen de accesibilidad."
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:875
+#: src/interfaz/dialogos/ia.py:877
 msgid "El libro tiene %d imágenes distintas. %d ya están descritas y quedan %d por describir con %s."
 msgstr ""
 
@@ -6411,7 +6411,7 @@ msgstr ""
 msgid "El más pequeño de todos: funciona con dos gigas de memoria libre y responde rápido incluso sin tarjeta gráfica.\n\nDescribe bien una fotografía o una ilustración, pero **no leas con él documentos escaneados**: la letra pequeña y las tablas se le dan mal. Es la opción para un equipo antiguo o con poca memoria, donde lo demás no cabría."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:714
+#: src/interfaz/dialogos/opciones.py:886
 msgid "El orden de lectura se reconstruye siempre: sin él, un documento a varias\ncolumnas se lee cruzando de una a otra y no hay manera de entenderlo."
 msgstr ""
 
@@ -6485,7 +6485,7 @@ msgstr ""
 msgid "El pasaje que se va a citar"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1913
+#: src/interfaz/dialogos/opciones.py:2089
 msgid "El pitido es lo más rápido de interpretar cuando ya se conoce, pero solo puede\nsonar uno por línea: en una línea que lleva un salto de página y una llamada de\nnota suena el salto de página, y la nota se queda sin señalar. En un libro muy\nanotado eso es la mitad de las notas.\n\nDichos con la voz se oyen todos, y además se distingue una llamada de nota de un\nenlace normal, que en un texto clásico es la diferencia entre el número de una\nnota y el número del pasaje."
 msgstr ""
 
@@ -6505,11 +6505,11 @@ msgstr ""
 msgid "El programa lee con la voz que trae Windows, que está siempre y arranca al\ninstante. Se pueden añadir otros motores como paquete: cada uno trae sus\nvoces y sus ajustes, y se instala y se quita desde aquí sin tocar el sistema."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1061
+#: src/interfaz/dialogos/opciones.py:1237
 msgid "El programa puede instalarte una inteligencia artificial completa dentro de\nsu carpeta «data»: el motor, un modelo que ve y todo lo demás. Sin instalar\nnada en Windows y sin tocar el Ollama que puedas tener ya."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1368
+#: src/interfaz/dialogos/opciones.py:1544
 msgid "El programa puede traer su propia inteligencia artificial, funcionando dentro\nde este ordenador: nada sale del equipo y no hay cuota. Se instala con el\nasistente y se maneja desde aquí."
 msgstr ""
 
@@ -6517,11 +6517,11 @@ msgstr ""
 msgid "El propio archivo marca su estructura como no verificada."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1279
+#: src/interfaz/dialogos/opciones.py:1455
 msgid "El proveedor no ha devuelto ninguna lista de modelos. Escribe el nombre del modelo a mano en el campo «Modelo»."
 msgstr ""
 
-#: src/nucleo/ia/ollama.py:714
+#: src/nucleo/ia/ollama.py:772
 msgid "El puerto %d lo está usando otro servidor de Ollama (proceso %s). El programa no va a usarlo ni a cerrarlo: ciérralo tú y vuelve a intentarlo."
 msgstr ""
 
@@ -6529,7 +6529,7 @@ msgstr ""
 msgid "El que Tesseract prefiera (recomendado)"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:652
+#: src/interfaz/dialogos/opciones.py:824
 msgid "El que convenga a cada motor (recomendado)"
 msgstr ""
 
@@ -6553,17 +6553,17 @@ msgstr ""
 msgid "El servicio no ha devuelto ninguna respuesta."
 msgstr ""
 
-#: src/nucleo/ia/ollama.py:921
-#: src/nucleo/ia/ollama.py:1060
-#: src/nucleo/ia/ollama.py:1161
+#: src/nucleo/ia/ollama.py:979
+#: src/nucleo/ia/ollama.py:1118
+#: src/nucleo/ia/ollama.py:1219
 msgid "El servidor de Ollama no está en marcha."
 msgstr ""
 
-#: src/nucleo/ia/ollama.py:754
+#: src/nucleo/ia/ollama.py:812
 msgid "El servidor de Ollama no ha respondido a tiempo."
 msgstr ""
 
-#: src/nucleo/ia/ollama.py:750
+#: src/nucleo/ia/ollama.py:808
 msgid "El servidor de Ollama se ha cerrado nada más arrancar. En data\\logs\\ollama.log está lo que ha dicho."
 msgstr ""
 
@@ -6571,7 +6571,7 @@ msgstr ""
 msgid "El servidor del autor y GitHub (el que tenga la más nueva)"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1594
+#: src/interfaz/dialogos/opciones.py:1770
 msgid "El servidor del puerto no es el de este programa: no se toca."
 msgstr ""
 
@@ -6579,11 +6579,11 @@ msgstr ""
 msgid "El servidor local no ha devuelto ninguna respuesta."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:806
+#: src/interfaz/dialogos/opciones.py:978
 msgid "El sonido está listo."
 msgstr ""
 
-#: src/interfaz/temporizador.py:81
+#: src/interfaz/temporizador.py:83
 msgid "El temporizador está apagado."
 msgstr ""
 
@@ -6682,7 +6682,7 @@ msgstr ""
 msgid "Elige antes un libro en la lista."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:2203
+#: src/interfaz/dialogos/opciones.py:2379
 msgid "Elige antes una carpeta compartida."
 msgstr ""
 
@@ -6698,7 +6698,7 @@ msgstr ""
 msgid "Elige el archivo del modelo"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1659
+#: src/interfaz/dialogos/opciones.py:1835
 msgid "Elige el modelo que quieres instalar:"
 msgstr ""
 
@@ -6710,7 +6710,7 @@ msgstr ""
 msgid "Elige el proyector de visión"
 msgstr ""
 
-#: src/interfaz/ventana.py:1493
+#: src/interfaz/ventana.py:1555
 msgid "Elige la carpeta del libro DAISY"
 msgstr ""
 
@@ -6722,7 +6722,7 @@ msgstr ""
 msgid "Elige qué datos salen en la ficha y en qué orden: marca los que quieras ver, desmarca los que no y súbelos o bájalos.\n\nSirve para todas las fichas, no solo para esta: si solo te interesan el título, el autor y la sinopsis, deja esos y la ficha se lee de un vistazo. Al aceptar, la ficha se rehace al momento."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:2127
+#: src/interfaz/dialogos/opciones.py:2303
 msgid "Elige una carpeta que ya sincronices por tu cuenta —Dropbox, OneDrive, Drive,\nun pendrive o una carpeta de red— y el programa dejará ahí una copia de por\ndónde vas en cada libro, de tus marcadores, de tus notas y de las descripciones\nde imágenes. Al abrirlo en el otro equipo, se junta con lo que haya.\n\nNo se sincronizan las preferencias: la voz y los atajos son de cada equipo.\nNo se manda nada a ningún servidor: solo se escribe en esa carpeta."
 msgstr ""
 
@@ -6734,7 +6734,7 @@ msgstr ""
 msgid "Eliminar"
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:271
+#: src/interfaz/dialogos/ia.py:272
 msgid "Eliminar el prompt"
 msgstr ""
 
@@ -6742,7 +6742,7 @@ msgstr ""
 msgid "Eliminar la instrucción"
 msgstr ""
 
-#: src/nucleo/ia/ollama.py:1155
+#: src/nucleo/ia/ollama.py:1213
 msgid "Empezando la descarga del modelo: %s."
 msgstr ""
 
@@ -6758,7 +6758,7 @@ msgstr ""
 msgid "Empezar a reproducir al abrir"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:372
+#: src/interfaz/dialogos/opciones.py:544
 msgid "Empezar cada &frase en un renglón nuevo (para la lectura continua del lector de pantalla)"
 msgstr ""
 
@@ -6790,7 +6790,7 @@ msgstr ""
 msgid "En &esta pestaña"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:2010
+#: src/interfaz/dialogos/opciones.py:2186
 msgid "En Windows 11 la orden del menú aparece en «Mostrar más opciones»,\no directamente pulsando Mayús+F10."
 msgstr ""
 
@@ -6814,7 +6814,7 @@ msgstr ""
 msgid "En el texto, una imagen aparece como «Imagen» seguido de su descripción, si es que el documento trae alguna. Muchas veces no la trae, o son tres palabras que no dicen nada.\n\nCon la tecla A, sobre una imagen, se le pide a una inteligencia artificial que cuente lo que se ve. La descripción se guarda y vuelve con el documento, así que se paga una vez y sirve siempre.\n\nViene desactivado y se configura en Opciones, pestaña Inteligencia artificial: hay una opción gratuita y otra que funciona sin conexión.\n\nPruébalo: pulsa A."
 msgstr ""
 
-#: src/interfaz/ventana.py:1500
+#: src/interfaz/ventana.py:1562
 msgid "En esa carpeta no hay ningún libro DAISY.\n\nUn libro DAISY tiene dentro un archivo «ncc.html» (versión 2.02) o uno con extensión «.ncx» (versión 3). Comprueba que has elegido la carpeta del libro y no la que la contiene."
 msgstr ""
 
@@ -6830,11 +6830,11 @@ msgstr ""
 msgid "En las mismas listas, esta tecla pregunta a qué número de elemento quieres ir y te deja en él. Solo admite cifras, y un número entre 1 y el total: si escribes otra cosa, te lo dice y no se mueve.\n\nSirve para volver a un sitio concreto de una lista de miles sin bajar con la flecha.\n\nRecomendado: Control+G, la misma de «Ir a» en el Bloc de notas. No puede ser la misma que la de la opción anterior."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:385
+#: src/interfaz/dialogos/opciones.py:557
 msgid "En las páginas web guardadas, quedarse solo con el &artículo (requiere volver a abrir la página)"
 msgstr ""
 
-#: src/interfaz/reproductor_daisy.py:335
+#: src/interfaz/reproductor_daisy.py:337
 msgid "En pausa."
 msgstr ""
 
@@ -6866,7 +6866,7 @@ msgstr ""
 msgid "En un PDF sin etiquetar —la inmensa mayoría— el programa **mide** cada página y deduce lo que el archivo no dice: los títulos por su tamaño de letra y su numeración, las listas por sus viñetas, las tablas por cómo se alinean sus columnas, las notas al pie por estar abajo y en letra menor.\n\nEs la diferencia entre un churro de texto sin apartados y un documento que se recorre con H, T y L.\n\nRecomendado: activado. Se apaga si en un archivo concreto la deducción hace más daño que bien; y un título suelto mal deducido se arregla mejor con Control+Mayús+E encima de él."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:432
+#: src/interfaz/dialogos/opciones.py:604
 msgid "En un libro anotado, la llamada de una nota es un número suelto —«[12]»— y leído\nen voz alta suena igual que cualquier otro número del texto, que en una edición\nclásica es justo el de la cita. Con la casilla de arriba se dice «nota 12».\n\nEs lo único que se oye en la lectura continua del lector de pantalla: los sonidos\ndel programa acompañan al cursor, y en la lectura continua el cursor no se mueve.\nA cambio alarga el texto, así que viene apagado."
 msgstr ""
 
@@ -6934,7 +6934,7 @@ msgstr ""
 msgid "Enlace"
 msgstr ""
 
-#: src/interfaz/ventana.py:2887
+#: src/interfaz/ventana.py:2998
 msgid "Enlace externo"
 msgstr ""
 
@@ -6970,7 +6970,7 @@ msgstr ""
 msgid "Enseña todos los pasajes resaltados del documento para ir a ellos, quitarlos o guardarlos en un archivo de texto."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:322
+#: src/interfaz/dialogos/opciones.py:494
 msgid "Enseñar cuántas palabras y cuántas pá&ginas tiene el documento"
 msgstr ""
 
@@ -6978,7 +6978,7 @@ msgstr ""
 msgid "Enseñar el recuento de palabras y páginas"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:303
+#: src/interfaz/dialogos/opciones.py:475
 msgid "Enseñar el resumen de &teclas mientras no hay ningún documento abierto"
 msgstr ""
 
@@ -6986,7 +6986,7 @@ msgstr ""
 msgid "Enseñar el resumen de teclas al arrancar"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:288
+#: src/interfaz/dialogos/opciones.py:460
 msgid "Enseñar el ár&bol de contenido a la izquierda del texto"
 msgstr ""
 
@@ -6994,8 +6994,8 @@ msgstr ""
 msgid "Enseñar el árbol de contenido"
 msgstr ""
 
-#: src/interfaz/dialogos/registro.py:221
-#: src/interfaz/dialogos/registro.py:220
+#: src/interfaz/dialogos/registro.py:223
+#: src/interfaz/dialogos/registro.py:222
 msgid "Entradas del registro"
 msgstr ""
 
@@ -7039,7 +7039,7 @@ msgstr ""
 msgid "Es lo que le permite ver imágenes. Suele llamarse «mmproj-algo.gguf» y es mucho más\npequeño, de unos cientos de megas. Sin él el modelo funciona, pero solo para texto:\nno podrá describirte las ilustraciones."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:697
+#: src/interfaz/dialogos/opciones.py:869
 msgid "Es lo que más mejora el resultado en documentos difíciles. Las dos lecturas se\nhacen con la página preparada de forma distinta, así que no fallan en los mismos\nsitios: medido sobre un folleto en color, pasó de 15 a 19 productos leídos con su\nprecio de 23."
 msgstr ""
 
@@ -7047,7 +7047,7 @@ msgstr ""
 msgid "Es una biblioteca de calibre: se importa con todos sus datos."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:2404
+#: src/interfaz/dialogos/opciones.py:2580
 msgid "Es una consulta diminuta que no retrasa la apertura, y solo dice algo\ncuando hay una versión nueva de verdad."
 msgstr ""
 
@@ -7136,7 +7136,7 @@ msgstr ""
 msgid "Escribe la contraseña cuando el programa te la pida."
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:96
+#: src/interfaz/dialogos/ia.py:97
 msgid "Escribe la instrucción que se le va a dar a la inteligencia artificial."
 msgstr ""
 
@@ -7144,7 +7144,7 @@ msgstr ""
 msgid "Escribe la lista en un archivo. Con BibTeX o RIS, ese archivo se importa directamente en el gestor de referencias."
 msgstr ""
 
-#: src/interfaz/dialogos/registro.py:395
+#: src/interfaz/dialogos/registro.py:397
 msgid "Escribe primero lo que quieres buscar."
 msgstr ""
 
@@ -7156,7 +7156,7 @@ msgstr ""
 msgid "Escribe qué quieres preguntar."
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:69
+#: src/interfaz/dialogos/ia.py:70
 msgid "Escribe qué quieres que cuente de la imagen y con cuánto detalle. No hace falta\npedir que responda en español ni sin markdown: el programa ya lo añade."
 msgstr ""
 
@@ -7192,7 +7192,7 @@ msgstr ""
 msgid "Escribiendo el libro DAISY..."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:477
+#: src/interfaz/dialogos/opciones.py:649
 msgid "Escribir el braille en &contraído (grado 2)"
 msgstr ""
 
@@ -7273,8 +7273,8 @@ msgstr ""
 msgid "Esos puntos no se anunciarán como parte de una lista."
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:718
-#: src/interfaz/dialogos/ia.py:727
+#: src/interfaz/dialogos/ia.py:720
+#: src/interfaz/dialogos/ia.py:729
 msgid "Espera a que termine la descripción."
 msgstr ""
 
@@ -7287,7 +7287,7 @@ msgstr ""
 msgid "Espera entre imágenes"
 msgstr ""
 
-#: src/interfaz/ventana.py:1215
+#: src/interfaz/ventana.py:1263
 msgid "Espera: todavía se está abriendo otro documento."
 msgstr ""
 
@@ -7303,7 +7303,7 @@ msgstr ""
 msgid "Esta es la conversación que llevamos:\n\n%s\n\nResponde ahora a esto, teniendo en cuenta todo lo anterior:\n%s"
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:410
+#: src/interfaz/dialogos/ia.py:412
 msgid "Esta es la descripción que trae el libro. Pulsa «Describir con IA» para pedir una más detallada."
 msgstr ""
 
@@ -7356,7 +7356,7 @@ msgid "Esta imagen ilustra una obra literaria. Describe la escena como lo haría
 msgstr ""
 
 #: src/interfaz/dialogos/contenido.py:71
-#: src/interfaz/dialogos/ia.py:413
+#: src/interfaz/dialogos/ia.py:415
 msgid "Esta imagen no tiene descripción en el documento."
 msgstr ""
 
@@ -7381,12 +7381,12 @@ msgid "Estado"
 msgstr ""
 
 #: src/interfaz/ayuda_control.py:2001
-#: src/interfaz/dialogos/opciones.py:1385
+#: src/interfaz/dialogos/opciones.py:1561
 msgid "Estado de la IA local"
 msgstr ""
 
 #: src/interfaz/ayuda_control.py:2086
-#: src/interfaz/dialogos/opciones.py:1073
+#: src/interfaz/dialogos/opciones.py:1249
 msgid "Estado de la IA local del programa"
 msgstr ""
 
@@ -7485,33 +7485,33 @@ msgstr ""
 msgid "Este documento de Word no tiene texto que leer. Puede que solo contenga imágenes."
 msgstr ""
 
-#: src/interfaz/ventana.py:1159
+#: src/interfaz/ventana.py:1207
 msgid "Este documento ha cambiado en el disco. Se vuelve a leer."
 msgstr ""
 
-#: src/interfaz/reproductor_daisy.py:350
-#: src/interfaz/ventana.py:3333
+#: src/interfaz/reproductor_daisy.py:352
+#: src/interfaz/ventana.py:3444
 msgid "Este documento no tiene grabación."
 msgstr ""
 
-#: src/interfaz/ventana.py:2767
-#: src/interfaz/ventana.py:2768
+#: src/interfaz/ventana.py:2878
+#: src/interfaz/ventana.py:2879
 msgid "Este documento no tiene ninguna imagen que describir."
 msgstr ""
 
-#: src/interfaz/ventana.py:2208
+#: src/interfaz/ventana.py:2319
 msgid "Este documento no tiene ningún resaltado."
 msgstr ""
 
-#: src/interfaz/ventana.py:2172
+#: src/interfaz/ventana.py:2283
 msgid "Este documento no tiene ningún resaltado. Selecciona un texto y pulsa Control+Alt+E para resaltarlo."
 msgstr ""
 
-#: src/interfaz/ventana.py:1881
+#: src/interfaz/ventana.py:1992
 msgid "Este documento no tiene numeración de páginas."
 msgstr ""
 
-#: src/interfaz/ventana.py:2885
+#: src/interfaz/ventana.py:2996
 msgid "Este enlace lleva a una página de Internet:\n\n%s\n\n¿Quieres abrirlo en el navegador?"
 msgstr ""
 
@@ -7519,11 +7519,11 @@ msgstr ""
 msgid "Este equipo no tiene el motor de navegador de Windows, así que el contenido se muestra como texto. Puedes guardarlo como HTML y abrirlo en tu navegador."
 msgstr ""
 
-#: src/interfaz/ventana.py:3740
+#: src/interfaz/ventana.py:3851
 msgid "Este equipo no tiene ninguna voz del sistema instalada, así que no hay con qué grabar.\n\nLas voces se añaden en Configuración de Windows, en «Hora e idioma», «Voz»."
 msgstr ""
 
-#: src/interfaz/lectura_voz.py:416
+#: src/interfaz/lectura_voz.py:418
 msgid "Este equipo no tiene ninguna voz del sistema instalada, así que no se puede leer en voz alta.\n\nLas voces se añaden en Configuración de Windows, en «Hora e idioma», «Voz»."
 msgstr ""
 
@@ -7564,7 +7564,7 @@ msgstr ""
 msgid "Este paquete está hecho para otra versión del programa."
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:253
+#: src/interfaz/dialogos/ia.py:254
 msgid "Este prompt viene con el programa y no se puede editar. Duplícalo para cambiarlo."
 msgstr ""
 
@@ -7572,7 +7572,7 @@ msgstr ""
 msgid "Este sistema no admite teclas globales."
 msgstr ""
 
-#: src/interfaz/dialogos/practica.py:174
+#: src/interfaz/dialogos/practica.py:176
 msgid "Este ya lo tenías hecho: %s Pasamos al siguiente."
 msgstr ""
 
@@ -7584,7 +7584,7 @@ msgstr ""
 msgid "Estilo o formato de la bibliografía"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:741
+#: src/interfaz/dialogos/opciones.py:913
 msgid "Esto ajusta la GRABACIÓN: la voz humana que viene dentro del libro DAISY.\nNo tiene nada que ver con la voz sintética que lee los demás documentos, que\nse ajusta en el menú «Voz», en «Voz y velocidad de la voz sintética»\n(Control+Alt+V)."
 msgstr ""
 
@@ -7604,7 +7604,7 @@ msgstr ""
 msgid "Estructura del PDF desactivada en las opciones."
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:542
+#: src/interfaz/dialogos/ia.py:544
 msgid "Estructura del diagrama"
 msgstr ""
 
@@ -7686,7 +7686,7 @@ msgstr ""
 msgid "Exportación a DAISY cancelada."
 msgstr ""
 
-#: src/interfaz/ventana.py:2960
+#: src/interfaz/ventana.py:3071
 msgid "Exportando a %s..."
 msgstr ""
 
@@ -7698,12 +7698,12 @@ msgstr ""
 msgid "Exportando las fichas: %(hechas)d de %(total)d"
 msgstr ""
 
-#: src/interfaz/ventana.py:2965
-#: src/interfaz/dialogos/opciones.py:167
+#: src/interfaz/ventana.py:3076
+#: src/interfaz/dialogos/opciones.py:212
 msgid "Exportar"
 msgstr ""
 
-#: src/interfaz/ventana.py:2950
+#: src/interfaz/ventana.py:3061
 msgid "Exportar a %s"
 msgstr ""
 
@@ -7738,7 +7738,7 @@ msgstr ""
 msgid "Exportar a DAISY"
 msgstr ""
 
-#: src/interfaz/ventana.py:3743
+#: src/interfaz/ventana.py:3854
 #: src/interfaz/dialogos/audio.py:204
 #: src/interfaz/dialogos/audio.py:41
 #: src/interfaz/dialogos/audio.py:176
@@ -7768,7 +7768,7 @@ msgstr ""
 msgid "Exportar fichas"
 msgstr ""
 
-#: src/interfaz/ventana.py:2238
+#: src/interfaz/ventana.py:2349
 msgid "Exportar los resaltados"
 msgstr ""
 
@@ -7788,7 +7788,7 @@ msgstr ""
 msgid "Falta el motor"
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:92
+#: src/interfaz/dialogos/ia.py:93
 msgid "Falta el nombre"
 msgstr ""
 
@@ -7796,11 +7796,11 @@ msgstr ""
 msgid "Falta la clave API de %s. Escríbela en Opciones, pestaña «Inteligencia artificial»."
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:97
+#: src/interfaz/dialogos/ia.py:98
 msgid "Falta la instrucción"
 msgstr ""
 
-#: src/interfaz/reproductor_daisy.py:376
+#: src/interfaz/reproductor_daisy.py:378
 msgid "Falta un archivo de sonido del libro: %s"
 msgstr ""
 
@@ -7887,18 +7887,18 @@ msgstr ""
 msgid "Fin de la %s."
 msgstr ""
 
-#: src/interfaz/lectura_voz.py:586
-#: src/interfaz/reproductor_daisy.py:462
-#: src/interfaz/reproductor_daisy.py:478
+#: src/interfaz/lectura_voz.py:588
+#: src/interfaz/reproductor_daisy.py:464
+#: src/interfaz/reproductor_daisy.py:480
 msgid "Fin del libro."
 msgstr ""
 
-#: src/interfaz/reproductor_daisy.py:510
+#: src/interfaz/reproductor_daisy.py:512
 msgid "Final de la grabación."
 msgstr ""
 
-#: src/interfaz/lectura_voz.py:392
-#: src/interfaz/ventana.py:1847
+#: src/interfaz/lectura_voz.py:394
+#: src/interfaz/ventana.py:1958
 msgid "Final del documento."
 msgstr ""
 
@@ -7937,7 +7937,7 @@ msgstr ""
 msgid "Formato del cuaderno"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1987
+#: src/interfaz/dialogos/opciones.py:2163
 msgid "Formatos"
 msgstr ""
 
@@ -7953,7 +7953,7 @@ msgstr ""
 msgid "Formatos que abre el programa"
 msgstr ""
 
-#: src/interfaz/reproductor_daisy.py:843
+#: src/interfaz/reproductor_daisy.py:846
 msgid "Frase %d"
 msgstr ""
 
@@ -7964,7 +7964,7 @@ msgstr ""
 
 #: src/interfaz/atajos.py:337
 #: src/interfaz/bandeja.py:77
-#: src/interfaz/reproductor_daisy.py:751
+#: src/interfaz/reproductor_daisy.py:753
 msgid "Frase &siguiente"
 msgstr ""
 
@@ -7976,12 +7976,12 @@ msgstr ""
 msgid "Frase siguiente"
 msgstr ""
 
-#: src/interfaz/reproductor_daisy.py:185
+#: src/interfaz/reproductor_daisy.py:187
 msgid "Frases"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1847
-#: src/interfaz/dialogos/opciones.py:2577
+#: src/interfaz/dialogos/opciones.py:2023
+#: src/interfaz/dialogos/opciones.py:2761
 msgid "Fuente del sistema"
 msgstr ""
 
@@ -8006,7 +8006,7 @@ msgstr ""
 msgid "Fórmulas matemáticas"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:2611
+#: src/interfaz/dialogos/opciones.py:2813
 #: src/nucleo/ia/ollama.py:277
 msgid "GB"
 msgstr ""
@@ -8051,11 +8051,11 @@ msgstr ""
 msgid "Generar el audio"
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:117
+#: src/interfaz/dialogos/ia.py:118
 msgid "Gestor de prompts de descripción"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:962
+#: src/interfaz/dialogos/opciones.py:1138
 msgid "Google Gemini"
 msgstr ""
 
@@ -8069,7 +8069,7 @@ msgstr ""
 msgid "Grabando: %s"
 msgstr ""
 
-#: src/interfaz/ventana.py:3362
+#: src/interfaz/ventana.py:3473
 msgid "Gracias. Se ha abierto la página de donaciones en el navegador."
 msgstr ""
 
@@ -8212,8 +8212,8 @@ msgstr ""
 msgid "Guardar la descripción"
 msgstr ""
 
-#: src/interfaz/ventana.py:2445
-#: src/interfaz/ventana.py:2456
+#: src/interfaz/ventana.py:2556
+#: src/interfaz/ventana.py:2567
 msgid "Guardar la lista"
 msgstr ""
 
@@ -8233,7 +8233,7 @@ msgstr ""
 msgid "Guardar los resaltados"
 msgstr ""
 
-#: src/interfaz/ventana.py:2217
+#: src/interfaz/ventana.py:2328
 msgid "Guardar los resaltados en %s"
 msgstr ""
 
@@ -8249,11 +8249,11 @@ msgstr ""
 msgid "Ha habido un error: %s"
 msgstr ""
 
-#: src/interfaz/ventana.py:1303
+#: src/interfaz/ventana.py:1351
 msgid "Ha ocurrido un error inesperado al abrir el libro.\nConsulta el registro para ver los detalles.\n\n%s"
 msgstr ""
 
-#: src/nucleo/ia/ollama.py:900
+#: src/nucleo/ia/ollama.py:958
 msgid "Hace falta un nombre para el modelo."
 msgstr ""
 
@@ -8298,7 +8298,7 @@ msgstr ""
 msgid "Haciendo la copia de seguridad..."
 msgstr ""
 
-#: src/interfaz/ventana.py:3160
+#: src/interfaz/ventana.py:3271
 msgid "Has cambiado una opción que afecta a cómo se convierte el libro.\n¿Quieres volver a abrirlo ahora para que surta efecto?"
 msgstr ""
 
@@ -8352,7 +8352,7 @@ msgstr ""
 msgid "Hay una versión nueva"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1631
+#: src/interfaz/dialogos/opciones.py:1807
 msgid "Hay una versión nueva de Ollama.\n\nTienes la %s y la última es la %s.\n\n¿Quieres instalarla ahora? Se descarga algo más de un giga y el servidor se reiniciará."
 msgstr ""
 
@@ -8445,12 +8445,12 @@ msgstr ""
 msgid "IA"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:171
-#: src/interfaz/dialogos/opciones.py:1787
+#: src/interfaz/dialogos/opciones.py:216
+#: src/interfaz/dialogos/opciones.py:1963
 msgid "IA local"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1069
+#: src/interfaz/dialogos/opciones.py:1245
 msgid "IA local del programa"
 msgstr ""
 
@@ -8458,7 +8458,7 @@ msgstr ""
 msgid "IA local del programa (Ollama incluido)"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:219
+#: src/interfaz/dialogos/opciones.py:391
 msgid "IDIOMA"
 msgstr ""
 
@@ -8518,7 +8518,7 @@ msgstr ""
 msgid "Imagen"
 msgstr ""
 
-#: src/interfaz/ventana.py:2524
+#: src/interfaz/ventana.py:2635
 msgid "Imagen %(cual)d de %(cuantas)d de esta línea. Con G vas a la siguiente."
 msgstr ""
 
@@ -8535,7 +8535,7 @@ msgstr ""
 msgid "Imagen sin descripción."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1706
+#: src/interfaz/dialogos/opciones.py:1882
 msgid "Importando %s"
 msgstr ""
 
@@ -8551,7 +8551,7 @@ msgstr ""
 msgid "Importando la carpeta «%s»..."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:2070
+#: src/interfaz/dialogos/opciones.py:2246
 msgid "Importar con sus datos las bibliotecas de calibre que haya &dentro de una carpeta"
 msgstr ""
 
@@ -8559,7 +8559,7 @@ msgstr ""
 msgid "Importar el modelo"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:2082
+#: src/interfaz/dialogos/opciones.py:2258
 msgid "Importar las si&nopsis"
 msgstr ""
 
@@ -8570,8 +8570,8 @@ msgstr ""
 #: src/interfaz/dialogos/importar_modelo.py:243
 #: src/interfaz/dialogos/importar_modelo.py:213
 #: src/interfaz/dialogos/importar_modelo.py:221
-#: src/interfaz/dialogos/opciones.py:1716
-#: src/interfaz/dialogos/opciones.py:1696
+#: src/interfaz/dialogos/opciones.py:1892
+#: src/interfaz/dialogos/opciones.py:1872
 msgid "Importar un modelo"
 msgstr ""
 
@@ -8580,11 +8580,11 @@ msgstr ""
 msgid "Importar un modelo del disco"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1416
+#: src/interfaz/dialogos/opciones.py:1592
 msgid "Importar uno del &disco..."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:2057
+#: src/interfaz/dialogos/opciones.py:2233
 msgid "Importarla con todos los datos de calibre"
 msgstr ""
 
@@ -8618,7 +8618,7 @@ msgstr ""
 msgid "Incluir también las &notas que hayas escrito, y la cita del documento"
 msgstr ""
 
-#: src/interfaz/dialogos/registro.py:160
+#: src/interfaz/dialogos/registro.py:161
 msgid "Información (INFO) o superior"
 msgstr ""
 
@@ -8638,7 +8638,7 @@ msgstr ""
 msgid "Inicio y Fin"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1206
+#: src/interfaz/dialogos/opciones.py:1382
 msgid "Instalada y %s, en %s.\nModelo con el que trabaja: %s."
 msgstr ""
 
@@ -8650,9 +8650,9 @@ msgstr ""
 msgid "Instalar otro modelo"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1655
-#: src/interfaz/dialogos/opciones.py:1660
-#: src/interfaz/dialogos/opciones.py:1667
+#: src/interfaz/dialogos/opciones.py:1831
+#: src/interfaz/dialogos/opciones.py:1836
+#: src/interfaz/dialogos/opciones.py:1843
 msgid "Instalar un modelo"
 msgstr ""
 
@@ -8664,26 +8664,26 @@ msgstr ""
 msgid "Instrucciones guardadas"
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:113
+#: src/interfaz/dialogos/ia.py:114
 msgid "Instrucción"
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:66
+#: src/interfaz/dialogos/ia.py:67
 msgid "Instrucción para la inteligencia artificial"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:178
-#: src/interfaz/dialogos/opciones.py:2031
+#: src/interfaz/dialogos/opciones.py:2207
+#: src/interfaz/dialogos/opciones.py:223
 msgid "Integración con el sistema"
 msgstr ""
 
-#: src/interfaz/ventana.py:3840
-#: src/interfaz/dialogos/estructura.py:196
-#: src/interfaz/dialogos/estructura.py:142
-#: src/interfaz/dialogos/ia.py:682
-#: src/interfaz/dialogos/ia.py:464
-#: src/interfaz/dialogos/ia.py:527
-#: src/interfaz/dialogos/opciones.py:170
+#: src/interfaz/ventana.py:3951
+#: src/interfaz/dialogos/estructura.py:198
+#: src/interfaz/dialogos/estructura.py:144
+#: src/interfaz/dialogos/ia.py:684
+#: src/interfaz/dialogos/ia.py:466
+#: src/interfaz/dialogos/ia.py:529
+#: src/interfaz/dialogos/opciones.py:215
 #: src/nucleo/diccionario.py:55
 msgid "Inteligencia artificial"
 msgstr ""
@@ -8729,7 +8729,7 @@ msgstr ""
 msgid "Ir a la &nota"
 msgstr ""
 
-#: src/interfaz/ventana.py:1855
+#: src/interfaz/ventana.py:1966
 msgid "Ir a la línea"
 msgstr ""
 
@@ -8742,7 +8742,7 @@ msgstr ""
 msgid "Ir a la pá&gina..."
 msgstr ""
 
-#: src/interfaz/ventana.py:1886
+#: src/interfaz/ventana.py:1997
 msgid "Ir a la página"
 msgstr ""
 
@@ -8762,7 +8762,7 @@ msgstr ""
 msgid "Ir al porcenta&je..."
 msgstr ""
 
-#: src/interfaz/ventana.py:1868
+#: src/interfaz/ventana.py:1979
 msgid "Ir al porcentaje"
 msgstr ""
 
@@ -8790,19 +8790,19 @@ msgstr ""
 msgid "KB"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:2043
+#: src/interfaz/dialogos/opciones.py:2219
 msgid "LA BIBLIOTECA"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:740
+#: src/interfaz/dialogos/opciones.py:912
 msgid "LA VOZ DEL NARRADOR"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:867
+#: src/interfaz/dialogos/opciones.py:1039
 msgid "LECTURA DE LAS LISTAS POR COLUMNAS\n\nEn las listas de varias columnas (los marcadores y notas, o la ventana de\nuna tabla) las flechas izquierda y derecha recorren las columnas de la fila\nen la que estés, y Control+1 a Control+9 van directamente a una de ellas.\nElige aquí qué quieres oír de cada celda:"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:920
+#: src/interfaz/dialogos/opciones.py:1092
 msgid "LECTURA DEL LIBRO"
 msgstr ""
 
@@ -8810,7 +8810,7 @@ msgstr ""
 msgid "LLaVA Phi-3 (descripciones largas)"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1402
+#: src/interfaz/dialogos/opciones.py:1578
 msgid "LOS MODELOS"
 msgstr ""
 
@@ -8818,11 +8818,11 @@ msgstr ""
 msgid "La IA local del programa no está en marcha y no se ha podido arrancar. Ve a Opciones, «IA local», y comprueba el servidor."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1510
+#: src/interfaz/dialogos/opciones.py:1686
 msgid "La IA local no está instalada todavía."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1746
+#: src/interfaz/dialogos/opciones.py:1922
 msgid "La IA local y sus modelos se han borrado del disco."
 msgstr ""
 
@@ -8830,7 +8830,7 @@ msgstr ""
 msgid "La IA y, si no puede, Tesseract"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:325
+#: src/interfaz/dialogos/opciones.py:497
 msgid "La barra de estado dice siempre por qué línea vas, por qué porcentaje del\ndocumento y en qué página. Con esto marcado añade el tamaño total: las palabras\nque tiene y sus páginas, y con varias pestañas abiertas, en cuál estás. El\ninforme completo, con las estadísticas de lectura, sigue en Control+D."
 msgstr ""
 
@@ -8838,7 +8838,7 @@ msgstr ""
 msgid "La bibliografía de los libros que estás viendo, ordenada por apellido del autor, en el estilo elegido. En la segunda columna, lo que le falta a cada una.\n\nArriba se dice a cuántas les falta algún dato. Una bibliografía con tres años en blanco hay que arreglarla antes de entregarla, no después, y con la vista eso se ve de un vistazo: aquí se dice.\n\nAguanta una biblioteca entera: solo se monta la cita de las filas que se ven, así que cambiar de estilo es instantáneo tenga las que tenga.\n\nControl+I dice en qué elemento estás y de cuántos («1425 de 2484»), y Control+G pregunta a qué número ir y te deja en él. Las dos teclas se cambian en Opciones, «Accesibilidad»."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:2044
+#: src/interfaz/dialogos/opciones.py:2220
 msgid "La biblioteca (Control+Mayús+B) reúne todos los libros que has abierto alguna\nvez y, además, los de las carpetas y bibliotecas de calibre que añadas. Desde\nella se puede buscar una frase en todos los libros a la vez."
 msgstr ""
 
@@ -8846,7 +8846,7 @@ msgstr ""
 msgid "La caché del análisis (se rehace sola al volver a abrir el documento)"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:2445
+#: src/interfaz/dialogos/opciones.py:2621
 msgid "La caché ocupa ahora %.1f MB."
 msgstr ""
 
@@ -8886,7 +8886,7 @@ msgstr ""
 msgid "La descarga se ha cortado antes de terminar."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:2423
+#: src/interfaz/dialogos/opciones.py:2599
 msgid "La dirección personalizada puede ser una carpeta web con version.json y el\npaquete, o la de un repositorio de GitHub. Venga de donde venga, solo se\ninstala un paquete firmado por el autor."
 msgstr ""
 
@@ -8963,7 +8963,7 @@ msgstr ""
 msgid "La inteligencia artificial no ha devuelto ninguna descripción."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:947
+#: src/interfaz/dialogos/opciones.py:1123
 msgid "La inteligencia artificial se usa aquí para una sola cosa: describir las imágenes\ndel libro. Con Gemini la imagen se envía a los servidores de Google; con un modelo\nlocal no sale nada del equipo, pero hay que tener el servidor en marcha."
 msgstr ""
 
@@ -8971,7 +8971,7 @@ msgstr ""
 msgid "La jerarquía de encabezados se salta un nivel %d veces."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:415
+#: src/interfaz/dialogos/opciones.py:587
 msgid "La lectura continua del lector de pantalla (NVDA+A) va diciendo el texto\nrenglón a renglón y deja el cursor al principio del que está sonando. Con cada\npárrafo en una sola línea, eso significa que al parar la lectura el cursor\naparece al principio del párrafo entero: se han oído veinte líneas y hay que\nvolver a bajar por ellas para seguir a mano. Con esto marcado el renglón es la\nfrase, y el cursor se queda en la frase que estaba sonando.\n\nNo cambia el texto ni una sola posición: lo único que pasa es que el espacio\nque separa dos frases se enseña como un salto de línea. Los marcadores, las\nnotas, los resaltados y por dónde ibas siguen exactamente donde estaban, y lo\nque se copia sale con sus espacios."
 msgstr ""
 
@@ -8983,12 +8983,12 @@ msgstr ""
 msgid "La lectura de la estructura de los PDF está desactivada en las opciones."
 msgstr ""
 
-#: src/interfaz/temporizador.py:85
-#: src/interfaz/temporizador.py:102
+#: src/interfaz/temporizador.py:87
+#: src/interfaz/temporizador.py:104
 msgid "La lectura se detendrá dentro de %d minutos."
 msgstr ""
 
-#: src/interfaz/temporizador.py:86
+#: src/interfaz/temporizador.py:88
 msgid "La lectura se detendrá dentro de %d segundos."
 msgstr ""
 
@@ -9000,7 +9000,7 @@ msgstr ""
 msgid "La línea que aparece igual en la parte de arriba de casi todas las páginas —el título del libro, el del capítulo— se salta al leer de corrido.\n\nSe reconoce midiendo: se miran las dos primeras y las dos últimas líneas de cada página y se toma por cabecera lo que salga en al menos un tercio de ellas. Por eso no se equivoca con un título de verdad, que sale una vez."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:531
+#: src/interfaz/dialogos/opciones.py:703
 msgid "La mayoría de los PDF no están etiquetados: dentro solo dicen dónde pintar\ncada letra. Con esto activado el programa mide cómo está escrita cada página\ny deduce lo que el archivo no dice: los títulos por su tamaño de letra y su\nnumeración, las listas por sus viñetas, las tablas por cómo se alinean sus\ncolumnas, los enlaces por dónde están dibujados, y las columnas de un texto\na dos columnas para leerlas enteras una detrás de otra en vez de saltando de\nuna a otra en cada renglón. Un documento así se recorre con H y con T como si\nestuviera etiquetado. Cuesta alrededor de medio segundo cada diez páginas y\nno se aplica a los PDF que sí traen estructura, que no lo necesitan."
 msgstr ""
 
@@ -9037,11 +9037,11 @@ msgstr ""
 msgid "La presentación no tiene diapositivas."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:2382
+#: src/interfaz/dialogos/opciones.py:2558
 msgid "La primera vez que se abre un documento se analiza entero; con la caché, la\nsegunda vez se abre al instante. Apagarla solo tiene sentido si andas muy justo\nde disco: el análisis se repetiría cada vez."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1314
+#: src/interfaz/dialogos/opciones.py:1490
 msgid "La prueba ha fallado:\n\n%s"
 msgstr ""
 
@@ -9073,7 +9073,7 @@ msgstr ""
 msgid "La respuesta se ha cortado por ser demasiado larga."
 msgstr ""
 
-#: src/interfaz/dialogos/estructura.py:176
+#: src/interfaz/dialogos/estructura.py:178
 msgid "La revisión no ha encontrado nada claramente mal etiquetado."
 msgstr ""
 
@@ -9097,7 +9097,7 @@ msgstr ""
 msgid "La tecla D dice por dónde vas: capítulo, página, porcentaje y línea. Es la tecla que más se acaba usando.\n\nLa tecla R repite el último aviso, para cuando el lector de pantalla se ha pisado a sí mismo y no te ha dado tiempo a oírlo.\n\nPruébalo: pulsa D."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:764
+#: src/interfaz/dialogos/opciones.py:936
 msgid "La velocidad se cambia sin alterar el tono de la voz, así que subirla no\nconvierte al narrador en un pato. También se cambia mientras suena, con\nControl+Alt+Arriba y Control+Alt+Abajo: con un libro DAISY grabado abierto,\nesas teclas mandan sobre la grabación y no sobre la voz sintética."
 msgstr ""
 
@@ -9134,7 +9134,7 @@ msgstr ""
 msgid "La voz y los sonidos"
 msgstr ""
 
-#: src/interfaz/ventana.py:3916
+#: src/interfaz/ventana.py:4027
 msgid "La última actualización no se pudo aplicar del todo y el programa sigue en la versión %(version)s.\n\nSuele pasar cuando algún archivo estaba en uso. Vuelve a intentarlo desde Ayuda, Buscar actualizaciones.\n\nDetalle: %(detalle)s"
 msgstr ""
 
@@ -9170,7 +9170,7 @@ msgstr ""
 msgid "Las descripciones de las imágenes hechas con IA"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1332
+#: src/interfaz/dialogos/opciones.py:1508
 msgid "Las descripciones guardadas de todos los documentos ocupan %.0f KB."
 msgstr ""
 
@@ -9223,7 +9223,7 @@ msgstr ""
 msgid "Las partituras se escriben en musicografía braille siguiendo el documento B 4-2 de la Comisión Braille Española. Los acordes van con sus signos de intervalo, las voces simultáneas separadas por la cópula, y los adornos —trinos, mordentes y grupetos— con los signos del manual internacional. El trémolo y los arpegios que cruzan dos pentagramas se dicen en palabras."
 msgstr ""
 
-#: src/interfaz/ventana.py:506
+#: src/interfaz/ventana.py:512
 msgid "Las pestañas están desactivadas.\n\nActívalas en Herramientas → Opciones → Personalización para poder tener varios documentos abiertos a la vez."
 msgstr ""
 
@@ -9243,7 +9243,7 @@ msgstr ""
 msgid "Las teclas globales"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:2236
+#: src/interfaz/dialogos/opciones.py:2412
 msgid "Las teclas globales las registra Windows y llegan aquí aunque estés en otro\nprograma. Sirven para escuchar un libro mientras haces otra cosa: pausar,\nretroceder una frase o cambiar la velocidad sin volver al programa."
 msgstr ""
 
@@ -9287,7 +9287,7 @@ msgstr ""
 msgid "Le pregunta a la inteligencia artificial sobre lo que estás leyendo: un resumen, quién es quién, qué significa un párrafo difícil."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:164
+#: src/interfaz/dialogos/opciones.py:203
 #: src/nucleo/biblioteca.py:382
 #: src/nucleo/biblioteca_ficha.py:61
 #: src/nucleo/biblioteca_ficha.py:177
@@ -9298,15 +9298,15 @@ msgstr ""
 msgid "Lectura (teclas propias del control de texto)"
 msgstr ""
 
-#: src/interfaz/lectura_voz.py:374
+#: src/interfaz/lectura_voz.py:376
 msgid "Lectura detenida."
 msgstr ""
 
-#: src/interfaz/lectura_voz.py:307
+#: src/interfaz/lectura_voz.py:309
 msgid "Lectura en pausa."
 msgstr ""
 
-#: src/interfaz/lectura_voz.py:419
+#: src/interfaz/lectura_voz.py:421
 #: src/interfaz/dialogos/voz.py:85
 msgid "Lectura en voz alta"
 msgstr ""
@@ -9327,7 +9327,7 @@ msgstr ""
 msgid "Leer &más deprisa"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:693
+#: src/interfaz/dialogos/opciones.py:865
 msgid "Leer cada página &dos veces y juntar lo leído (tarda el doble)"
 msgstr ""
 
@@ -9347,7 +9347,7 @@ msgstr ""
 msgid "Leer la selecció&n"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:2076
+#: src/interfaz/dialogos/opciones.py:2252
 msgid "Leer los &metadatos de los EPUB al importar carpetas (título, autores, serie...)"
 msgstr ""
 
@@ -9395,7 +9395,7 @@ msgstr ""
 msgid "Leyendo aparecen palabras que uno no conoce. Con la tecla V se define la palabra del cursor sin salir del documento.\n\nSe puede buscar en el diccionario de la Real Academia, en el Wikcionario —que cubre cualquier idioma— o preguntándoselo a la inteligencia artificial, que es la única que entiende en qué sentido se usa la palabra en esa frase.\n\nPruébalo: pulsa V."
 msgstr ""
 
-#: src/interfaz/dialogos/registro.py:313
+#: src/interfaz/dialogos/registro.py:315
 msgid "Leyendo el registro..."
 msgstr ""
 
@@ -9430,7 +9430,7 @@ msgstr ""
 msgid "Leyendo los datos de %d libros..."
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:535
+#: src/interfaz/dialogos/ia.py:537
 msgid "Leyendo los datos del gráfico con %s. Puede tardar un poco..."
 msgstr ""
 
@@ -9549,8 +9549,8 @@ msgstr ""
 msgid "Licencia: %s"
 msgstr ""
 
-#: src/nucleo/ia/ollama.py:1138
-#: src/nucleo/ia/ollama.py:1139
+#: src/nucleo/ia/ollama.py:1196
+#: src/nucleo/ia/ollama.py:1197
 msgid "Limpiando lo que ya no hace falta..."
 msgstr ""
 
@@ -9588,7 +9588,7 @@ msgstr ""
 msgid "Lista de atajos de teclado"
 msgstr ""
 
-#: src/interfaz/ventana.py:980
+#: src/interfaz/ventana.py:1022
 msgid "Lista de documentos recientes vaciada."
 msgstr ""
 
@@ -9600,11 +9600,11 @@ msgstr ""
 msgid "Lista de los últimos documentos abiertos."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1645
+#: src/interfaz/dialogos/opciones.py:1821
 msgid "Lista de modelos actualizada."
 msgstr ""
 
-#: src/interfaz/ventana.py:2458
+#: src/interfaz/ventana.py:2569
 msgid "Lista guardada en %s"
 msgstr ""
 
@@ -9624,7 +9624,7 @@ msgstr ""
 msgid "Listo"
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:885
+#: src/interfaz/dialogos/ia.py:887
 msgid "Listo para empezar."
 msgstr ""
 
@@ -9636,9 +9636,9 @@ msgstr ""
 msgid "Listo. %s"
 msgstr ""
 
-#: src/interfaz/ventana.py:205
-#: src/interfaz/ventana.py:1538
-#: src/interfaz/ventana.py:487
+#: src/interfaz/ventana.py:207
+#: src/interfaz/ventana.py:1600
+#: src/interfaz/ventana.py:490
 msgid "Listo. Pulsa Control+O para abrir un documento."
 msgstr ""
 
@@ -9808,7 +9808,7 @@ msgstr ""
 msgid "Lo último de Google en la versión pensada para equipos modestos. Entiende más de ciento cuarenta idiomas, así que es el que mejor responde cuando el libro no está en español ni en inglés, y lee con soltura el texto de una página escaneada, una captura de pantalla o un gráfico.\n\nEs la versión **QAT**: se entrenó ya sabiendo que iba a comprimirse, de manera que ocupa poco más de cuatro gigas conservando la calidad del modelo entero. Cuenta con unos cinco gigas de memoria libre, aunque Google dice que puede apañarse con tres.\n\nBuena elección si lees en varios idiomas y no tienes tarjeta gráfica. En tablas y diagramas sigue acertando más Granite."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:442
+#: src/interfaz/dialogos/opciones.py:614
 msgid "Los PDF escaneados y los libros DAISY grabados tienen sus propias pestañas,\n«Reconocimiento» y «DAISY»."
 msgstr ""
 
@@ -9816,7 +9816,7 @@ msgstr ""
 msgid "Los apuntes del cuaderno"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1876
+#: src/interfaz/dialogos/opciones.py:2052
 msgid "Los colores se eligen por su nombre. Las combinaciones de más contraste\nson letra amarilla o blanca sobre fondo negro, y letra negra sobre fondo\ncrema o amarillo pálido."
 msgstr ""
 
@@ -9868,7 +9868,7 @@ msgstr ""
 msgid "Los libros que has quitado a mano de la biblioteca no vuelven al actualizar. Esto los devuelve: se olvida que los quitaste y se actualizan sus fuentes para que aparezcan otra vez."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:789
+#: src/interfaz/dialogos/opciones.py:961
 msgid "Los mandos completos están en el menú «Reproductor» (Control+Alt+R), con la\nlista de capítulos y páginas y el nivel de navegación. Las teclas globales\nmanejan la grabación desde cualquier programa."
 msgstr ""
 
@@ -9880,7 +9880,7 @@ msgstr ""
 msgid "Los marcadores y las notas no se pueden recuperar."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1528
+#: src/interfaz/dialogos/opciones.py:1704
 msgid "Los modelos ocupan %s en el disco."
 msgstr ""
 
@@ -9888,7 +9888,7 @@ msgstr ""
 msgid "Los nombres propios de este libro. Se guardan con él y vuelven al abrirlo."
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:210
+#: src/interfaz/dialogos/ia.py:211
 msgid "Los prompts predefinidos no se editan ni se borran. Duplícalo para cambiarlo."
 msgstr ""
 
@@ -9924,7 +9924,7 @@ msgstr ""
 msgid "Línea %d de %d"
 msgstr ""
 
-#: src/interfaz/ventana.py:1860
+#: src/interfaz/ventana.py:1971
 msgid "Línea %d."
 msgstr ""
 
@@ -9936,7 +9936,7 @@ msgstr ""
 msgid "Líneas: %s"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:2611
+#: src/interfaz/dialogos/opciones.py:2813
 #: src/nucleo/ia/ollama.py:277
 msgid "MB"
 msgstr ""
@@ -9945,7 +9945,7 @@ msgstr ""
 msgid "MLA 9.ª edición"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:553
+#: src/interfaz/dialogos/opciones.py:725
 msgid "MOTOR"
 msgstr ""
 
@@ -9973,7 +9973,7 @@ msgstr ""
 msgid "Manda y trae los cambios por su cuenta, sin tener que acordarse.\n\nRecomendado: activado si usas dos equipos. Acordarse de sincronizar a mano funciona hasta el día que no te acuerdas, que es el día que pierdes por dónde ibas."
 msgstr ""
 
-#: src/interfaz/ventana.py:3236
+#: src/interfaz/ventana.py:3347
 msgid "Manual de %s"
 msgstr ""
 
@@ -10006,7 +10006,7 @@ msgstr ""
 msgid "Marca las clases de datos que quieras eliminar. Se dice cuánto ocupa cada una y se avisa antes de borrar; los marcadores y las notas no se tocan desde aquí."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1977
+#: src/interfaz/dialogos/opciones.py:2153
 msgid "Marca los formatos que quieras abrir con este programa desde el\nexplorador de archivos. Lo que no marques se queda como está."
 msgstr ""
 
@@ -10018,11 +10018,11 @@ msgstr ""
 msgid "Marca visualmente el texto en negrita y en cursiva del documento.\n\nEs solo visual: los lectores de pantalla anuncian el formato por su cuenta si los tienes configurados para eso.\n\nRecomendado: desactivado. En un documento con muchas cursivas hace más lento el desplazamiento y no aporta nada a quien lee de oído."
 msgstr ""
 
-#: src/interfaz/ventana.py:2039
+#: src/interfaz/ventana.py:2150
 msgid "Marcador eliminado."
 msgstr ""
 
-#: src/interfaz/ventana.py:2043
+#: src/interfaz/ventana.py:2154
 msgid "Marcador puesto en el %d por ciento."
 msgstr ""
 
@@ -10042,7 +10042,7 @@ msgstr ""
 msgid "Marcadores y notas del documento"
 msgstr ""
 
-#: src/interfaz/dialogos/estructura.py:86
+#: src/interfaz/dialogos/estructura.py:88
 msgid "Marcar &todas"
 msgstr ""
 
@@ -10117,7 +10117,7 @@ msgstr ""
 msgid "Mi perfil"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:308
+#: src/interfaz/dialogos/opciones.py:480
 msgid "Mientras no hay libro abierto, el cuadro de lectura enseña un resumen de todo lo\nque se puede hacer y con qué tecla. Es lo que hace falta el primer día; cuando ya\nte las sabes, es una pantalla por la que pasar cada vez que arrancas.\n\nDesmarcándolo quedan dos líneas: el nombre del programa y cómo abrir un\ndocumento. El resumen entero sigue estando en Mayús+F1, con todas las teclas y su\ndescripción."
 msgstr ""
 
@@ -10133,7 +10133,7 @@ msgstr ""
 msgid "Mientras suena la grabación, el cursor del texto se va moviendo a la frase que se está oyendo.\n\nSirve para poder consultar en cualquier momento con tu lector de pantalla lo que acaba de sonar, y para saber por dónde vas. En un libro DAISY de solo audio es además la única forma de situarse.\n\nRecomendado: activado."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1451
+#: src/interfaz/dialogos/opciones.py:1627
 msgid "Minutos que el modelo se queda &cargado en memoria:"
 msgstr ""
 
@@ -10145,19 +10145,19 @@ msgstr ""
 msgid "Mirando qué hay guardado..."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:975
+#: src/interfaz/dialogos/opciones.py:1151
 msgid "Mo&delo de Gemini:"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1029
+#: src/interfaz/dialogos/opciones.py:1205
 msgid "Mode&lo:"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1731
+#: src/interfaz/dialogos/opciones.py:1907
 msgid "Modelo %s borrado."
 msgstr ""
 
-#: src/nucleo/ia/ollama.py:1113
+#: src/nucleo/ia/ollama.py:1171
 msgid "Modelo %s descargado."
 msgstr ""
 
@@ -10169,7 +10169,7 @@ msgstr ""
 msgid "Modelo con el que se trabaja"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:994
+#: src/interfaz/dialogos/opciones.py:1170
 msgid "Modelo de &Claude:"
 msgstr ""
 
@@ -10177,11 +10177,11 @@ msgstr ""
 msgid "Modelo del servicio compatible"
 msgstr ""
 
-#: src/nucleo/ia/ollama.py:1140
+#: src/nucleo/ia/ollama.py:1198
 msgid "Modelo listo."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1036
+#: src/interfaz/dialogos/opciones.py:1212
 msgid "Modelo local"
 msgstr ""
 
@@ -10189,11 +10189,11 @@ msgstr ""
 msgid "Modelo local (llama.cpp, Ollama, LM Studio)"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1715
+#: src/interfaz/dialogos/opciones.py:1891
 msgid "Modelo «%s» importado y elegido."
 msgstr ""
 
-#: src/nucleo/ia/ollama.py:948
+#: src/nucleo/ia/ollama.py:1006
 msgid "Modelo «%s» importado."
 msgstr ""
 
@@ -10213,11 +10213,11 @@ msgstr ""
 msgid "Modo &lectura"
 msgstr ""
 
-#: src/interfaz/ventana.py:3091
+#: src/interfaz/ventana.py:3202
 msgid "Modo lectura activado."
 msgstr ""
 
-#: src/interfaz/ventana.py:3092
+#: src/interfaz/ventana.py:3203
 msgid "Modo lectura desactivado."
 msgstr ""
 
@@ -10237,7 +10237,7 @@ msgstr ""
 msgid "Moondream (el más ligero)"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:378
+#: src/interfaz/dialogos/opciones.py:550
 msgid "Mostrar la &negrita y la cursiva del libro (hace más lento el desplazamiento)"
 msgstr ""
 
@@ -10245,7 +10245,7 @@ msgstr ""
 msgid "Mostrar la negrita y la cursiva"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:340
+#: src/interfaz/dialogos/opciones.py:512
 msgid "Mostrar las &tablas completas dentro del texto (requiere volver a abrir el libro)"
 msgstr ""
 
@@ -10285,7 +10285,7 @@ msgstr ""
 msgid "Motor: %s"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1514
+#: src/interfaz/dialogos/opciones.py:1690
 msgid "Motor: Ollama %s, en la carpeta «data» del programa."
 msgstr ""
 
@@ -10293,7 +10293,7 @@ msgstr ""
 msgid "Motores de voz"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:773
+#: src/interfaz/dialogos/opciones.py:945
 msgid "Mover el &cursor siguiendo a la grabación"
 msgstr ""
 
@@ -10341,7 +10341,7 @@ msgstr ""
 msgid "Más del teclado numérico"
 msgstr ""
 
-#: src/interfaz/dialogos/registro.py:70
+#: src/interfaz/dialogos/registro.py:71
 msgid "Módulo"
 msgstr ""
 
@@ -10357,12 +10357,12 @@ msgstr ""
 msgid "Naranja"
 msgstr ""
 
-#: src/interfaz/reproductor_daisy.py:723
+#: src/interfaz/reproductor_daisy.py:725
 msgid "Narrado por %s"
 msgstr ""
 
-#: src/interfaz/reproductor_daisy.py:572
-#: src/interfaz/reproductor_daisy.py:868
+#: src/interfaz/reproductor_daisy.py:574
+#: src/interfaz/reproductor_daisy.py:871
 msgid "Navegación por %s. %d en el libro."
 msgstr ""
 
@@ -10378,7 +10378,7 @@ msgstr ""
 msgid "Ninguna"
 msgstr ""
 
-#: src/interfaz/reproductor_daisy.py:178
+#: src/interfaz/reproductor_daisy.py:180
 #: src/interfaz/dialogos/corregir.py:80
 msgid "Nivel %d"
 msgstr ""
@@ -10396,7 +10396,7 @@ msgstr ""
 msgid "No"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1903
+#: src/interfaz/dialogos/opciones.py:2079
 msgid "No avisar de los elementos"
 msgstr ""
 
@@ -10428,7 +10428,7 @@ msgstr ""
 msgid "No decir los números de página sueltos"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1593
+#: src/interfaz/dialogos/opciones.py:1769
 msgid "No había ningún servidor en marcha."
 msgstr ""
 
@@ -10456,7 +10456,7 @@ msgstr ""
 msgid "No has terminado ninguno. Se puede volver cuando quieras: Ayuda, Practicar."
 msgstr ""
 
-#: src/interfaz/ventana.py:1818
+#: src/interfaz/ventana.py:1929
 msgid "No hay %s %s."
 msgstr ""
 
@@ -10472,7 +10472,7 @@ msgstr ""
 msgid "No hay libros de los que sacar el cuaderno."
 msgstr ""
 
-#: src/interfaz/ventana.py:1806
+#: src/interfaz/ventana.py:1917
 msgid "No hay marcadores en este documento."
 msgstr ""
 
@@ -10484,7 +10484,7 @@ msgstr ""
 msgid "No hay más %s hacia atrás."
 msgstr ""
 
-#: src/interfaz/reproductor_daisy.py:601
+#: src/interfaz/reproductor_daisy.py:603
 msgid "No hay más %s."
 msgstr ""
 
@@ -10504,21 +10504,21 @@ msgstr ""
 msgid "No hay nada marcado que repasar."
 msgstr ""
 
-#: src/interfaz/dialogos/registro.py:424
+#: src/interfaz/dialogos/registro.py:426
 msgid "No hay nada que copiar con este filtro."
 msgstr ""
 
-#: src/interfaz/ventana.py:2419
+#: src/interfaz/ventana.py:2530
 #: src/interfaz/dialogos/diccionario.py:126
 #: src/interfaz/dialogos/preguntar.py:144
 msgid "No hay nada que copiar."
 msgstr ""
 
-#: src/interfaz/ventana.py:2659
+#: src/interfaz/ventana.py:2770
 msgid "No hay nada que corregir en esta línea."
 msgstr ""
 
-#: src/interfaz/ventana.py:2438
+#: src/interfaz/ventana.py:2549
 msgid "No hay nada que guardar."
 msgstr ""
 
@@ -10531,11 +10531,11 @@ msgstr ""
 msgid "No hay nada que preguntar."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1076
+#: src/interfaz/dialogos/opciones.py:1252
 msgid "No hay nada que rellenar: la dirección, el puerto y el modelo los pone el\nprograma. Todo lo demás —arrancar, parar, instalar modelos— está en la\npestaña «IA local»."
 msgstr ""
 
-#: src/interfaz/lectura_voz.py:400
+#: src/interfaz/lectura_voz.py:402
 msgid "No hay nada seleccionado."
 msgstr ""
 
@@ -10560,20 +10560,20 @@ msgstr ""
 msgid "No hay ninguna clave API de Gemini configurada."
 msgstr ""
 
-#: src/interfaz/dialogos/registro.py:400
+#: src/interfaz/dialogos/registro.py:402
 msgid "No hay ninguna entrada donde buscar."
 msgstr ""
 
-#: src/interfaz/ventana.py:2519
-#: src/interfaz/ventana.py:2602
+#: src/interfaz/ventana.py:2630
+#: src/interfaz/ventana.py:2713
 msgid "No hay ninguna imagen en esta línea. Usa la tecla G para ir a la siguiente imagen."
 msgstr ""
 
-#: src/interfaz/ventana.py:1832
+#: src/interfaz/ventana.py:1943
 msgid "No hay ninguna posición anterior."
 msgstr ""
 
-#: src/interfaz/ventana.py:1840
+#: src/interfaz/ventana.py:1951
 msgid "No hay ninguna posición siguiente."
 msgstr ""
 
@@ -10586,15 +10586,15 @@ msgstr ""
 msgid "No hay ninguna regla seleccionada."
 msgstr ""
 
-#: src/interfaz/ventana.py:2801
+#: src/interfaz/ventana.py:2912
 msgid "No hay ninguna tabla aquí. Usa la tecla T para ir a la siguiente."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:236
+#: src/interfaz/dialogos/opciones.py:408
 msgid "No hay ninguna traducción instalada; se ve en español."
 msgstr ""
 
-#: src/interfaz/ventana.py:2353
+#: src/interfaz/ventana.py:2464
 msgid "No hay ninguno que quitar."
 msgstr ""
 
@@ -10602,7 +10602,7 @@ msgstr ""
 msgid "No hay ningún %s en el documento."
 msgstr ""
 
-#: src/interfaz/ventana.py:3325
+#: src/interfaz/ventana.py:3436
 #: src/nucleo/estadisticas.py:204
 msgid "No hay ningún documento abierto."
 msgstr ""
@@ -10611,11 +10611,11 @@ msgstr ""
 msgid "No hay ningún documento abierto. Pulsa Control+O para abrir uno."
 msgstr ""
 
-#: src/interfaz/ventana.py:2731
+#: src/interfaz/ventana.py:2842
 msgid "No hay ningún documento que volver a analizar."
 msgstr ""
 
-#: src/interfaz/reproductor_daisy.py:682
+#: src/interfaz/reproductor_daisy.py:684
 msgid "No hay ningún libro DAISY abierto."
 msgstr ""
 
@@ -10637,11 +10637,11 @@ msgstr ""
 msgid "No hay ningún proveedor de IA activo."
 msgstr ""
 
-#: src/interfaz/ventana.py:3940
+#: src/interfaz/ventana.py:4051
 msgid "No hay ningún sitio configurado donde buscar actualizaciones.\n\nSi has elegido una dirección personalizada, escríbela en Opciones, «Avanzado»."
 msgstr ""
 
-#: src/interfaz/ventana.py:1805
+#: src/interfaz/ventana.py:1916
 msgid "No hay notas en este documento."
 msgstr ""
 
@@ -10649,11 +10649,11 @@ msgstr ""
 msgid "No me acordaba"
 msgstr ""
 
-#: src/interfaz/lectura_voz.py:319
+#: src/interfaz/lectura_voz.py:321
 msgid "No queda nada por leer."
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:883
+#: src/interfaz/dialogos/ia.py:885
 msgid "No queda ninguna imagen por describir."
 msgstr ""
 
@@ -10673,7 +10673,7 @@ msgstr ""
 msgid "No se borra ningún archivo ni nada de lo que hayas hecho en ellos. Al actualizar su biblioteca no vuelven; para recuperarlos, «Devolver los libros quitados» en Bibliotecas y carpetas."
 msgstr ""
 
-#: src/interfaz/ventana.py:3256
+#: src/interfaz/ventana.py:3367
 msgid "No se encuentra el archivo de novedades.\n\nDebería estar en:\n%s"
 msgstr ""
 
@@ -10685,15 +10685,15 @@ msgstr ""
 msgid "No se encuentra el archivo del proyector."
 msgstr ""
 
-#: src/nucleo/ia/ollama.py:908
+#: src/nucleo/ia/ollama.py:966
 msgid "No se encuentra el archivo: %s"
 msgstr ""
 
-#: src/interfaz/ventana.py:1225
+#: src/interfaz/ventana.py:1273
 msgid "No se encuentra el documento"
 msgstr ""
 
-#: src/interfaz/ventana.py:3237
+#: src/interfaz/ventana.py:3348
 msgid "No se encuentra el manual de usuario.\n\nDebería estar en:\n%s"
 msgstr ""
 
@@ -10705,7 +10705,7 @@ msgstr ""
 msgid "No se ha detectado ninguna carencia de las que se comprueban."
 msgstr ""
 
-#: src/interfaz/ventana.py:3783
+#: src/interfaz/ventana.py:3894
 msgid "No se ha encontrado el texto de esa nota."
 msgstr ""
 
@@ -10713,7 +10713,7 @@ msgstr ""
 msgid "No se ha encontrado nada."
 msgstr ""
 
-#: src/interfaz/dialogos/registro.py:417
+#: src/interfaz/dialogos/registro.py:419
 #: src/nucleo/busqueda.py:140
 #: src/nucleo/busqueda.py:164
 msgid "No se ha encontrado «%s»."
@@ -10748,23 +10748,23 @@ msgstr ""
 msgid "No se ha podido abrir el cómic: %s"
 msgstr ""
 
-#: src/interfaz/ventana.py:1482
+#: src/interfaz/ventana.py:1544
 msgid "No se ha podido abrir el documento"
 msgstr ""
 
-#: src/interfaz/ventana.py:1474
+#: src/interfaz/ventana.py:1535
 msgid "No se ha podido abrir el documento."
 msgstr ""
 
-#: src/interfaz/ventana.py:3222
+#: src/interfaz/ventana.py:3333
 msgid "No se ha podido abrir el documento:\n%s"
 msgstr ""
 
-#: src/interfaz/ventana.py:2422
+#: src/interfaz/ventana.py:2533
 msgid "No se ha podido abrir el portapapeles."
 msgstr ""
 
-#: src/interfaz/reproductor_daisy.py:380
+#: src/interfaz/reproductor_daisy.py:382
 msgid "No se ha podido abrir el sonido del libro."
 msgstr ""
 
@@ -10772,7 +10772,7 @@ msgstr ""
 msgid "No se ha podido abrir la tarjeta de sonido:\n\n%s"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:2029
+#: src/interfaz/dialogos/opciones.py:2205
 msgid "No se ha podido abrir la ventana de Windows. Búscala en Configuración, «Aplicaciones», «Aplicaciones predeterminadas»."
 msgstr ""
 
@@ -10784,7 +10784,7 @@ msgstr ""
 msgid "No se ha podido abrir: %s"
 msgstr ""
 
-#: src/nucleo/ia/ollama.py:1170
+#: src/nucleo/ia/ollama.py:1228
 msgid "No se ha podido borrar el modelo: %s"
 msgstr ""
 
@@ -10816,7 +10816,7 @@ msgstr ""
 msgid "No se ha podido completar: %s"
 msgstr ""
 
-#: src/interfaz/ventana.py:3957
+#: src/interfaz/ventana.py:4068
 msgid "No se ha podido comprobar si hay una versión nueva.\n\nRevisa la conexión a Internet y vuelve a intentarlo."
 msgstr ""
 
@@ -10836,7 +10836,7 @@ msgstr ""
 msgid "No se ha podido consultar si hay versión nueva de Ollama: %s"
 msgstr ""
 
-#: src/nucleo/ia/ollama.py:1010
+#: src/nucleo/ia/ollama.py:1068
 msgid "No se ha podido copiar %(que)s: %(fallo)s"
 msgstr ""
 
@@ -10853,15 +10853,15 @@ msgstr ""
 msgid "No se ha podido descargar el idioma: %s"
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:679
+#: src/interfaz/dialogos/ia.py:681
 msgid "No se ha podido describir la imagen."
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:681
+#: src/interfaz/dialogos/ia.py:683
 msgid "No se ha podido describir la imagen:\n\n%s"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1595
+#: src/interfaz/dialogos/opciones.py:1771
 msgid "No se ha podido detener; sigue contestando."
 msgstr ""
 
@@ -10877,11 +10877,11 @@ msgstr ""
 msgid "No se ha podido exportar a audio:\n\n%s"
 msgstr ""
 
-#: src/interfaz/ventana.py:2964
+#: src/interfaz/ventana.py:3075
 msgid "No se ha podido exportar:\n%s"
 msgstr ""
 
-#: src/interfaz/ventana.py:2626
+#: src/interfaz/ventana.py:2737
 msgid "No se ha podido extraer esta imagen del documento."
 msgstr ""
 
@@ -10909,7 +10909,7 @@ msgstr ""
 msgid "No se ha podido guardar la bibliografía:\n%s"
 msgstr ""
 
-#: src/interfaz/ventana.py:2671
+#: src/interfaz/ventana.py:2782
 msgid "No se ha podido guardar la corrección."
 msgstr ""
 
@@ -10917,7 +10917,7 @@ msgstr ""
 msgid "No se ha podido guardar la imagen: %s"
 msgstr ""
 
-#: src/interfaz/ventana.py:2455
+#: src/interfaz/ventana.py:2566
 msgid "No se ha podido guardar: %s"
 msgstr ""
 
@@ -10925,7 +10925,7 @@ msgstr ""
 msgid "No se ha podido hacer la copia: %s"
 msgstr ""
 
-#: src/interfaz/ventana.py:3996
+#: src/interfaz/ventana.py:4107
 msgid "No se ha podido iniciar la actualización. Inténtalo de nuevo."
 msgstr ""
 
@@ -10948,7 +10948,7 @@ msgstr ""
 msgid "No se ha podido leer el paquete: %s"
 msgstr ""
 
-#: src/interfaz/dialogos/registro.py:341
+#: src/interfaz/dialogos/registro.py:343
 msgid "No se ha podido leer el registro: %s"
 msgstr ""
 
@@ -10977,7 +10977,7 @@ msgstr ""
 msgid "No se ha podido preparar el índice de palabras relacionadas."
 msgstr ""
 
-#: src/interfaz/ventana.py:3660
+#: src/interfaz/ventana.py:3771
 msgid "No se ha podido preparar la carpeta: %s"
 msgstr ""
 
@@ -10994,11 +10994,11 @@ msgstr ""
 msgid "No se ha podido restaurar la copia:\n\n%s"
 msgstr ""
 
-#: src/interfaz/dialogos/estructura.py:193
+#: src/interfaz/dialogos/estructura.py:195
 msgid "No se ha podido revisar la estructura."
 msgstr ""
 
-#: src/interfaz/dialogos/estructura.py:195
+#: src/interfaz/dialogos/estructura.py:197
 msgid "No se ha podido revisar la estructura:\n\n%s"
 msgstr ""
 
@@ -11006,12 +11006,12 @@ msgstr ""
 msgid "No se ha podido sincronizar: %s"
 msgstr ""
 
-#: src/interfaz/ventana.py:3677
+#: src/interfaz/ventana.py:3788
 #: src/nucleo/traer_web.py:132
 msgid "No se ha podido traer la página: %s"
 msgstr ""
 
-#: src/interfaz/dialogos/registro.py:434
+#: src/interfaz/dialogos/registro.py:436
 msgid "No se ha podido usar el portapapeles."
 msgstr ""
 
@@ -11023,11 +11023,11 @@ msgstr ""
 msgid "No se ha podido usar la voz del sistema para grabar: %s"
 msgstr ""
 
-#: src/interfaz/dialogos/registro.py:456
+#: src/interfaz/dialogos/registro.py:458
 msgid "No se ha podido vaciar el archivo:\n%s"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:2469
+#: src/interfaz/dialogos/opciones.py:2645
 msgid "No se ha podido vaciar la caché:\n\n%s"
 msgstr ""
 
@@ -11035,7 +11035,7 @@ msgstr ""
 msgid "No se ha visto una tarjeta gráfica dedicada, así que trabajará el procesador. **Funciona igual**, solo que más despacio: describir una imagen puede llevar de medio minuto a un par de minutos según el modelo. Por eso conviene elegir uno de los pequeños."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1348
+#: src/interfaz/dialogos/opciones.py:1524
 msgid "No se han podido borrar las descripciones:\n\n%s"
 msgstr ""
 
@@ -11047,11 +11047,11 @@ msgstr ""
 msgid "No se han podido guardar las fichas:\n\n%s"
 msgstr ""
 
-#: src/interfaz/ventana.py:2237
+#: src/interfaz/ventana.py:2348
 msgid "No se han podido guardar los resaltados:\n%s"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1264
+#: src/interfaz/dialogos/opciones.py:1440
 msgid "No se han podido obtener los modelos:\n\n%s"
 msgstr ""
 
@@ -11106,7 +11106,7 @@ msgstr ""
 msgid "Nombre del modelo"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1666
+#: src/interfaz/dialogos/opciones.py:1842
 msgid "Nombre del modelo tal como aparece en ollama.com,\npor ejemplo «llava:7b»:"
 msgstr ""
 
@@ -11122,15 +11122,15 @@ msgstr ""
 msgid "Nota"
 msgstr ""
 
-#: src/interfaz/ventana.py:2071
+#: src/interfaz/ventana.py:2182
 msgid "Nota eliminada."
 msgstr ""
 
-#: src/interfaz/ventana.py:2081
+#: src/interfaz/ventana.py:2192
 msgid "Nota guardada con las etiquetas %s."
 msgstr ""
 
-#: src/interfaz/ventana.py:2084
+#: src/interfaz/ventana.py:2195
 msgid "Nota guardada."
 msgstr ""
 
@@ -11139,7 +11139,7 @@ msgstr ""
 msgid "Nota:"
 msgstr ""
 
-#: src/interfaz/ventana.py:3786
+#: src/interfaz/ventana.py:3897
 #: src/nucleo/cuaderno.py:187
 #: src/nucleo/resaltados.py:168
 msgid "Nota: %s"
@@ -11160,7 +11160,7 @@ msgstr ""
 msgid "Notas del ponente"
 msgstr ""
 
-#: src/interfaz/ventana.py:3255
+#: src/interfaz/ventana.py:3366
 msgid "Novedades de %s"
 msgstr ""
 
@@ -11176,7 +11176,7 @@ msgstr ""
 msgid "Nueva instrucción"
 msgstr ""
 
-#: src/interfaz/ventana.py:509
+#: src/interfaz/ventana.py:515
 msgid "Nueva pestaña"
 msgstr ""
 
@@ -11192,14 +11192,14 @@ msgstr ""
 msgid "Número del elemento"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1258
-#: src/interfaz/dialogos/opciones.py:1265
-#: src/interfaz/dialogos/opciones.py:1276
-#: src/interfaz/dialogos/opciones.py:1281
+#: src/interfaz/dialogos/opciones.py:1434
+#: src/interfaz/dialogos/opciones.py:1441
+#: src/interfaz/dialogos/opciones.py:1452
+#: src/interfaz/dialogos/opciones.py:1457
 msgid "Obtener los modelos"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1262
+#: src/interfaz/dialogos/opciones.py:1438
 msgid "Obteniendo los modelos"
 msgstr ""
 
@@ -11223,20 +11223,20 @@ msgstr ""
 msgid "Ollama %s ya está en la carpeta «data» de este programa.\n\nSi quieres comprobar si hay una versión más nueva, hazlo desde Opciones, «IA local». Pulsa Siguiente para elegir el modelo."
 msgstr ""
 
-#: src/nucleo/ia/ollama.py:721
+#: src/nucleo/ia/ollama.py:779
 msgid "Ollama no está instalado todavía. Ve a Opciones, «IA local», y usa el asistente para instalarlo."
 msgstr ""
 
-#: src/nucleo/ia/ollama.py:1007
+#: src/nucleo/ia/ollama.py:1065
 msgid "Ollama no ha aceptado el archivo %(que)s: %(fallo)s"
 msgstr ""
 
-#: src/nucleo/ia/ollama.py:1038
-#: src/nucleo/ia/ollama.py:1033
+#: src/nucleo/ia/ollama.py:1096
+#: src/nucleo/ia/ollama.py:1091
 msgid "Ollama no ha podido crear el modelo: %s"
 msgstr ""
 
-#: src/nucleo/ia/ollama.py:1082
+#: src/nucleo/ia/ollama.py:1140
 msgid "Ollama no ha podido descargar el modelo: %s"
 msgstr ""
 
@@ -11244,7 +11244,7 @@ msgstr ""
 msgid "Olvidar la corrección de este elemento"
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:703
+#: src/interfaz/dialogos/ia.py:705
 msgid "Olvidar la descripción"
 msgstr ""
 
@@ -11253,7 +11253,7 @@ msgid "Olvidar la descripción guardada"
 msgstr ""
 
 #: src/interfaz/dialogos/buscar.py:55
-#: src/interfaz/dialogos/opciones.py:150
+#: src/interfaz/dialogos/opciones.py:171
 msgid "Opciones"
 msgstr ""
 
@@ -11261,7 +11261,7 @@ msgstr ""
 msgid "OpenAI y compatibles: Groq, DeepSeek, OpenRouter... (por internet)"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1002
+#: src/interfaz/dialogos/opciones.py:1178
 msgid "OpenAI y servicios compatibles"
 msgstr ""
 
@@ -11281,11 +11281,11 @@ msgstr ""
 msgid "Otro color…"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1658
+#: src/interfaz/dialogos/opciones.py:1834
 msgid "Otro: escribir el nombre a mano"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:301
+#: src/interfaz/dialogos/opciones.py:473
 msgid "PANTALLA DE BIENVENIDA"
 msgstr ""
 
@@ -11306,11 +11306,11 @@ msgstr ""
 msgid "PDF sin etiquetar: no trae estructura de accesibilidad."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:240
+#: src/interfaz/dialogos/opciones.py:412
 msgid "PESTAÑAS"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:590
+#: src/interfaz/dialogos/opciones.py:762
 msgid "PREPARAR LA IMAGEN"
 msgstr ""
 
@@ -11353,7 +11353,7 @@ msgstr ""
 msgid "Para abrir archivos PDF hace falta el complemento «pypdfium2», que no está instalado. Instálalo con: pip install pypdfium2"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1426
+#: src/interfaz/dialogos/opciones.py:1602
 msgid "Para describir imágenes el modelo tiene que admitirlas. Los que instala el\nasistente las admiten todos; si añades uno por tu cuenta, comprueba que sea\nde visión o solo servirá para preguntas de texto.\n«Importar uno del disco» mete un modelo que ya tengas descargado en formato\nGGUF, con su archivo de visión si lo tiene."
 msgstr ""
 
@@ -11430,7 +11430,7 @@ msgstr ""
 msgid "Pasa el EPUB que acabas de exportar por las mismas comprobaciones de accesibilidad que se le hacen a cualquier otro libro: si el envoltorio está bien formado, si declara los metadatos que pide la norma europea, si su índice lleva de verdad a cada capítulo, si los encabezados se saltan niveles, si hay imágenes sin describir y si las tablas marcan su fila de encabezados.\n\nTarda una décima de segundo. Si algo está mal de verdad se enseña en una ventana; si solo hay observaciones, se dicen.\n\nRecomendado: activado. Es la diferencia entre mandarle a alguien un libro que se lee y uno que no."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:491
+#: src/interfaz/dialogos/opciones.py:663
 msgid "Pasa el EPUB recién escrito por las mismas comprobaciones que se le hacen a\ncualquier otro libro: el envoltorio, los metadatos de accesibilidad, el índice\ny las imágenes sin describir. Tarda una décima."
 msgstr ""
 
@@ -11443,7 +11443,7 @@ msgstr ""
 msgid "Pasajes resaltados"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:597
+#: src/interfaz/dialogos/opciones.py:769
 msgid "Pasar la página a escala de &grises"
 msgstr ""
 
@@ -11473,7 +11473,7 @@ msgstr ""
 msgid "Pedir la revisión"
 msgstr ""
 
-#: src/interfaz/ventana.py:3644
+#: src/interfaz/ventana.py:3755
 msgid "Pega o escribe la dirección de la página que quieres leer.\n\nSe trae, se le quitan los menús y los anuncios y se abre. Si es un PDF o un EPUB, se descarga y se abre tal cual."
 msgstr ""
 
@@ -11505,7 +11505,7 @@ msgstr ""
 msgid "Perfiles guardados"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:165
+#: src/interfaz/dialogos/opciones.py:210
 msgid "Personalización"
 msgstr ""
 
@@ -11517,7 +11517,7 @@ msgstr ""
 msgid "Pestaña &siguiente"
 msgstr ""
 
-#: src/interfaz/ventana.py:1526
+#: src/interfaz/ventana.py:1588
 msgid "Pestaña cerrada. Quedan %d."
 msgstr ""
 
@@ -11528,7 +11528,7 @@ msgstr ""
 #: src/interfaz/atajos.py:179
 #: src/interfaz/atajos.py:182
 #: src/interfaz/atajos.py:184
-#: src/interfaz/ventana.py:90
+#: src/interfaz/ventana.py:92
 msgid "Pestañas"
 msgstr ""
 
@@ -11592,7 +11592,7 @@ msgstr ""
 msgid "Poniendo al día las bibliotecas de calibre con lo nuevo de esta versión..."
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:91
+#: src/interfaz/dialogos/ia.py:92
 msgid "Ponle un nombre al prompt para poder reconocerlo en la lista."
 msgstr ""
 
@@ -11609,7 +11609,7 @@ msgstr ""
 msgid "Posición"
 msgstr ""
 
-#: src/interfaz/ventana.py:1834
+#: src/interfaz/ventana.py:1945
 msgid "Posición anterior. "
 msgstr ""
 
@@ -11617,12 +11617,12 @@ msgstr ""
 msgid "Posición en el documento: %d por ciento."
 msgstr ""
 
-#: src/interfaz/ventana.py:1842
+#: src/interfaz/ventana.py:1953
 msgid "Posición siguiente. "
 msgstr ""
 
-#: src/interfaz/dialogos/practica.py:224
-#: src/interfaz/dialogos/practica.py:49
+#: src/interfaz/dialogos/practica.py:226
+#: src/interfaz/dialogos/practica.py:50
 msgid "Practicar"
 msgstr ""
 
@@ -11642,11 +11642,11 @@ msgstr ""
 msgid "Pregunta: %s — siguiendo la conversación"
 msgstr ""
 
-#: src/nucleo/ia/ollama.py:1135
+#: src/nucleo/ia/ollama.py:1193
 msgid "Preguntando por el modelo..."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1647
+#: src/interfaz/dialogos/opciones.py:1823
 msgid "Preguntando por los modelos..."
 msgstr ""
 
@@ -11659,7 +11659,7 @@ msgstr ""
 msgid "Preguntar"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:2058
+#: src/interfaz/dialogos/opciones.py:2234
 msgid "Preguntar cada vez"
 msgstr ""
 
@@ -11668,7 +11668,7 @@ msgstr ""
 msgid "Preguntar sobre el documento"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:272
+#: src/interfaz/dialogos/opciones.py:444
 msgid "Preguntarme cada vez"
 msgstr ""
 
@@ -11680,7 +11680,7 @@ msgstr ""
 msgid "Preparando el texto: %(hecho)d de %(total)d"
 msgstr ""
 
-#: src/interfaz/lectura_voz.py:623
+#: src/interfaz/lectura_voz.py:625
 msgid "Preparando la voz..."
 msgstr ""
 
@@ -11692,7 +11692,7 @@ msgstr ""
 msgid "Preparando las referencias: %(hecho)d de %(total)d"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1811
+#: src/interfaz/dialogos/opciones.py:1987
 msgid "Preparando..."
 msgstr ""
 
@@ -11712,9 +11712,9 @@ msgstr ""
 msgid "Primera y última columna"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1618
-#: src/interfaz/dialogos/opciones.py:1654
-#: src/interfaz/dialogos/opciones.py:1695
+#: src/interfaz/dialogos/opciones.py:1794
+#: src/interfaz/dialogos/opciones.py:1830
+#: src/interfaz/dialogos/opciones.py:1871
 msgid "Primero hay que instalar la IA local con el asistente."
 msgstr ""
 
@@ -11726,12 +11726,12 @@ msgstr ""
 msgid "Principio de la %s."
 msgstr ""
 
-#: src/interfaz/reproductor_daisy.py:510
+#: src/interfaz/reproductor_daisy.py:512
 msgid "Principio de la grabación."
 msgstr ""
 
-#: src/interfaz/ventana.py:718
-#: src/interfaz/ventana.py:1072
+#: src/interfaz/ventana.py:752
+#: src/interfaz/ventana.py:1114
 msgid "Principio del documento."
 msgstr ""
 
@@ -11747,7 +11747,7 @@ msgstr ""
 msgid "Principio y final del documento"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1084
+#: src/interfaz/dialogos/opciones.py:1260
 msgid "Pro&bar la conexión"
 msgstr ""
 
@@ -11755,11 +11755,11 @@ msgstr ""
 msgid "Probando"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1312
+#: src/interfaz/dialogos/opciones.py:1488
 msgid "Probando la conexión"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1311
+#: src/interfaz/dialogos/opciones.py:1487
 msgid "Probando la conexión con la inteligencia artificial..."
 msgstr ""
 
@@ -11772,8 +11772,8 @@ msgid "Probar el sonido"
 msgstr ""
 
 #: src/interfaz/ayuda_control.py:446
-#: src/interfaz/dialogos/opciones.py:1308
-#: src/interfaz/dialogos/opciones.py:1315
+#: src/interfaz/dialogos/opciones.py:1484
+#: src/interfaz/dialogos/opciones.py:1491
 msgid "Probar la conexión"
 msgstr ""
 
@@ -11789,24 +11789,24 @@ msgid "Probarlo"
 msgstr ""
 
 #: src/interfaz/dialogos/asistente_ia.py:109
-#: src/interfaz/dialogos/ia.py:819
+#: src/interfaz/dialogos/ia.py:821
 #: src/interfaz/dialogos/progreso.py:77
 msgid "Progreso"
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:281
+#: src/interfaz/dialogos/ia.py:282
 msgid "Prompt eliminado."
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:212
+#: src/interfaz/dialogos/ia.py:213
 msgid "Prompt propio: se puede editar y eliminar."
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:246
+#: src/interfaz/dialogos/ia.py:247
 msgid "Prompt «%s» añadido."
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:133
+#: src/interfaz/dialogos/ia.py:134
 msgid "Prompts disponibles"
 msgstr ""
 
@@ -11850,7 +11850,7 @@ msgstr ""
 msgid "Pulsa la combinación"
 msgstr ""
 
-#: src/interfaz/dialogos/estructura.py:74
+#: src/interfaz/dialogos/estructura.py:75
 msgid "Pulsa «Revisar» para empezar."
 msgstr ""
 
@@ -11898,7 +11898,7 @@ msgid "Página %d."
 msgstr ""
 
 #: src/interfaz/arbol.py:364
-#: src/interfaz/reproductor_daisy.py:840
+#: src/interfaz/reproductor_daisy.py:843
 #: src/interfaz/dialogos/navegacion.py:749
 #: src/interfaz/dialogos/navegacion.py:292
 #: src/nucleo/biblioteca.py:801
@@ -11907,7 +11907,7 @@ msgstr ""
 msgid "Página %s"
 msgstr ""
 
-#: src/interfaz/ventana.py:1891
+#: src/interfaz/ventana.py:2002
 #: src/nucleo/navegacion.py:161
 msgid "Página %s."
 msgstr ""
@@ -11924,7 +11924,7 @@ msgid "Página web (.html)"
 msgstr ""
 
 #: src/interfaz/arbol.py:64
-#: src/interfaz/reproductor_daisy.py:182
+#: src/interfaz/reproductor_daisy.py:184
 #: src/interfaz/dialogos/navegacion.py:186
 msgid "Páginas"
 msgstr ""
@@ -11960,7 +11960,7 @@ msgstr ""
 msgid "QUÉ NO SE DICE AL LEER DE CORRIDO"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:691
+#: src/interfaz/dialogos/opciones.py:863
 msgid "QUÉ SE HACE CON LO LEÍDO"
 msgstr ""
 
@@ -11968,7 +11968,7 @@ msgstr ""
 msgid "Que el cursor acompañe a la voz"
 msgstr ""
 
-#: src/interfaz/temporizador.py:131
+#: src/interfaz/temporizador.py:133
 msgid "Queda un minuto de lectura."
 msgstr ""
 
@@ -11996,15 +11996,15 @@ msgstr ""
 msgid "Quita el resaltado elegido. El texto del documento no se toca."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:389
+#: src/interfaz/dialogos/opciones.py:561
 msgid "Quita los menús, el aviso de galletas, la columna de «lo más leído» y el pie\ncon cincuenta enlaces. Si el recorte no se puede decidir con seguridad, la\npágina se lee entera, así que no hay nada que perder."
 msgstr ""
 
-#: src/interfaz/ventana.py:2342
+#: src/interfaz/ventana.py:2453
 msgid "Quitado."
 msgstr ""
 
-#: src/interfaz/ventana.py:2367
+#: src/interfaz/ventana.py:2478
 msgid "Quitados %d."
 msgstr ""
 
@@ -12059,7 +12059,7 @@ msgstr ""
 msgid "Quitar idiomas"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1741
+#: src/interfaz/dialogos/opciones.py:1917
 msgid "Quitar la IA local"
 msgstr ""
 
@@ -12067,7 +12067,7 @@ msgstr ""
 msgid "Quitar la IA local del disco"
 msgstr ""
 
-#: src/interfaz/ventana.py:2336
+#: src/interfaz/ventana.py:2447
 msgid "Quitar la nota"
 msgstr ""
 
@@ -12085,7 +12085,7 @@ msgstr ""
 msgid "Quitar motor de voz"
 msgstr ""
 
-#: src/interfaz/ventana.py:2360
+#: src/interfaz/ventana.py:2471
 msgid "Quitar todos"
 msgstr ""
 
@@ -12205,7 +12205,7 @@ msgstr ""
 msgid "Qwen 2.5 VL 7B (el que mejor lee, con tarjeta)"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:544
+#: src/interfaz/dialogos/opciones.py:716
 msgid "RECONOCIMIENTO DE LAS PÁGINAS ESCANEADAS"
 msgstr ""
 
@@ -12230,7 +12230,7 @@ msgstr ""
 msgid "Re&sultados de la búsqueda:"
 msgstr ""
 
-#: src/interfaz/reproductor_daisy.py:310
+#: src/interfaz/reproductor_daisy.py:312
 msgid "Reanudando."
 msgstr ""
 
@@ -12246,7 +12246,7 @@ msgstr ""
 msgid "Reconoce cada página dos veces, con la imagen preparada de dos formas distintas, y junta lo leído.\n\nFunciona porque las dos lecturas no fallan en los mismos sitios: la primera lee bien el texto oscuro sobre fondo claro y se come el precio que va sobre un círculo rojo; la segunda, al revés. De la segunda solo se añade lo que cae donde la primera no encontró nada, así que no se repite ni una palabra.\n\nMedido sobre un folleto de supermercado en color, pasó de 15 a 19 productos leídos con su precio al lado, de 23. Es lo que más mejora el resultado en documentos difíciles.\n\nRecomendado: activado. Tarda aproximadamente el doble, así que si vas a reconocer un libro entero de texto limpio puedes desactivarlo."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:583
+#: src/interfaz/dialogos/opciones.py:755
 msgid "Reconocer es lento. El tope evita que un libro escaneado de quinientas páginas\ndeje el programa abriendo durante horas."
 msgstr ""
 
@@ -12255,7 +12255,7 @@ msgstr ""
 msgid "Reconociendo la página %d de %d..."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:168
+#: src/interfaz/dialogos/opciones.py:213
 msgid "Reconocimiento"
 msgstr ""
 
@@ -12263,7 +12263,7 @@ msgstr ""
 msgid "Reconocimiento más preciso"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:710
+#: src/interfaz/dialogos/opciones.py:882
 msgid "Reconstruir las ta&blas como tablas de verdad"
 msgstr ""
 
@@ -12275,7 +12275,7 @@ msgstr ""
 msgid "Recordar la posición de lectura de cada documento"
 msgstr ""
 
-#: src/interfaz/ventana.py:3721
+#: src/interfaz/ventana.py:3832
 #: src/interfaz/dialogos/primer_uso.py:320
 msgid "Recorrido guiado"
 msgstr ""
@@ -12310,7 +12310,7 @@ msgstr ""
 msgid "Referencias"
 msgstr ""
 
-#: src/interfaz/dialogos/registro.py:166
+#: src/interfaz/dialogos/registro.py:167
 msgid "Registro de la aplicación"
 msgstr ""
 
@@ -12342,7 +12342,7 @@ msgstr ""
 msgid "Reglas y diccionario"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1611
+#: src/interfaz/dialogos/opciones.py:1787
 msgid "Reiniciando el servidor..."
 msgstr ""
 
@@ -12384,7 +12384,7 @@ msgstr ""
 msgid "Repite la última búsqueda hacia delante."
 msgstr ""
 
-#: src/interfaz/reproductor_daisy.py:345
+#: src/interfaz/reproductor_daisy.py:347
 msgid "Reproducción detenida."
 msgstr ""
 
@@ -12392,7 +12392,7 @@ msgstr ""
 msgid "Reproduce uno de los avisos con el volumen que hayas puesto, para no tener que cerrar las opciones y ponerse a navegar para oírlo."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1889
+#: src/interfaz/dialogos/opciones.py:2065
 msgid "Reproducir &sonidos de navegación"
 msgstr ""
 
@@ -12408,8 +12408,8 @@ msgstr ""
 #: src/interfaz/atajos.py:380
 #: src/interfaz/atajos.py:383
 #: src/interfaz/atajos.py:385
-#: src/interfaz/reproductor_daisy.py:354
-#: src/interfaz/reproductor_daisy.py:713
+#: src/interfaz/reproductor_daisy.py:356
+#: src/interfaz/reproductor_daisy.py:715
 msgid "Reproductor DAISY"
 msgstr ""
 
@@ -12417,7 +12417,7 @@ msgstr ""
 msgid "Resalta un trozo de texto: selecciónalo y guárdalo."
 msgstr ""
 
-#: src/interfaz/ventana.py:2144
+#: src/interfaz/ventana.py:2255
 msgid "Resaltado quitado."
 msgstr ""
 
@@ -12460,7 +12460,7 @@ msgstr ""
 msgid "Restaurar una copia"
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:828
+#: src/interfaz/dialogos/ia.py:830
 msgid "Resultado de la descripción"
 msgstr ""
 
@@ -12497,11 +12497,11 @@ msgstr ""
 msgid "Retroceder diez segundos"
 msgstr ""
 
-#: src/interfaz/dialogos/estructura.py:77
+#: src/interfaz/dialogos/estructura.py:78
 msgid "Revisando"
 msgstr ""
 
-#: src/interfaz/dialogos/estructura.py:148
+#: src/interfaz/dialogos/estructura.py:150
 msgid "Revisando la estructura con %s..."
 msgstr ""
 
@@ -12509,11 +12509,11 @@ msgstr ""
 msgid "Revisar la &estructura con IA..."
 msgstr ""
 
-#: src/interfaz/dialogos/estructura.py:44
+#: src/interfaz/dialogos/estructura.py:45
 msgid "Revisar la estructura con IA"
 msgstr ""
 
-#: src/interfaz/ventana.py:2997
+#: src/interfaz/ventana.py:3108
 msgid "Revisión del libro exportado"
 msgstr ""
 
@@ -12557,7 +12557,7 @@ msgstr ""
 msgid "SAPI 5 de Windows"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:2125
+#: src/interfaz/dialogos/opciones.py:2301
 msgid "SEGUIR DONDE LO DEJASTE, EN OTRO EQUIPO"
 msgstr ""
 
@@ -12577,7 +12577,7 @@ msgstr ""
 msgid "Sacar la bibliografía"
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:369
+#: src/interfaz/dialogos/ia.py:371
 msgid "Sacar los &datos"
 msgstr ""
 
@@ -12585,7 +12585,7 @@ msgstr ""
 msgid "Sacar los datos o la estructura"
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:802
+#: src/interfaz/dialogos/ia.py:804
 msgid "Sacar también los &datos de los gráficos (una petición más por imagen)"
 msgstr ""
 
@@ -12650,11 +12650,11 @@ msgstr ""
 msgid "Saltar las que ya tienen descripción"
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:794
+#: src/interfaz/dialogos/ia.py:796
 msgid "Saltar también las que ya traen &descripción en el documento"
 msgstr ""
 
-#: src/interfaz/temporizador.py:171
+#: src/interfaz/temporizador.py:173
 msgid "Se acabó el tiempo. Lectura detenida."
 msgstr ""
 
@@ -12662,7 +12662,7 @@ msgstr ""
 msgid "Se aplican a todos los documentos: siglas, símbolos, palabras extranjeras."
 msgstr ""
 
-#: src/interfaz/temporizador.py:200
+#: src/interfaz/temporizador.py:202
 msgid "Se avisa un minuto antes y el sonido se apaga poco a poco en los últimos\nsegundos, para no despertar a nadie de golpe. Vale igual para la voz\nsintética y para las grabaciones DAISY."
 msgstr ""
 
@@ -12680,11 +12680,11 @@ msgstr ""
 msgid "Se copiará a la IA local del programa y quedará como un modelo más, elegible en la lista.\nEl archivo original se queda donde está; puedes borrarlo después si quieres el espacio."
 msgstr ""
 
-#: src/interfaz/dialogos/registro.py:476
+#: src/interfaz/dialogos/registro.py:478
 msgid "Se deja de seguir el registro."
 msgstr ""
 
-#: src/interfaz/ventana.py:2609
+#: src/interfaz/ventana.py:2720
 msgid "Se describe la imagen %(cual)d de %(cuantas)d de esta línea. Con G vas a la siguiente."
 msgstr ""
 
@@ -12696,7 +12696,7 @@ msgstr ""
 msgid "Se escriben ahí «libro.xml» con el texto, «libro.ncx» con la navegación y\n«libro.opf» con los datos del libro. Con voz se añade un archivo de sonido y\notro de sincronización por capítulo."
 msgstr ""
 
-#: src/nucleo/ia/ollama.py:1110
+#: src/nucleo/ia/ollama.py:1168
 msgid "Se ha cortado la descarga del modelo: %s"
 msgstr ""
 
@@ -12708,7 +12708,7 @@ msgstr ""
 msgid "Se ha encontrado 1 aparición."
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:1018
+#: src/interfaz/dialogos/ia.py:1020
 msgid "Se ha interrumpido tras varios fallos seguidos. Descritas %d, fallidas %d.\n\nÚltimo aviso: %s"
 msgstr ""
 
@@ -12720,7 +12720,7 @@ msgstr ""
 msgid "Se han borrado %d entradas sobrantes."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1352
+#: src/interfaz/dialogos/opciones.py:1528
 msgid "Se han borrado las descripciones de %d documentos."
 msgstr ""
 
@@ -12732,7 +12732,7 @@ msgstr ""
 msgid "Se intentará abrir desde una copia reparada."
 msgstr ""
 
-#: src/interfaz/dialogos/estructura.py:61
+#: src/interfaz/dialogos/estructura.py:62
 msgid "Se le manda a la inteligencia artificial el **esqueleto** del documento: sus %d bloques con su tipo y su título, sin el texto del libro.\nCon eso puede señalar lo que está mal etiquetado —un índice tomado por capítulos, un pie de página tomado por un título— sin que el contenido salga de aquí."
 msgstr ""
 
@@ -12788,7 +12788,7 @@ msgstr ""
 msgid "Se selecciona con Mayús y las flechas, y se resalta con Control+R. Los resaltados se sacan luego a un archivo."
 msgstr ""
 
-#: src/interfaz/lectura_voz.py:303
+#: src/interfaz/lectura_voz.py:305
 msgid "Se sigue leyendo."
 msgstr ""
 
@@ -12804,7 +12804,7 @@ msgstr ""
 msgid "Se va a quitar «%s» y sus archivos. Los ajustes que tengas puestos se conservan por si vuelves a instalarlo.\n\n¿Seguro?"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1738
+#: src/interfaz/dialogos/opciones.py:1914
 msgid "Se van a borrar del disco el motor y todos los modelos descargados.\n\nSe puede volver a instalar cuando quieras con el asistente, pero habrá que descargarlo todo otra vez.\n\n¿Seguir?"
 msgstr ""
 
@@ -12833,11 +12833,11 @@ msgstr ""
 msgid "Seguir el registro en vivo"
 msgstr ""
 
-#: src/interfaz/dialogos/registro.py:236
+#: src/interfaz/dialogos/registro.py:238
 msgid "Seguir en &vivo"
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:808
+#: src/interfaz/dialogos/ia.py:810
 msgid "Segundos de espera &entre imágenes:"
 msgstr ""
 
@@ -12849,7 +12849,7 @@ msgstr ""
 msgid "Segundos que se esperan entre una imagen y la siguiente.\n\nLos servicios de pago limitan cuántas peticiones se les pueden hacer por minuto, y pasarse significa que la tanda se corta a la mitad. Con una IA local, esto se puede dejar en cero."
 msgstr ""
 
-#: src/interfaz/ventana.py:2147
+#: src/interfaz/ventana.py:2258
 msgid "Selecciona antes el texto que quieras resaltar."
 msgstr ""
 
@@ -12861,7 +12861,7 @@ msgstr ""
 msgid "Separador"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1010
+#: src/interfaz/dialogos/opciones.py:1186
 msgid "Ser&vicio:"
 msgstr ""
 
@@ -12876,23 +12876,23 @@ msgstr ""
 msgid "Serie y número"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1583
+#: src/interfaz/dialogos/opciones.py:1759
 msgid "Servidor arrancado en %s."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1592
+#: src/interfaz/dialogos/opciones.py:1768
 msgid "Servidor detenido."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1608
+#: src/interfaz/dialogos/opciones.py:1784
 msgid "Servidor reiniciado con los ajustes de ahora."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1518
+#: src/interfaz/dialogos/opciones.py:1694
 msgid "Servidor: en marcha, en %s."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1524
+#: src/interfaz/dialogos/opciones.py:1700
 msgid "Servidor: parado. Se arranca solo la primera vez que se le pida algo."
 msgstr ""
 
@@ -12912,7 +12912,7 @@ msgstr ""
 msgid "Señalar las llamadas de nota al pie"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:922
+#: src/interfaz/dialogos/opciones.py:1094
 msgid "Señalar también las &imágenes que no tienen descripción (requiere volver a abrir el libro)"
 msgstr ""
 
@@ -12940,31 +12940,31 @@ msgstr ""
 msgid "Si es una biblioteca de calibre —se leen sus datos de su metadata.db— o una carpeta corriente —se recorren sus archivos—. Cambiarlo vuelve a importarla."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:888
+#: src/interfaz/dialogos/opciones.py:1060
 msgid "Si las desactivas las tres se dirá de todos modos el contenido de la celda:\nuna lista que no dice nada al recorrerla no serviría de nada."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:927
+#: src/interfaz/dialogos/opciones.py:1099
 msgid "Si lo desactivas, las imágenes decorativas dejan de estorbar la lectura,\npero tampoco podrás saltar a ellas con la tecla G."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:2088
+#: src/interfaz/dialogos/opciones.py:2264
 msgid "Si un libro de calibre está en varios formatos, poner &uno por formato"
 msgstr ""
 
-#: src/interfaz/reproductor_daisy.py:768
+#: src/interfaz/reproductor_daisy.py:770
 msgid "Si&guiente"
 msgstr ""
 
-#: src/interfaz/ventana.py:1992
+#: src/interfaz/ventana.py:2103
 msgid "Sigo leyendo desde aquí."
 msgstr ""
 
-#: src/interfaz/ventana.py:1991
+#: src/interfaz/ventana.py:2102
 msgid "Sigo leyendo."
 msgstr ""
 
-#: src/interfaz/dialogos/registro.py:484
+#: src/interfaz/dialogos/registro.py:486
 msgid "Siguiendo el registro en vivo."
 msgstr ""
 
@@ -13016,12 +13016,12 @@ msgstr ""
 msgid "Sincronizado: %(libros)d libros, %(traidos)d archivos traídos y %(llevados)d llevados."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:2209
-#: src/interfaz/dialogos/opciones.py:2204
+#: src/interfaz/dialogos/opciones.py:2385
+#: src/interfaz/dialogos/opciones.py:2380
 msgid "Sincronizar"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:2151
+#: src/interfaz/dialogos/opciones.py:2327
 msgid "Sincronizar sola al &arrancar y al cerrar"
 msgstr ""
 
@@ -13034,7 +13034,7 @@ msgstr ""
 msgid "Sinopsis"
 msgstr ""
 
-#: src/interfaz/reproductor_daisy.py:802
+#: src/interfaz/reproductor_daisy.py:804
 msgid "Sitios del libro"
 msgstr ""
 
@@ -13090,16 +13090,16 @@ msgstr ""
 msgid "Solo en la versión instalada"
 msgstr ""
 
-#: src/interfaz/dialogos/registro.py:161
+#: src/interfaz/dialogos/registro.py:162
 msgid "Solo errores"
 msgstr ""
 
-#: src/interfaz/ventana.py:526
 #: src/interfaz/ventana.py:532
+#: src/interfaz/ventana.py:538
 msgid "Solo hay un documento abierto."
 msgstr ""
 
-#: src/interfaz/ventana.py:603
+#: src/interfaz/ventana.py:631
 msgid "Solo hay una zona. El árbol de contenido y las pestañas se activan en Herramientas, Opciones, Personalización."
 msgstr ""
 
@@ -13119,7 +13119,7 @@ msgstr ""
 msgid "Solo se puede leer rellenándolo en Adobe Reader y guardando una copia como PDF normal."
 msgstr ""
 
-#: src/interfaz/ventana.py:2652
+#: src/interfaz/ventana.py:2763
 msgid "Solo se pueden corregir los elementos de un PDF: los demás formatos ya dicen por sí mismos qué es cada cosa."
 msgstr ""
 
@@ -13131,7 +13131,7 @@ msgstr ""
 msgid "Solo se usa si en «Buscar las actualizaciones en» eliges «Una dirección personalizada».\n\nPuede ser una carpeta web donde estén los dos archivos que se publican con cada versión, version.json y el paquete ZIP —por ejemplo «https://mi-servidor/VisorUniversal»—, o la dirección de un repositorio de GitHub que publique esos dos archivos en sus releases.\n\nSirve para tener un espejo, no para instalar paquetes de otra persona: el programa solo instala lo que lleve la firma del autor."
 msgstr ""
 
-#: src/interfaz/ventana.py:2688
+#: src/interfaz/ventana.py:2799
 msgid "Solo tiene sentido revisar la estructura de un PDF: los demás formatos ya dicen por sí mismos qué es cada cosa."
 msgstr ""
 
@@ -13143,7 +13143,7 @@ msgstr ""
 msgid "Son los pesos: el archivo grande, de uno a ocho gigas."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1894
+#: src/interfaz/dialogos/opciones.py:2070
 msgid "Sonar &solo al usar las teclas de navegación por elementos, no al moverse con las flechas"
 msgstr ""
 
@@ -13151,7 +13151,7 @@ msgstr ""
 msgid "Sonar solo al saltar entre elementos"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:173
+#: src/interfaz/dialogos/opciones.py:218
 msgid "Sonidos"
 msgstr ""
 
@@ -13175,7 +13175,7 @@ msgstr ""
 msgid "Subir el dato"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:684
+#: src/interfaz/dialogos/opciones.py:856
 msgid "Subirla limpia el ruido, pero con cuidado: en un folleto los precios sobre fondo\nde color se reconocen con poca confianza y se perderían."
 msgstr ""
 
@@ -13207,7 +13207,7 @@ msgstr ""
 msgid "Tamaño de la letra"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1457
+#: src/interfaz/dialogos/opciones.py:1633
 msgid "Tamaño del conte&xto en fichas (0 = el del modelo):"
 msgstr ""
 
@@ -13223,7 +13223,7 @@ msgstr ""
 msgid "Tecla global para «%s»"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:897
+#: src/interfaz/dialogos/opciones.py:1069
 msgid "Tecla para decir en qué &elemento estás y de cuántos:"
 msgstr ""
 
@@ -13236,12 +13236,12 @@ msgid "Tecla para saber en qué elemento estás"
 msgstr ""
 
 #: src/interfaz/ayuda_control.py:483
-#: src/interfaz/ventana.py:3398
-#: src/interfaz/dialogos/opciones.py:175
+#: src/interfaz/ventana.py:3509
+#: src/interfaz/dialogos/opciones.py:220
 msgid "Teclas globales"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:2245
+#: src/interfaz/dialogos/opciones.py:2421
 msgid "Teclas globales asignadas"
 msgstr ""
 
@@ -13261,12 +13261,12 @@ msgstr ""
 msgid "Temas de esta nota, separados por comas: «tema 4, examen, dudas».\n\nEs lo que después permite quedarse con «todo lo del tema cuatro» —en este libro y en los otros cinco de la asignatura— y sacarlo a un cuaderno. Sin etiquetas, las notas solo se pueden leer libro por libro y en orden.\n\nDa igual cómo las escribas: «Tema 4» y «tema 4» son la misma."
 msgstr ""
 
-#: src/interfaz/temporizador.py:182
+#: src/interfaz/temporizador.py:184
 msgid "Temporizador de apagado"
 msgstr ""
 
-#: src/interfaz/temporizador.py:94
-#: src/interfaz/temporizador.py:112
+#: src/interfaz/temporizador.py:96
+#: src/interfaz/temporizador.py:114
 msgid "Temporizador quitado."
 msgstr ""
 
@@ -13278,7 +13278,7 @@ msgstr ""
 msgid "Terminados"
 msgstr ""
 
-#: src/nucleo/ia/ollama.py:1137
+#: src/nucleo/ia/ollama.py:1195
 msgid "Terminando de guardarlo..."
 msgstr ""
 
@@ -13286,11 +13286,11 @@ msgstr ""
 msgid "Tesseract"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:829
+#: src/interfaz/dialogos/opciones.py:1001
 msgid "Tesseract %s, con %d idiomas: %s"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:825
+#: src/interfaz/dialogos/opciones.py:997
 msgid "Tesseract %s, sin ningún idioma."
 msgstr ""
 
@@ -13322,7 +13322,7 @@ msgstr ""
 msgid "Tesseract puntúa de 0 a 100 lo seguro que está de cada palabra. Por debajo de este número, la palabra se tira.\n\nSubirlo limpia el ruido que salen de los adornos, pero cuidado: en un folleto, los precios sobre fondo de color se reconocen con poca confianza y se perderían. En las pruebas, subirlo de 30 a 50 quitó 5 líneas de basura pero también 3 precios.\n\nRecomendado: 30."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:821
+#: src/interfaz/dialogos/opciones.py:993
 msgid "Tesseract: no disponible."
 msgstr ""
 
@@ -13346,8 +13346,8 @@ msgstr ""
 msgid "Texto de la nota"
 msgstr ""
 
-#: src/interfaz/lector.py:138
-#: src/interfaz/ventana.py:91
+#: src/interfaz/lector.py:140
+#: src/interfaz/ventana.py:93
 msgid "Texto del documento"
 msgstr ""
 
@@ -13434,7 +13434,7 @@ msgstr ""
 msgid "Todas"
 msgstr ""
 
-#: src/interfaz/dialogos/estructura.py:131
+#: src/interfaz/dialogos/estructura.py:133
 msgid "Todas desmarcadas."
 msgstr ""
 
@@ -13463,7 +13463,7 @@ msgstr ""
 msgid "Todas las referencias están completas."
 msgstr ""
 
-#: src/interfaz/dialogos/estructura.py:131
+#: src/interfaz/dialogos/estructura.py:133
 msgid "Todas marcadas."
 msgstr ""
 
@@ -13471,7 +13471,7 @@ msgstr ""
 msgid "Todas, o solo las que tienen algún dato sin rellenar (el autor, el título, la editorial o el año).\n\nLas incompletas son las que hay que revisar antes de entregar el trabajo; con una biblioteca grande, verlas aparte ahorra recorrer miles que ya están bien. Copiar y guardar actúan sobre lo que se ve."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1200
+#: src/interfaz/dialogos/opciones.py:1376
 msgid "Todavía no está instalada. Ve a la pestaña «IA local» y usa el asistente: en unos minutos la tienes funcionando."
 msgstr ""
 
@@ -13491,15 +13491,15 @@ msgstr ""
 msgid "Todavía no se ha hecho ninguna petición a la inteligencia artificial."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1274
+#: src/interfaz/dialogos/opciones.py:1450
 msgid "Todavía no tienes ningún modelo descargado. Ve a la pestaña «IA local» para instalar uno, o usa el asistente si es la primera vez."
 msgstr ""
 
-#: src/interfaz/dialogos/registro.py:159
+#: src/interfaz/dialogos/registro.py:160
 msgid "Todo"
 msgstr ""
 
-#: src/interfaz/ventana.py:3715
+#: src/interfaz/ventana.py:3826
 msgid "Todo el recorrido"
 msgstr ""
 
@@ -13523,7 +13523,7 @@ msgstr ""
 msgid "Todo marcado."
 msgstr ""
 
-#: src/interfaz/dialogos/estructura.py:177
+#: src/interfaz/dialogos/estructura.py:179
 msgid "Todo parece correcto."
 msgstr ""
 
@@ -13564,11 +13564,11 @@ msgstr ""
 msgid "Tope de páginas que se reconocen en un mismo documento. A 0 no hay tope.\n\nImporta porque reconocer es lento: sin tope, un libro escaneado de quinientas páginas dejaría el programa abriendo durante horas, y con la inteligencia artificial además gastaría quinientas peticiones.\n\nRecomendado: 100. Si de verdad necesitas un libro entero, súbelo y déjalo trabajando; puedes cancelar en cualquier momento con Escape."
 msgstr ""
 
-#: src/nucleo/ia/ollama.py:1156
+#: src/nucleo/ia/ollama.py:1214
 msgid "Trabajando: %s"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:234
+#: src/interfaz/dialogos/opciones.py:406
 msgid "Traducciones encontradas: %s."
 msgstr ""
 
@@ -13596,11 +13596,11 @@ msgstr ""
 msgid "Trata lo escrito como una expresión regular en vez de como texto normal.\n\nSirve para buscar cosas que no son una palabra: «\\d{4}» encuentra cualquier año de cuatro cifras y «^Capítulo» solo lo que empiece una línea.\n\nRecomendado: apagado, salvo que sepas qué es esto. Con ello encendido, caracteres como el punto o el paréntesis dejan de significar lo que parecen."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:2059
+#: src/interfaz/dialogos/opciones.py:2235
 msgid "Tratarla como una carpeta corriente"
 msgstr ""
 
-#: src/interfaz/ventana.py:3664
+#: src/interfaz/ventana.py:3775
 msgid "Trayendo la página..."
 msgstr ""
 
@@ -13630,7 +13630,7 @@ msgstr ""
 msgid "Título"
 msgstr ""
 
-#: src/interfaz/ventana.py:2555
+#: src/interfaz/ventana.py:2666
 msgid "Título del documento: %s"
 msgstr ""
 
@@ -13654,11 +13654,11 @@ msgstr ""
 msgid "Un &título"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:591
+#: src/interfaz/dialogos/opciones.py:763
 msgid "Un OCR no lee la página que se ve: lee la que se le da. Medido sobre un folleto\nen color, pasarla a gris y subirle el contraste llevó los productos leídos con su\nprecio de 7 a 10 sobre 14, y la basura de 31 líneas a 7. Es lo que más ayuda."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:517
+#: src/interfaz/dialogos/opciones.py:689
 msgid "Un PDF accesible (etiquetado, según la norma PDF/UA) lleva dentro la misma\ninformación que una página web: qué es un encabezado, qué una lista, qué una\ntabla con sus encabezados de columna, qué describe cada imagen y en qué idioma\nestá cada trozo. Con esto activado el documento se recorre igual que un EPUB,\ncon H, T, L, Q, I, con F7 y con Ctrl+H, y desaparecen los encabezados y pies\nque se repiten en cada página. Desactívalo solo si un PDF concreto sale peor\nasí que como texto corrido."
 msgstr ""
 
@@ -13666,7 +13666,7 @@ msgstr ""
 msgid "Un PDF escaneado son fotografías: no hay texto que leer y hay que reconocerlo. Aquí eliges con qué.\n\n• Tesseract viene incluido, va sin conexión, no gasta cuota y es el que mejor conserva las columnas y las tablas.\n• La inteligencia artificial lee mejor la letra difícil, tachada o sobre fondos de color, pero necesita conexión, gasta cuota y manda la página a un servidor.\n• El de Windows ya está en el sistema y es el más rápido.\n\nRecomendado: automático. Prueba Tesseract y, si no puede, sigue con los otros. Si un documento concreto no sale bien, prueba con la IA."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:546
+#: src/interfaz/dialogos/opciones.py:718
 msgid "Un PDF o un DjVu escaneados son fotografías de las páginas: sin reconocerlos\nse abren vacíos. Hay tres motores y ninguno sobra, porque fallan en sitios\ndistintos. Estos ajustes valen para los dos formatos."
 msgstr ""
 
@@ -13678,8 +13678,8 @@ msgstr ""
 msgid "Un libro por formato"
 msgstr ""
 
-#: src/interfaz/dialogos/espera.py:102
-#: src/interfaz/dialogos/espera.py:50
+#: src/interfaz/dialogos/espera.py:104
+#: src/interfaz/dialogos/espera.py:51
 msgid "Un momento"
 msgstr ""
 
@@ -13687,7 +13687,7 @@ msgstr ""
 msgid "Un perfil guarda de una vez la voz, la velocidad, los sonidos y cómo se\npresenta el texto. Sirve para leer una novela y un manual técnico sin tener\nque cambiar ocho ajustes a mano cada vez."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:359
+#: src/interfaz/dialogos/opciones.py:531
 msgid "Un renglón muy largo es incómodo de seguir: al llegar al final hay que volver\nal principio del siguiente, y cuanto más largo sea más fácil es perderse por el\ncamino. En papel casi nunca se pasa de setenta caracteres por línea; en una\nventana maximizada salen fácilmente el doble. Con esto se estrecha la columna\nde texto dejando márgenes a los lados.\n\nNo cambia el texto ni una sola posición: los marcadores, las notas y por dónde\nibas siguen donde estaban."
 msgstr ""
 
@@ -13731,7 +13731,7 @@ msgstr ""
 msgid "Uniendo los capítulos..."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1511
+#: src/interfaz/dialogos/opciones.py:1687
 msgid "Usa el asistente de arriba: te lleva de la mano y en unos minutos la tienes funcionando."
 msgstr ""
 
@@ -13739,15 +13739,15 @@ msgstr ""
 msgid "Usa el modelo grande en vez del rápido.\n\nTarda bastante más por página y se equivoca bastante menos. Merece la pena en un escaneo torcido, en letra pequeña o en un documento que vayas a citar; para leer un folleto, el rápido basta."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:481
+#: src/interfaz/dialogos/opciones.py:653
 msgid "Usa las abreviaturas del braille contraído español y ocupa alrededor de un\ntercio menos. Solo afecta al BRF y al PEF. Viene apagado: quien no haya\nestudiado el contraído no lo entiende."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:2370
+#: src/interfaz/dialogos/opciones.py:2546
 msgid "Usa «DEBUG» solo para averiguar la causa de un problema: genera muchísima\ninformación y hace el programa algo más lento."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1863
+#: src/interfaz/dialogos/opciones.py:2039
 msgid "Usar &colores propios en lugar de los del sistema"
 msgstr ""
 
@@ -13759,7 +13759,7 @@ msgstr ""
 msgid "Usar esta combinación"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:2378
+#: src/interfaz/dialogos/opciones.py:2554
 msgid "Usar la ca&ché para que los documentos ya leídos se abran al instante"
 msgstr ""
 
@@ -13767,11 +13767,11 @@ msgstr ""
 msgid "Usar la caché"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1439
+#: src/interfaz/dialogos/opciones.py:1615
 msgid "Usar la tarjeta gráfica si la hay (recomendado)"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1440
+#: src/interfaz/dialogos/opciones.py:1616
 msgid "Usar solo el procesador"
 msgstr ""
 
@@ -13791,7 +13791,7 @@ msgstr ""
 msgid "V&olumen de la voz, de 0 a 100:"
 msgstr ""
 
-#: src/interfaz/reproductor_daisy.py:792
+#: src/interfaz/reproductor_daisy.py:794
 msgid "V&olumen, de 0 a 100:"
 msgstr ""
 
@@ -13835,25 +13835,25 @@ msgstr ""
 msgid "Vaciado. La siguiente pregunta empieza una conversación nueva."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:2467
+#: src/interfaz/dialogos/opciones.py:2643
 msgid "Vaciando la caché..."
 msgstr ""
 
 #: src/interfaz/ayuda_control.py:759
-#: src/interfaz/dialogos/registro.py:449
-#: src/interfaz/dialogos/registro.py:457
+#: src/interfaz/dialogos/registro.py:451
+#: src/interfaz/dialogos/registro.py:459
 msgid "Vaciar el registro"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:2470
+#: src/interfaz/dialogos/opciones.py:2646
 msgid "Vaciar la caché"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1005
+#: src/interfaz/dialogos/opciones.py:1181
 msgid "Vale cualquier servicio que hable la API de OpenAI, que hoy son casi todos:\nOpenAI, Groq, DeepSeek, Mistral, OpenRouter, xAI o Together. Elige uno de la\nlista o escribe la dirección que te den."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1049
+#: src/interfaz/dialogos/opciones.py:1225
 msgid "Vale cualquier servidor que hable la API de OpenAI: llama.cpp, Ollama o LM Studio.\nEl modelo cargado tiene que admitir imágenes (LLaVA, Qwen-VL, MiniCPM-V...):\nlos de solo texto aceptan la petición pero no ven la ilustración."
 msgstr ""
 
@@ -13892,7 +13892,7 @@ msgstr ""
 msgid "Ve&locidad, de 0 a 100 (%d es la normal):"
 msgstr ""
 
-#: src/interfaz/reproductor_daisy.py:623
+#: src/interfaz/reproductor_daisy.py:625
 msgid "Velocidad %d por ciento."
 msgstr ""
 
@@ -13920,7 +13920,7 @@ msgstr ""
 msgid "Ver el ca&pítulo como HTML..."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1086
+#: src/interfaz/dialogos/opciones.py:1262
 msgid "Ver el consu&mo..."
 msgstr ""
 
@@ -13928,11 +13928,11 @@ msgstr ""
 msgid "Ver el elemento como &HTML..."
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:447
+#: src/interfaz/dialogos/ia.py:449
 msgid "Ver el es&quema"
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:370
+#: src/interfaz/dialogos/ia.py:372
 msgid "Ver la &tabla"
 msgstr ""
 
@@ -13988,11 +13988,11 @@ msgstr ""
 msgid "Visor accesible de documentos: libros, PDF, Word y DAISY."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:759
+#: src/interfaz/dialogos/opciones.py:931
 msgid "Vo&lumen de la grabación, de 0 a 100:"
 msgstr ""
 
-#: src/interfaz/reproductor_daisy.py:635
+#: src/interfaz/reproductor_daisy.py:637
 msgid "Volumen %d por ciento."
 msgstr ""
 
@@ -14009,7 +14009,7 @@ msgid "Volumen de la voz"
 msgstr ""
 
 #: src/interfaz/ayuda_control.py:374
-#: src/interfaz/dialogos/opciones.py:1941
+#: src/interfaz/dialogos/opciones.py:2117
 msgid "Volumen de los sonidos"
 msgstr ""
 
@@ -14021,7 +14021,7 @@ msgstr ""
 msgid "Volve&r a analizar el documento"
 msgstr ""
 
-#: src/interfaz/ventana.py:3162
+#: src/interfaz/ventana.py:3273
 msgid "Volver a abrir el documento"
 msgstr ""
 
@@ -14041,7 +14041,7 @@ msgstr ""
 msgid "Volver a medir"
 msgstr ""
 
-#: src/interfaz/ventana.py:2734
+#: src/interfaz/ventana.py:2845
 msgid "Volviendo a analizar el documento."
 msgstr ""
 
@@ -14106,7 +14106,7 @@ msgstr ""
 msgid "Vuelve a preguntarle al servidor qué modelos tienes descargados.\n\nHace falta después de instalar o importar uno desde fuera del programa, y cuando la lista sale vacía porque el servidor estaba parado: arráncalo y pulsa aquí."
 msgstr ""
 
-#: src/interfaz/dialogos/practica.py:147
+#: src/interfaz/dialogos/practica.py:149
 msgid "Vuelve al documento con F6 y hazlo. Te aviso en cuanto salga."
 msgstr ""
 
@@ -14126,7 +14126,7 @@ msgstr ""
 msgid "Windows no concede esa combinación: la tiene cogida el sistema u otro programa que está abierto. Elige otra, o cierra ese programa y vuelve a intentarlo."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:2017
+#: src/interfaz/dialogos/opciones.py:2193
 msgid "Windows no deja que un programa se ponga como predeterminado por su\ncuenta: hay que elegirlo en su propia ventana. Este botón la abre."
 msgstr ""
 
@@ -14146,7 +14146,7 @@ msgstr ""
 msgid "Y vuelve al principio."
 msgstr ""
 
-#: src/interfaz/ventana.py:1163
+#: src/interfaz/ventana.py:1211
 msgid "Ya estaba abierto: %s"
 msgstr ""
 
@@ -14170,11 +14170,11 @@ msgstr ""
 msgid "Ya hay un perfil que se llama «%s». ¿Lo sustituyo por los ajustes de ahora?"
 msgstr ""
 
-#: src/interfaz/ventana.py:3965
+#: src/interfaz/ventana.py:4076
 msgid "Ya tienes la última versión (%s)."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1627
+#: src/interfaz/dialogos/opciones.py:1803
 msgid "Ya tienes la última versión de Ollama (%s)."
 msgstr ""
 
@@ -14503,7 +14503,7 @@ msgstr ""
 msgid "deja de crecer"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:823
+#: src/interfaz/dialogos/opciones.py:995
 msgid "del sistema"
 msgstr ""
 
@@ -14512,12 +14512,12 @@ msgid "delta mayúscula"
 msgstr ""
 
 #: src/formatos/pdf_diagnostico.py:163
-#: src/interfaz/dialogos/opciones.py:1633
-#: src/nucleo/ia/ollama.py:1262
+#: src/interfaz/dialogos/opciones.py:1809
+#: src/nucleo/ia/ollama.py:1320
 msgid "desconocida"
 msgstr ""
 
-#: src/nucleo/ia/ollama.py:717
+#: src/nucleo/ia/ollama.py:775
 msgid "desconocido"
 msgstr ""
 
@@ -14583,7 +14583,7 @@ msgstr ""
 msgid "einstenio"
 msgstr ""
 
-#: src/interfaz/dialogos/registro.py:380
+#: src/interfaz/dialogos/registro.py:382
 msgid "el archivo ocupa %.1f MB y solo se ha leído el final"
 msgstr ""
 
@@ -14669,7 +14669,7 @@ msgstr ""
 msgid "en cualquier sitio"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1205
+#: src/interfaz/dialogos/opciones.py:1381
 msgid "en marcha"
 msgstr ""
 
@@ -14870,7 +14870,7 @@ msgstr ""
 msgid "grupeto invertido"
 msgstr ""
 
-#: src/nucleo/ia/ollama.py:1252
+#: src/nucleo/ia/ollama.py:1310
 msgid "gráfica %s, integrada en el procesador: será él quien trabaje"
 msgstr ""
 
@@ -14942,7 +14942,7 @@ msgstr ""
 msgid "imágenes"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:823
+#: src/interfaz/dialogos/opciones.py:995
 msgid "incluido con el programa"
 msgstr ""
 
@@ -15102,12 +15102,12 @@ msgstr ""
 msgid "marcado"
 msgstr ""
 
-#: src/interfaz/ventana.py:2355
+#: src/interfaz/ventana.py:2466
 msgid "marcadores"
 msgstr ""
 
-#: src/interfaz/ventana.py:925
-#: src/interfaz/ventana.py:897
+#: src/interfaz/ventana.py:959
+#: src/interfaz/ventana.py:931
 msgid "mayús"
 msgstr ""
 
@@ -15171,7 +15171,7 @@ msgstr ""
 msgid "mínimo común múltiplo"
 msgstr ""
 
-#: src/interfaz/reproductor_daisy.py:692
+#: src/interfaz/reproductor_daisy.py:694
 msgid "navegando por %s"
 msgstr ""
 
@@ -15199,7 +15199,7 @@ msgstr ""
 msgid "nihonio"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1208
+#: src/interfaz/dialogos/opciones.py:1384
 msgid "ninguno elegido todavía"
 msgstr ""
 
@@ -15236,7 +15236,7 @@ msgstr ""
 msgid "no se ha podido conectar con el servidor local (%s). Comprueba que está en marcha y que la dirección es correcta."
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:934
+#: src/interfaz/dialogos/ia.py:936
 msgid "no se ha podido extraer del documento"
 msgstr ""
 
@@ -15248,7 +15248,7 @@ msgstr ""
 msgid "nobelio"
 msgstr ""
 
-#: src/interfaz/ventana.py:2355
+#: src/interfaz/ventana.py:2466
 msgid "notas"
 msgstr ""
 
@@ -15301,7 +15301,7 @@ msgstr ""
 msgid "paladio"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1205
+#: src/interfaz/dialogos/opciones.py:1381
 msgid "parada"
 msgstr ""
 
@@ -15317,7 +15317,7 @@ msgstr ""
 msgid "pendiente"
 msgstr ""
 
-#: src/interfaz/ventana.py:3560
+#: src/interfaz/ventana.py:3671
 msgid "pestaña %d de %d"
 msgstr ""
 
@@ -15387,7 +15387,7 @@ msgid "página"
 msgstr ""
 
 #: src/formatos/pdf.py:565
-#: src/interfaz/reproductor_daisy.py:675
+#: src/interfaz/reproductor_daisy.py:677
 #: src/nucleo/citas.py:362
 #: src/nucleo/navegacion.py:299
 msgid "página %s"
@@ -15401,7 +15401,7 @@ msgstr ""
 msgid "páginas"
 msgstr ""
 
-#: src/interfaz/reproductor_daisy.py:689
+#: src/interfaz/reproductor_daisy.py:691
 msgid "quedan %s"
 msgstr ""
 
@@ -15441,7 +15441,7 @@ msgstr ""
 msgid "resalta la frase"
 msgstr ""
 
-#: src/interfaz/ventana.py:2356
+#: src/interfaz/ventana.py:2467
 msgid "resaltados"
 msgstr ""
 
@@ -15535,7 +15535,7 @@ msgstr ""
 msgid "servicio compatible con OpenAI"
 msgstr ""
 
-#: src/interfaz/dialogos/registro.py:285
+#: src/interfaz/dialogos/registro.py:287
 msgid "sesión"
 msgstr ""
 
@@ -15599,7 +15599,7 @@ msgstr ""
 msgid "sin proveedor"
 msgstr ""
 
-#: src/nucleo/ia/ollama.py:1255
+#: src/nucleo/ia/ollama.py:1313
 msgid "sin tarjeta gráfica dedicada: se usará el procesador"
 msgstr ""
 
@@ -15677,11 +15677,11 @@ msgstr ""
 msgid "tantalio"
 msgstr ""
 
-#: src/nucleo/ia/ollama.py:1246
+#: src/nucleo/ia/ollama.py:1304
 msgid "tarjeta gráfica %s con %s"
 msgstr ""
 
-#: src/nucleo/ia/ollama.py:1249
+#: src/nucleo/ia/ollama.py:1307
 msgid "tarjeta gráfica %s, de memoria desconocida"
 msgstr ""
 
@@ -15809,7 +15809,7 @@ msgstr ""
 msgid "zeta"
 msgstr ""
 
-#: src/interfaz/dialogos/practica.py:202
+#: src/interfaz/dialogos/practica.py:204
 msgid "¡Eso es!"
 msgstr ""
 
@@ -15865,7 +15865,7 @@ msgstr ""
 msgid "«%s» no deja entrar sin haber iniciado sesión. Ábrela en el navegador, inicia sesión y guárdala con «Guardar como»; después se abre desde aquí."
 msgstr ""
 
-#: src/nucleo/ia/ollama.py:910
+#: src/nucleo/ia/ollama.py:968
 msgid "«%s» no es un archivo GGUF. Los modelos para Ollama son archivos con extensión .gguf; si lo has bajado de Hugging Face, es el que pone «GGUF» y no el de pesos originales."
 msgstr ""
 
@@ -15886,7 +15886,7 @@ msgstr ""
 msgid "«%s» no se dice"
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:223
+#: src/interfaz/dialogos/ia.py:224
 msgid "«%s» pasa a ser el prompt por omisión."
 msgstr ""
 
@@ -15902,11 +15902,11 @@ msgstr ""
 msgid "«%s» ya no está. Queda puesta la voz de Windows."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1724
+#: src/interfaz/dialogos/opciones.py:1900
 msgid "¿Borrar el modelo «%s» del disco?\n\nSe puede volver a descargar cuando quieras."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1338
+#: src/interfaz/dialogos/opciones.py:1514
 msgid "¿Borrar las descripciones guardadas de todos los libros?\n\nHabrá que volver a pedirlas a la inteligencia artificial."
 msgstr ""
 
@@ -15930,15 +15930,15 @@ msgstr ""
 msgid "¿No sabes montar tu IA local?"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1057
+#: src/interfaz/dialogos/opciones.py:1233
 msgid "¿No sabes montar tu IA local? &Pulsa aquí"
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:701
+#: src/interfaz/dialogos/ia.py:703
 msgid "¿Olvidar la descripción guardada de esta imagen?\n\nLa próxima vez habrá que volver a pedirla."
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:1168
+#: src/interfaz/dialogos/opciones.py:1344
 msgid "¿Quieres poner el contador a cero?"
 msgstr ""
 
@@ -15950,7 +15950,7 @@ msgstr ""
 msgid "¿Quitar %d libros de la biblioteca?"
 msgstr ""
 
-#: src/interfaz/ventana.py:2335
+#: src/interfaz/ventana.py:2446
 msgid "¿Quitar esta nota?\n\n%s"
 msgstr ""
 
@@ -15958,7 +15958,7 @@ msgstr ""
 msgid "¿Quitar estos idiomas?\n\n%s\n\nSe pueden volver a añadir cuando quieras."
 msgstr ""
 
-#: src/interfaz/ventana.py:2357
+#: src/interfaz/ventana.py:2468
 msgid "¿Quitar los %(cuantos)d %(que)s de este documento?\n\nNo se puede deshacer."
 msgstr ""
 
@@ -15986,7 +15986,7 @@ msgstr ""
 msgid "¿Qué palabras o términos difíciles hay?"
 msgstr ""
 
-#: src/interfaz/ventana.py:3721
+#: src/interfaz/ventana.py:3832
 msgid "¿Qué quieres repasar?"
 msgstr ""
 
@@ -15994,7 +15994,7 @@ msgstr ""
 msgid "¿Seguro que quieres eliminar %s?\n\n%s\n\nEsta acción no se puede deshacer."
 msgstr ""
 
-#: src/interfaz/dialogos/ia.py:270
+#: src/interfaz/dialogos/ia.py:271
 msgid "¿Seguro que quieres eliminar el prompt «%s»?\n\nEsta acción no se puede deshacer."
 msgstr ""
 
@@ -16002,11 +16002,11 @@ msgstr ""
 msgid "¿Seguro que quieres quitar este resaltado?\n\n%s\n\nEsta acción no se puede deshacer."
 msgstr ""
 
-#: src/interfaz/dialogos/registro.py:445
+#: src/interfaz/dialogos/registro.py:447
 msgid "¿Seguro que quieres vaciar este archivo de registro?"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:286
+#: src/interfaz/dialogos/opciones.py:458
 msgid "ÁRBOL DE CONTENIDO"
 msgstr ""
 
@@ -16014,15 +16014,15 @@ msgstr ""
 msgid "Árbol de &contenido"
 msgstr ""
 
-#: src/interfaz/ventana.py:89
+#: src/interfaz/ventana.py:91
 msgid "Árbol de contenido"
 msgstr ""
 
-#: src/interfaz/ventana.py:447
+#: src/interfaz/ventana.py:450
 msgid "Árbol de contenido a la vista. Ve a él con F6."
 msgstr ""
 
-#: src/interfaz/ventana.py:448
+#: src/interfaz/ventana.py:451
 msgid "Árbol de contenido escondido."
 msgstr ""
 
@@ -16057,7 +16057,7 @@ msgstr ""
 msgid "índice de %d entradas"
 msgstr ""
 
-#: src/interfaz/dialogos/opciones.py:562
+#: src/interfaz/dialogos/opciones.py:734
 msgid "• Tesseract viene incluido, va sin conexión, no gasta cuota y es el que mejor\n  conserva las columnas y las tablas.\n• La inteligencia artificial lee mejor la letra difícil, pero necesita conexión,\n  gasta cuota y manda la página a un servidor.\n• El de Windows ya está en el sistema y es el más rápido."
 msgstr ""
 
@@ -16103,7 +16103,7 @@ msgid_plural "%d documentos, %s en total."
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/interfaz/dialogos/registro.py:373
+#: src/interfaz/dialogos/registro.py:375
 msgid "%d entrada."
 msgid_plural "%d entradas."
 msgstr[0] ""
@@ -16278,13 +16278,13 @@ msgid_plural "Descargando %d idiomas..."
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/interfaz/dialogos/ia.py:913
+#: src/interfaz/dialogos/ia.py:915
 msgid "Describiendo %d imagen. Te avisaré al terminar."
 msgid_plural "Describiendo %d imágenes. Te avisaré al terminar."
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/interfaz/dialogos/ia.py:912
+#: src/interfaz/dialogos/ia.py:914
 msgid "Describiendo %d imagen..."
 msgid_plural "Describiendo %d imágenes..."
 msgstr[0] ""
@@ -16320,7 +16320,7 @@ msgid_plural "Has quitado %d libros a mano. ¿Devolverlos a la biblioteca?\n\nVu
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/interfaz/dialogos/estructura.py:179
+#: src/interfaz/dialogos/estructura.py:181
 msgid "Hay %d cosa que revisar. Marca las que quieras aplicar."
 msgid_plural "Hay %d cosas que revisar. Marca las que quieras aplicar."
 msgstr[0] ""
@@ -16368,7 +16368,7 @@ msgid_plural "Repasadas %d tarjetas."
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/interfaz/ventana.py:2155
+#: src/interfaz/ventana.py:2266
 msgid "Resaltado, %d carácter."
 msgid_plural "Resaltado, %d caracteres."
 msgstr[0] ""
@@ -16386,7 +16386,7 @@ msgid_plural "Se exportarán las fichas de %d libros."
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/interfaz/ventana.py:2701
+#: src/interfaz/ventana.py:2812
 msgid "Se ha aplicado %d corrección. Volviendo a leer el documento."
 msgid_plural "Se han aplicado %d correcciones. Volviendo a leer el documento."
 msgstr[0] ""
@@ -16398,13 +16398,13 @@ msgid_plural "Se han copiado %d referencias al portapapeles."
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/interfaz/ventana.py:2787
+#: src/interfaz/ventana.py:2898
 msgid "Se ha descrito %d imagen del documento."
 msgid_plural "Se han descrito %d imágenes del documento."
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/interfaz/dialogos/opciones.py:2473
+#: src/interfaz/dialogos/opciones.py:2649
 msgid "Se ha eliminado %d archivo de la caché."
 msgid_plural "Se han eliminado %d archivos de la caché."
 msgstr[0] ""
@@ -16422,7 +16422,7 @@ msgid_plural "Se han guardado %d referencias."
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/interfaz/ventana.py:2241
+#: src/interfaz/ventana.py:2352
 msgid "Se ha guardado %d resaltado en %s."
 msgid_plural "Se han guardado %d resaltados en %s."
 msgstr[0] ""
@@ -16434,7 +16434,7 @@ msgid_plural "Se va a borrar esto de %d libros:\n\n%s\n\n¿Seguir?"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/interfaz/dialogos/ia.py:1027
+#: src/interfaz/dialogos/ia.py:1029
 msgid "Terminado. Descrita %d imagen"
 msgid_plural "Terminado. Descritas %d imágenes"
 msgstr[0] ""

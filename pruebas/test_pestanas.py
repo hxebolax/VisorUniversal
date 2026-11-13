@@ -217,6 +217,121 @@ def test_el_arbol_vacio_no_estorba(ventana_con_pestanas):
 
 
 # ---------------------------------------------------------------------------
+# Restaurar la sesión anterior sin abrirlo todo de golpe
+# ---------------------------------------------------------------------------
+
+def _esperar(condicion, segundos=15.0):
+    """Atiende eventos hasta que se cumpla la condición o se agote el plazo."""
+    import time
+
+    limite = time.monotonic() + segundos
+    while time.monotonic() < limite:
+        wx.SafeYield()
+        if condicion():
+            return True
+        time.sleep(0.02)
+    return False
+
+
+def test_al_restaurar_solo_se_abre_el_documento_de_delante(ventana_con_pestanas, tmp_path):
+    """Los demás quedan reservados en su pestaña y se abren al entrar en ella."""
+    ventana = ventana_con_pestanas
+    while len(ventana.pestanas) > 1:
+        ventana.pestanas.cerrar(ventana.pestanas.indice_actual)
+    ventana.pestanas.actual.documento = None
+    ventana.pestanas.actual.ruta = ""
+
+    rutas = []
+    for numero in range(3):
+        archivo = tmp_path / ("libro%d.txt" % numero)
+        archivo.write_text("Texto del libro %d.\n" % numero, encoding="utf-8")
+        rutas.append(str(archivo))
+    configuracion = ventana.configuracion
+    recientes = configuracion.recientes()
+    configuracion.guardar = lambda: None          # la prueba no escribe en disco
+    configuracion.establecer("restaurar_documentos", True)
+    configuracion.establecer("documentos_abiertos", rutas)
+    configuracion.establecer("documento_activo", 1)
+    try:
+        assert ventana.restaurar_documentos_abiertos()
+        assert _esperar(lambda: not ventana._cargando and ventana.documento is not None)
+
+        sesiones = ventana.pestanas.sesiones
+        assert len(sesiones) == 3
+        assert ventana.pestanas.indice_actual == 1
+        assert sesiones[1].documento is not None
+        # Las otras dos tienen su documento reservado, sin abrir.
+        assert sesiones[0].documento is None and sesiones[0].ruta_pendiente == rutas[0]
+        assert sesiones[2].documento is None and sesiones[2].ruta_pendiente == rutas[2]
+        assert not sesiones[0].vacia
+        assert ventana.pestanas.rotulos()[0] == "libro0"
+
+        # Al cerrar, la sesión se apunta entera y con la misma de delante.
+        ventana.anotar_documentos_abiertos()
+        assert configuracion.obtener("documentos_abiertos") == rutas
+        assert configuracion.obtener("documento_activo") == 1
+
+        # Entrar en una pestaña reservada abre su documento.
+        ventana.pestanas.seleccionar(2)
+        assert _esperar(lambda: sesiones[2].documento is not None and not ventana._cargando)
+        assert sesiones[2].ruta_pendiente == ""
+        assert sesiones[0].documento is None            # esta sigue esperando
+
+        # Pedir desde fuera un documento reservado lleva a su pestaña y lo abre.
+        assert ventana._ir_a_lo_ya_abierto(rutas[0])
+        assert _esperar(lambda: sesiones[0].documento is not None and not ventana._cargando)
+        assert ventana.pestanas.indice_actual == 0
+    finally:
+        _esperar(lambda: not ventana._cargando, 5)
+        while len(ventana.pestanas) > 1:
+            ventana.pestanas.cerrar(ventana.pestanas.indice_actual)
+        ventana.pestanas.actual.documento = None
+        ventana.pestanas.actual.ruta = ""
+        configuracion.establecer("documentos_abiertos", [])
+        configuracion.establecer("restaurar_documentos", False)
+        configuracion.establecer("documentos_recientes", recientes)
+        del configuracion.guardar
+
+
+def test_un_documento_reservado_que_ya_no_existe_cierra_su_pestana(
+        ventana_con_pestanas, tmp_path):
+    """Si se borró mientras tanto, su pestaña se va sin dejar un hueco."""
+    ventana = ventana_con_pestanas
+    while len(ventana.pestanas) > 1:
+        ventana.pestanas.cerrar(ventana.pestanas.indice_actual)
+    ventana.pestanas.actual.documento = None
+    ventana.pestanas.actual.ruta = ""
+    rutas = []
+    for numero in range(2):
+        archivo = tmp_path / ("otro%d.txt" % numero)
+        archivo.write_text("Hola %d.\n" % numero, encoding="utf-8")
+        rutas.append(str(archivo))
+    configuracion = ventana.configuracion
+    recientes = configuracion.recientes()
+    configuracion.guardar = lambda: None          # la prueba no escribe en disco
+    configuracion.establecer("restaurar_documentos", True)
+    configuracion.establecer("documentos_abiertos", rutas)
+    configuracion.establecer("documento_activo", 0)
+    try:
+        assert ventana.restaurar_documentos_abiertos()
+        assert _esperar(lambda: not ventana._cargando and ventana.documento is not None)
+        assert len(ventana.pestanas) == 2
+        (tmp_path / "otro1.txt").unlink()
+        ventana.pestanas.seleccionar(1)
+        assert _esperar(lambda: len(ventana.pestanas) == 1)
+    finally:
+        _esperar(lambda: not ventana._cargando, 5)
+        while len(ventana.pestanas) > 1:
+            ventana.pestanas.cerrar(ventana.pestanas.indice_actual)
+        ventana.pestanas.actual.documento = None
+        ventana.pestanas.actual.ruta = ""
+        configuracion.establecer("documentos_abiertos", [])
+        configuracion.establecer("restaurar_documentos", False)
+        configuracion.establecer("documentos_recientes", recientes)
+        del configuracion.guardar
+
+
+# ---------------------------------------------------------------------------
 # DOCX y ODT: lo que los hace accesibles
 # ---------------------------------------------------------------------------
 

@@ -37,6 +37,7 @@ import time
 
 import wx
 
+from interfaz.temporizadores import parar_al_destruir
 from interfaz.accesible import etiquetar, fila_etiquetada
 from interfaz.dialogos import ayuda_opcion
 from nucleo import omisiones, pronunciacion, quimica, segmentador
@@ -141,6 +142,7 @@ class LectorEnVozAlta:
         self._voz_elegida = ""
         self._voz_puesta = ""
         self._temporizador = wx.Timer(ventana)
+        parar_al_destruir(ventana, self._temporizador)
         ventana.Bind(wx.EVT_TIMER, self._al_latir, self._temporizador)
 
     # -- estado --------------------------------------------------------------

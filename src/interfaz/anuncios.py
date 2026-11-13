@@ -61,21 +61,96 @@ _voz_compartida = None
 _voz_intentada = False
 
 
+class SalidaAutomatica:
+    """Elige sola por dónde hablar, como ``Auto`` de ``accessible_output2``.
+
+    La diferencia está en la voz de Windows (SAPI 5).  ``Auto`` prepara al
+    empezar **todas** las salidas, y la de SAPI 5 abre el sintetizador por COM
+    y recorre las voces instaladas: unas décimas al arrancar —más con muchas
+    voces, como las de Eloquence o Vocalizer— que se pagaban siempre, aunque
+    hubiera un lector de pantalla delante y SAPI no se fuera a usar nunca.
+
+    Aquí los lectores de pantalla se preparan al empezar, como antes, y la voz
+    de Windows solo la primera vez que no haya ninguno activo.  El orden en que
+    se prueban es el mismo que el de ``Auto``.
+    """
+
+    def __init__(self) -> None:
+        import accessible_output2  # type: ignore
+        from accessible_output2.outputs.base import OutputError  # type: ignore
+
+        self._lectores = []
+        self._clases_del_sistema = []
+        for clase in accessible_output2.get_output_classes():
+            if getattr(clase, "system_output", False):
+                self._clases_del_sistema.append(clase)
+                continue
+            try:
+                self._lectores.append(clase())
+            except OutputError:
+                pass
+        self._del_sistema = None
+
+    def _salidas_del_sistema(self) -> list:
+        """Las salidas propias de Windows, preparadas la primera vez que hacen falta."""
+        if self._del_sistema is None:
+            self._del_sistema = []
+            for clase in self._clases_del_sistema:
+                try:
+                    self._del_sistema.append(clase())
+                except Exception as error:
+                    log.debug("No se ha podido preparar %s: %s",
+                              getattr(clase, "name", clase), error)
+        return self._del_sistema
+
+    def get_first_available_output(self):  # noqa: N802 (nombre de accessible_output2)
+        """La primera salida activa: un lector de pantalla y, si no hay, Windows."""
+        for salida in self._lectores:
+            if salida.is_active():
+                return salida
+        for salida in self._salidas_del_sistema():
+            if salida.is_active():
+                return salida
+        return None
+
+    def speak(self, *args, **kwargs) -> None:
+        """Dice el texto por la primera salida activa."""
+        salida = self.get_first_available_output()
+        if salida:
+            salida.speak(*args, **kwargs)
+
+    def braille(self, *args, **kwargs) -> None:
+        """Escribe el texto en la línea braille de la primera salida activa."""
+        salida = self.get_first_available_output()
+        if salida:
+            salida.braille(*args, **kwargs)
+
+    def output(self, *args, **kwargs) -> None:
+        """Igual que :meth:`speak`, como en ``Auto``."""
+        self.speak(*args, **kwargs)
+
+    def is_system_output(self):  # noqa: N802 (nombre de accessible_output2)
+        """Si la salida que se usaría es la de Windows y no un lector."""
+        salida = self.get_first_available_output()
+        if salida:
+            return salida.is_system_output()
+        return None
+
+
 def obtener_voz():
     """Devuelve la biblioteca de voz directa, cargándola la primera vez.
 
-    :return: El objeto de ``accessible_output2``, o ``None`` si no está
-             instalado; en ese caso se anuncia por regiones activas.
+    :return: El objeto que habla con el lector de pantalla, o ``None`` si
+             ``accessible_output2`` no está; en ese caso se anuncia por
+             regiones activas.
     """
     global _voz_compartida, _voz_intentada
     if _voz_intentada:
         return _voz_compartida
     _voz_intentada = True
     try:
-        from accessible_output2.outputs.auto import Auto  # type: ignore
-
-        _voz_compartida = Auto()
-        log.info("Anuncios: se usará accessible_output2 (%s)", type(_voz_compartida).__name__)
+        _voz_compartida = SalidaAutomatica()
+        log.info("Anuncios: se usará accessible_output2 (Auto)")
     except Exception as error:
         _voz_compartida = None
         log.info("accessible_output2 no disponible (%s); se usarán regiones activas", error)
@@ -165,9 +240,19 @@ class Voz:
     :param ventana: Ventana desde la que se anuncia.
     """
 
-    def __init__(self, ventana: wx.Window) -> None:
-        self._voz = obtener_voz()
+    def __init__(self, ventana: wx.Window, perezosa: bool = False) -> None:
+        #: Con ``perezosa`` la biblioteca no se carga hasta el primer aviso.
+        #: Lo pide la ventana principal, que se crea al arrancar: así la
+        #: ventana sale antes y la biblioteca se prepara justo después.
+        self._voz = None if perezosa else obtener_voz()
+        self._perezosa = perezosa
         self._region = RegionActiva(ventana)
+
+    def preparar(self) -> None:
+        """Carga ya la biblioteca de voz, si se dejó para más tarde."""
+        if self._perezosa:
+            self._perezosa = False
+            self._voz = obtener_voz()
 
     def decir(self, mensaje: str, interrumpir: bool = True) -> None:
         """Entrega el mensaje por la mejor vía disponible, sin esperas."""
@@ -175,6 +260,7 @@ class Voz:
         if not mensaje:
             return
         log.debug("Anuncio: %s", mensaje)
+        self.preparar()
         if self._voz is not None:
             # A braille siempre, aunque la voz funcione: son dos canales y hay
             # quien solo usa uno de los dos.
@@ -194,9 +280,35 @@ class Anunciador:
     """
 
     def __init__(self, ventana: wx.Window) -> None:
-        self._salida = Voz(ventana)
+        # La biblioteca de voz se carga justo después de enseñar la ventana
+        # (o con el primer aviso, si llega antes), no mientras se construye.
+        self._salida = Voz(ventana, perezosa=True)
         self._ultimo = ""
         self._temporizador: wx.CallLater | None = None
+        wx.CallAfter(self._preparar_voz)
+        # Un aviso que todavía espera su turno cuando se cierra la ventana se
+        # cancela: si siguiera en marcha, su temporizador sobreviviría a la
+        # ventana y avisaría a memoria ya liberada (ver ``temporizadores``).
+        self._id_ventana = ventana.GetId()
+        ventana.Bind(wx.EVT_WINDOW_DESTROY, self._al_destruir_ventana)
+
+    def _al_destruir_ventana(self, evento: wx.WindowDestroyEvent) -> None:
+        """Cancela el aviso pendiente al destruirse la ventana (no sus hijas)."""
+        if evento.GetId() == self._id_ventana:
+            temporizador, self._temporizador = self._temporizador, None
+            if temporizador is not None:
+                try:
+                    temporizador.Stop()
+                except (RuntimeError, AttributeError):
+                    pass
+        evento.Skip()
+
+    def _preparar_voz(self) -> None:
+        """Deja lista la biblioteca de voz en cuanto la ventana está a la vista."""
+        try:
+            self._salida.preparar()
+        except Exception as error:   # pragma: no cover - salvaguarda
+            log.debug("No se ha podido preparar la voz directa: %s", error)
 
     # -- anuncios ------------------------------------------------------------
 

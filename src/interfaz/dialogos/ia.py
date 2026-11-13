@@ -24,6 +24,7 @@ import threading
 
 import wx
 
+from interfaz.temporizadores import parar_al_destruir
 from interfaz.accesible import etiquetar, fila_etiquetada
 from interfaz.anuncios import Voz
 from interfaz.dialogos import ayuda_opcion
@@ -359,6 +360,7 @@ class DialogoDescripcion(wx.Dialog):
         contenedor.Add(self.barra, 0, wx.EXPAND | wx.LEFT | wx.RIGHT, MARGEN)
         self.barra.Hide()
         self._latido = wx.Timer(self)
+        parar_al_destruir(self, self._latido)
         self.Bind(wx.EVT_TIMER, lambda evento: self.barra.Pulse(), self._latido)
 
         fila = wx.BoxSizer(wx.HORIZONTAL)

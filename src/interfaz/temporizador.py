@@ -24,6 +24,7 @@ import time
 
 import wx
 
+from interfaz.temporizadores import parar_al_destruir
 from interfaz.accesible import fila_etiquetada
 from interfaz.dialogos import ayuda_opcion
 from nucleo.idioma import _
@@ -62,6 +63,7 @@ class Temporizador:
         self._avisado = False
         self._volumen_original = -1
         self._reloj = wx.Timer(ventana)
+        parar_al_destruir(ventana, self._reloj)
         ventana.Bind(wx.EVT_TIMER, self._al_latir, self._reloj)
 
     # -- estado --------------------------------------------------------------

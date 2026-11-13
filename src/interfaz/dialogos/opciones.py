@@ -33,6 +33,7 @@ from interfaz.dialogos import ayuda_opcion
 from interfaz.dialogos import progreso as dialogos_progreso
 from interfaz.dialogos.espera import ejecutar_esperando
 from interfaz.listas import ListaAccesible, ListaCasillas, rellenar_columnas
+from interfaz.temporizadores import parar_al_destruir
 from nucleo import actualizaciones, cache, descripciones, idioma, integracion
 from nucleo import registro as modulo_registro
 from nucleo.ia import consumo as ia_consumo
@@ -44,6 +45,26 @@ from nucleo.registro import obtener_registro, registrar_excepcion
 log = obtener_registro(__name__)
 
 MARGEN = 8
+
+#: Milisegundos sin cambiar de pestaña antes de empezar a montar las demás.
+#: Da tiempo a que el lector de pantalla lea el diálogo o la pestaña sin que
+#: nada le haga esperar.
+ESPERA_ANTES_DE_ADELANTAR = 250
+
+#: Milisegundos de respiro entre una pestaña montada en segundo plano y la
+#: siguiente, para que las pulsaciones se atiendan entre medias.
+PAUSA_ENTRE_PESTANAS = 30
+
+
+def _hay_entrada_esperando() -> bool:
+    """Dice si hay una tecla o un clic en la cola, aún sin atender."""
+    try:
+        import ctypes
+
+        QS_INPUT = 0x0407
+        return bool(ctypes.windll.user32.GetQueueStatus(QS_INPUT) >> 16)
+    except Exception:
+        return False
 
 #: Opciones cuyo cambio obliga a analizar el libro otra vez.
 #:
@@ -161,22 +182,65 @@ class DialogoOpciones(wx.Dialog):
         # pantalla anuncia el nombre de la pestaña seleccionada, y ponerle uno
         # propio lo sustituiría por él en todas las pestañas.
         self.cuaderno = wx.Notebook(self)
+        #: Dónde crea cada ``_pagina_*`` su panel.  Es el cuaderno para la
+        #: primera pestaña y el hueco de la suya para las demás.
+        self._padre_pagina: wx.Window = self.cuaderno
+        #: Pestañas ya construidas, por el nombre de su método.  Al aceptar
+        #: solo se guarda lo de estas: las demás no se han visto y por tanto
+        #: no han podido cambiar.
+        self._hechas: set[str] = set()
+        #: Pestañas por construir: índice en el cuaderno -> (hueco, método que
+        #: la construye, métodos que hay que construir con ella).
+        self._pendientes: dict[int, tuple[wx.Panel, str, tuple[str, ...]]] = {}
+        #: Índice de la pestaña de cada método, para saber en qué hueco cae.
+        self._indice_de: dict[str, int] = {}
+
+        # Solo la primera pestaña se construye al abrir.  Las demás se montan
+        # la primera vez que se visitan: construir las catorce de golpe
+        # costaba más de un segundo —cientos de controles, la lista de
+        # fuentes del sistema, la de colores, el estado de Tesseract— y casi
+        # nunca se entra en más de una o dos.
         self.cuaderno.AddPage(self._pagina_lectura(), _("Lectura"))
-        self.cuaderno.AddPage(self._pagina_personalizacion(), _("Personalización"))
-        self.cuaderno.AddPage(self._pagina_accesibilidad(), _("Accesibilidad"))
-        self.cuaderno.AddPage(self._pagina_exportar(), _("Exportar"))
-        self.cuaderno.AddPage(self._pagina_ocr(), _("Reconocimiento"))
-        self.cuaderno.AddPage(self._pagina_daisy(), _("DAISY"))
-        self.cuaderno.AddPage(self._pagina_ia(), _("Inteligencia artificial"))
-        self.cuaderno.AddPage(self._pagina_ollama(), _("IA local"))
-        self.cuaderno.AddPage(self._pagina_apariencia(), _("Apariencia"))
-        self.cuaderno.AddPage(self._pagina_sonidos(), _("Sonidos"))
-        self.cuaderno.AddPage(self._pagina_biblioteca(), _("Biblioteca y sincronización"))
-        self.cuaderno.AddPage(self._pagina_globales(), _("Teclas globales"))
+        self._hechas.add("_pagina_lectura")
+        # La IA y la IA local se tocan entre sí (cada una enseña y cambia cosas
+        # de la otra), así que se construyen siempre juntas y en este orden,
+        # se entre por la que se entre.
+        juntas_ia = ("_pagina_ia", "_pagina_ollama")
+        perezosas = [
+            ("_pagina_personalizacion", _("Personalización")),
+            ("_pagina_accesibilidad", _("Accesibilidad")),
+            ("_pagina_exportar", _("Exportar")),
+            ("_pagina_ocr", _("Reconocimiento")),
+            ("_pagina_daisy", _("DAISY")),
+            ("_pagina_ia", _("Inteligencia artificial")),
+            ("_pagina_ollama", _("IA local")),
+            ("_pagina_apariencia", _("Apariencia")),
+            ("_pagina_sonidos", _("Sonidos")),
+            ("_pagina_biblioteca", _("Biblioteca y sincronización")),
+            ("_pagina_globales", _("Teclas globales")),
+        ]
         if integracion.disponible():
-            self.cuaderno.AddPage(self._pagina_integracion(),
-                                  _("Integración con el sistema"))
-        self.cuaderno.AddPage(self._pagina_avanzado(), _("Avanzado"))
+            perezosas.append(("_pagina_integracion", _("Integración con el sistema")))
+        perezosas.append(("_pagina_avanzado", _("Avanzado")))
+        for metodo, titulo in perezosas:
+            hueco = wx.Panel(self.cuaderno)
+            hueco.SetSizer(wx.BoxSizer(wx.VERTICAL))
+            indice = self.cuaderno.GetPageCount()
+            grupo = juntas_ia if metodo in juntas_ia else (metodo,)
+            self._pendientes[indice] = (hueco, metodo, grupo)
+            self._indice_de[metodo] = indice
+            self.cuaderno.AddPage(hueco, titulo)
+        # Se construye al ir a cambiar, para que la pestaña ya tenga sus
+        # controles cuando se enseña, y otra vez después de cambiar.  Hacen
+        # falta los dos: cuando el cambio lo hace el propio Windows —con las
+        # flechas sobre las pestañas o con el ratón— el aviso de «va a
+        # cambiar» trae la pestaña que se **deja**, no aquella a la que se va,
+        # y solo el de «ha cambiado» sabe cuál es.  Con solo el primero, cada
+        # pestaña se construía al salir de ella y se llegaba siempre a un
+        # hueco vacío.  Construir dos veces no cuesta nada: la segunda ve que
+        # ya está hecha.
+        self.cuaderno.Bind(wx.EVT_NOTEBOOK_PAGE_CHANGING, self._al_cambiar_pestana)
+        self.cuaderno.Bind(wx.EVT_NOTEBOOK_PAGE_CHANGED, self._al_cambiar_pestana)
         contenedor.Add(self.cuaderno, 1, wx.EXPAND | wx.ALL, MARGEN)
 
         fila = wx.StdDialogButtonSizer()
@@ -193,6 +257,114 @@ class DialogoOpciones(wx.Dialog):
         # poner, y quien no ve la pantalla no tiene el contexto de alrededor.
         ayuda_opcion.enganchar(self)
         self.cuaderno.SetFocus()
+        # Las pestañas que faltan se van montando solas en los ratos en que no
+        # se pulsa nada, para que al llegar a cualquiera ya esté hecha.  Si se
+        # montaran justo al llegar, cada cambio a una pestaña nueva se
+        # atrancaría: las listas desplegables de Windows son caras de crear
+        # —más de diez milésimas cada una con un lector de pantalla
+        # escuchando— y algunas pestañas llevan muchas.
+        self._adelanto = wx.CallLater(ESPERA_ANTES_DE_ADELANTAR, self._adelantar_pestana)
+        parar_al_destruir(self, self._adelanto)
+
+    # -- construcción perezosa de las pestañas -------------------------------
+
+    def _al_cambiar_pestana(self, evento) -> None:
+        """Construye la pestaña a la que se va, si aún no lo estaba."""
+        evento.Skip()
+        if evento.GetEventObject() is not self.cuaderno:
+            return              # un cuaderno de dentro de alguna pestaña
+        self.construir_pestana(evento.GetSelection())
+        # Mientras se va de pestaña en pestaña no se adelanta nada: se espera
+        # a que el usuario se pare, y entonces se monta lo de alrededor.
+        if self._pendientes and self._adelanto.IsRunning():
+            self._adelanto.Start(ESPERA_ANTES_DE_ADELANTAR)
+
+    def _adelantar_pestana(self) -> None:
+        """Monta, en un rato libre, la pestaña pendiente más cercana a la actual.
+
+        Va de una en una, dejando respirar entre medias, y primero la
+        siguiente y la anterior, que son a las que se va con las flechas.  Si
+        hay una tecla o un clic esperando, lo deja para luego: lo primero es
+        atender al usuario.
+        """
+        if not self or not self._pendientes:
+            return
+        if _hay_entrada_esperando():
+            self._adelanto.Start(PAUSA_ENTRE_PESTANAS)
+            return
+        actual = self.cuaderno.GetSelection()
+        cantidad = self.cuaderno.GetPageCount()
+
+        def cercania(indice: int) -> tuple[int, int]:
+            delante = (indice - actual) % cantidad
+            detras = (actual - indice) % cantidad
+            return (min(delante, detras), 0 if delante <= detras else 1)
+
+        self.construir_pestana(min(self._pendientes, key=cercania))
+        if self._pendientes:
+            self._adelanto.Start(PAUSA_ENTRE_PESTANAS)
+
+    def construir_pestana(self, indice: int) -> None:
+        """Monta los controles de una pestaña que todavía no se ha visitado.
+
+        Las que van juntas (la IA y la IA local) se construyen a la vez y
+        siempre en el mismo orden, y cada una cae en su propio hueco.
+        """
+        if indice not in self._pendientes:
+            return
+        _hueco, _metodo, grupo = self._pendientes[indice]
+        for metodo in grupo:
+            if metodo in self._hechas:
+                continue
+            # Cada método cae en el hueco de **su** pestaña, que no tiene por
+            # qué ser la que se ha pedido.
+            propia = self._indice_de[metodo]
+            hueco = self._pendientes[propia][0]
+            self._padre_pagina = hueco
+            try:
+                panel = getattr(self, metodo)()
+            finally:
+                self._padre_pagina = self.cuaderno
+            hueco.GetSizer().Add(panel, 1, wx.EXPAND)
+            hueco.Layout()
+            self._hechas.add(metodo)
+            del self._pendientes[propia]
+        self._crecer_si_hace_falta()
+
+    def construir_todas(self) -> None:
+        """Construye todas las pestañas que falten.
+
+        Lo usan las herramientas de revisión y las pruebas, que necesitan ver
+        todos los controles a la vez.
+        """
+        for indice in sorted(self._pendientes):
+            self.construir_pestana(indice)
+
+    def _crecer_si_hace_falta(self) -> None:
+        """Agranda el diálogo si la pestaña recién montada no cabe.
+
+        Solo crece, nunca encoge: un diálogo que cambia de tamaño en cada
+        pestaña es incómodo, y uno que se queda corto corta los controles.
+        Tampoco pasa del área útil de la pantalla; las pestañas largas ya
+        tienen su propia barra de desplazamiento.
+        """
+        sizer = self.GetSizer()
+        if sizer is None:
+            return              # todavía en el constructor
+        self.cuaderno.InvalidateBestSize()
+        necesario = self.ClientToWindowSize(sizer.GetMinSize())
+        actual = self.GetSize()
+        ancho = max(actual.width, necesario.width)
+        alto = max(actual.height, necesario.height)
+        try:
+            area = wx.Display(max(wx.Display.GetFromWindow(self), 0)).GetClientArea()
+            ancho = min(ancho, area.width)
+            alto = min(alto, area.height)
+        except Exception:
+            pass
+        if (ancho, alto) != (actual.width, actual.height):
+            self.SetSize(ancho, alto)
+        self.Layout()
 
     # -- construcción de las páginas -----------------------------------------
 
@@ -205,7 +377,7 @@ class DialogoOpciones(wx.Dialog):
         compara documentos, y un estorbo diario para quien lee una novela de un
         tirón.  Que cada cual encienda lo suyo.
         """
-        panel = wx.ScrolledWindow(self.cuaderno, style=wx.VSCROLL)
+        panel = wx.ScrolledWindow(self._padre_pagina, style=wx.VSCROLL)
         panel.SetScrollRate(0, 12)
         caja = wx.BoxSizer(wx.VERTICAL)
 
@@ -334,7 +506,7 @@ class DialogoOpciones(wx.Dialog):
 
     def _pagina_lectura(self) -> wx.Panel:
         """Cómo se lee y cómo se convierte el documento."""
-        panel = wx.Panel(self.cuaderno)
+        panel = wx.Panel(self._padre_pagina)
         caja = wx.BoxSizer(wx.VERTICAL)
         self.tablas = wx.CheckBox(
             panel, label=_("Mostrar las &tablas completas dentro del texto "
@@ -470,7 +642,7 @@ class DialogoOpciones(wx.Dialog):
         imprimir en braille entra aquí, no en «Lectura». Y es donde irá lo que
         se añada de exportación, que hoy son seis formatos.
         """
-        panel = wx.Panel(self.cuaderno)
+        panel = wx.Panel(self._padre_pagina)
         caja = wx.BoxSizer(wx.VERTICAL)
 
         self.braille_contraido = wx.CheckBox(
@@ -504,7 +676,7 @@ class DialogoOpciones(wx.Dialog):
         barra de desplazamiento: son los que deciden si un documento difícil
         sale legible o sale inservible, y merecen sitio para explicarse.
         """
-        panel = wx.ScrolledWindow(self.cuaderno, style=wx.VSCROLL)
+        panel = wx.ScrolledWindow(self._padre_pagina, style=wx.VSCROLL)
         panel.SetScrollRate(0, 12)
         caja = wx.BoxSizer(wx.VERTICAL)
 
@@ -728,7 +900,7 @@ class DialogoOpciones(wx.Dialog):
 
     def _pagina_daisy(self) -> wx.Panel:
         """Cómo suenan los libros DAISY grabados."""
-        panel = wx.Panel(self.cuaderno)
+        panel = wx.Panel(self._padre_pagina)
         caja = wx.BoxSizer(wx.VERTICAL)
 
         caja.Add(wx.StaticText(panel, label=_(
@@ -860,7 +1032,7 @@ class DialogoOpciones(wx.Dialog):
         lee de oído: qué se anuncia al recorrer las columnas de una lista y si
         se señalan las imágenes que el libro no describe.
         """
-        panel = wx.Panel(self.cuaderno)
+        panel = wx.Panel(self._padre_pagina)
         caja = wx.BoxSizer(wx.VERTICAL)
 
         caja.Add(wx.StaticText(panel, label=(
@@ -939,7 +1111,11 @@ class DialogoOpciones(wx.Dialog):
         abren las opciones.  El botón vuelve a pedirlos cuando el usuario
         quiera refrescarlos.
         """
-        panel = wx.ScrolledWindow(self.cuaderno)
+        panel = wx.ScrolledWindow(self._padre_pagina)
+        #: Se guarda para recolocarla al cambiar de proveedor.  Antes se usaba
+        #: la pestaña activa del cuaderno, que al construirse la pestaña no es
+        #: esta, y ahora además la pestaña es un hueco que la contiene.
+        self._panel_ia = panel
         panel.SetScrollRate(0, 12)
         caja = wx.BoxSizer(wx.VERTICAL)
 
@@ -1190,7 +1366,7 @@ class DialogoOpciones(wx.Dialog):
         activo = clave != "off"
         self.boton_modelos.Enable(activo)
         self.boton_probar.Enable(activo)
-        self.cuaderno.GetCurrentPage().Layout()
+        self._panel_ia.Layout()
 
     def _resumir_ia_local(self) -> None:
         """Escribe en la pestaña de IA en qué estado está la local del programa."""
@@ -1361,7 +1537,7 @@ class DialogoOpciones(wx.Dialog):
         pararlo, darle modelos, decidir si usa la tarjeta gráfica—, que es más
         parecido a administrar un servicio que a rellenar unos ajustes.
         """
-        panel = wx.ScrolledWindow(self.cuaderno, style=wx.VSCROLL)
+        panel = wx.ScrolledWindow(self._padre_pagina, style=wx.VSCROLL)
         panel.SetScrollRate(0, 12)
         caja = wx.BoxSizer(wx.VERTICAL)
 
@@ -1841,7 +2017,7 @@ class DialogoOpciones(wx.Dialog):
 
     def _pagina_apariencia(self) -> wx.Panel:
         """Fuente, tamaño y colores del texto."""
-        panel = wx.Panel(self.cuaderno)
+        panel = wx.Panel(self._padre_pagina)
         caja = wx.BoxSizer(wx.VERTICAL)
 
         fuentes = [_("Fuente del sistema")] + sorted(set(wx.FontEnumerator.GetFacenames()))
@@ -1883,7 +2059,7 @@ class DialogoOpciones(wx.Dialog):
 
     def _pagina_sonidos(self) -> wx.Panel:
         """Activación, volumen y prueba de los sonidos de navegación."""
-        panel = wx.Panel(self.cuaderno)
+        panel = wx.Panel(self._padre_pagina)
         caja = wx.BoxSizer(wx.VERTICAL)
 
         self.sonidos_activos = wx.CheckBox(panel, label=_("Reproducir &sonidos de navegación"))
@@ -1970,7 +2146,7 @@ class DialogoOpciones(wx.Dialog):
         Viene todo apagado de fábrica y a propósito: un programa portátil no
         tiene por qué tocar el equipo de nadie hasta que se lo pidan.
         """
-        panel = wx.ScrolledWindow(self.cuaderno, style=wx.VSCROLL)
+        panel = wx.ScrolledWindow(self._padre_pagina, style=wx.VSCROLL)
         panel.SetScrollRate(0, 12)
         caja = wx.BoxSizer(wx.VERTICAL)
 
@@ -2036,7 +2212,7 @@ class DialogoOpciones(wx.Dialog):
         Las dos cosas van juntas porque son la misma idea vista desde dos
         sitios: dónde están mis libros y cómo llevo conmigo por dónde iba.
         """
-        panel = wx.ScrolledWindow(self.cuaderno, style=wx.VSCROLL)
+        panel = wx.ScrolledWindow(self._padre_pagina, style=wx.VSCROLL)
         panel.SetScrollRate(0, 12)
         caja = wx.BoxSizer(wx.VERTICAL)
 
@@ -2212,7 +2388,7 @@ class DialogoOpciones(wx.Dialog):
 
     def _pagina_globales(self) -> wx.Panel:
         """Bandeja del sistema y teclas que funcionan desde cualquier programa."""
-        panel = wx.Panel(self.cuaderno)
+        panel = wx.Panel(self._padre_pagina)
         caja = wx.BoxSizer(wx.VERTICAL)
 
         self.a_bandeja = wx.CheckBox(
@@ -2354,7 +2530,7 @@ class DialogoOpciones(wx.Dialog):
 
     def _pagina_avanzado(self) -> wx.Panel:
         """Registro de actividad y mantenimiento de la caché."""
-        panel = wx.Panel(self.cuaderno)
+        panel = wx.Panel(self._padre_pagina)
         caja = wx.BoxSizer(wx.VERTICAL)
 
         self.nivel = fila_etiquetada(
@@ -2502,100 +2678,126 @@ class DialogoOpciones(wx.Dialog):
             integracion.quitar()
 
     def _al_aceptar(self, evento) -> None:
-        """Guarda todos los ajustes y avisa si hay que reabrir el libro."""
+        """Guarda los ajustes y avisa si hay que reabrir el libro.
+
+        Solo se guarda lo de las pestañas que se han llegado a construir: las
+        que no se han visitado enseñan lo que ya había guardado, así que no hay
+        nada nuevo que recoger de ellas (y sus controles ni siquiera existen).
+        """
         establecer = self.configuracion.establecer
-        establecer("tablas_en_linea", self.tablas.GetValue())
-        establecer("anunciar_imagenes_sin_texto", self.imagenes.GetValue())
-        establecer("ajuste_de_linea", self.ajuste.GetValue())
-        establecer("renglon_por_frase", self.renglon_frase.GetValue())
-        establecer("ancho_maximo_linea", int(self.ancho_linea.GetValue()))
-        establecer("navegacion_circular", self.circular.GetValue())
-        establecer("recordar_posicion", self.recordar.GetValue())
-        establecer("mostrar_formato", self.formato.GetValue())
-        establecer("usar_cache", self.cache.GetValue())
-        establecer("marcar_llamadas_de_nota", self.marcar_notas.GetValue())
-        establecer("solo_articulo", self.solo_articulo.GetValue())
-        establecer("revisar_epub", self.revisar_epub.GetValue())
-        establecer("braille_contraido", self.braille_contraido.GetValue())
-        establecer("sincronizacion_carpeta", self.sincro_carpeta.GetValue().strip())
-        establecer("sincronizacion_automatica", self.sincro_auto.GetValue())
-        self._guardar_biblioteca(establecer)
-        establecer("usar_pestanas", self.usar_pestanas.GetValue())
-        self._guardar_integracion(establecer)
-        establecer("restaurar_documentos", self.restaurar_documentos.GetValue())
-        establecer("pestanas_al_abrir",
-                   self._donde_abrir[max(0, self.pestanas_al_abrir.GetSelection())][0])
-        establecer("mostrar_arbol", self.mostrar_arbol.GetValue())
-        establecer("barra_recuentos", self.barra_recuentos.GetValue())
-        establecer("mostrar_bienvenida", self.mostrar_bienvenida.GetValue())
-        establecer("pdf_estructura", self.pdf_estructura.GetValue())
-        establecer("pdf_geometria", self.pdf_geometria.GetValue())
-        establecer("pdf_ocr_modo", self._modos_ocr[max(0, self.pdf_modo.GetSelection())][0])
-        establecer("pdf_ocr_gris", self.ocr_gris.GetValue())
-        establecer("pdf_ocr_contraste", self.ocr_contraste.GetValue() / 10.0)
-        establecer("pdf_ocr_binarizar", self.ocr_binarizar.GetValue())
-        establecer("pdf_ocr_umbral", self.ocr_umbral.GetValue())
-        establecer("pdf_ocr_psm", self._psm[max(0, self.ocr_psm.GetSelection())][0])
-        establecer("pdf_ocr_oem", self._oem[max(0, self.ocr_oem.GetSelection())][0])
-        establecer("pdf_ocr_escala", self._escalas[max(0, self.ocr_escala.GetSelection())][0])
-        establecer("pdf_ocr_dpi", self.ocr_dpi.GetValue())
-        establecer("pdf_ocr_confianza", self.ocr_confianza.GetValue())
-        establecer("pdf_ocr_quitar_simbolos", self.ocr_simbolos.GetValue())
-        establecer("pdf_ocr_tablas", self.ocr_tablas.GetValue())
-        establecer("pdf_ocr_esmerado", self.ocr_esmerado.GetValue())
-        establecer("daisy_velocidad", self.daisy_velocidad.GetValue())
-        establecer("daisy_volumen", self.daisy_volumen.GetValue())
-        establecer("daisy_mover_cursor", self.daisy_cursor.GetValue())
-        establecer("daisy_reproducir_al_abrir", self.daisy_al_abrir.GetValue())
-        establecer("pdf_ocr_maximo", self.pdf_maximo.GetValue())
+        hecha = self._hechas.__contains__
 
-        establecer("columnas_decir_fila", self.decir_fila.GetValue())
-        posicion = self._teclas_lista[max(0, self.lista_tecla_posicion.GetSelection())][0]
-        ir_a = self._teclas_lista[max(0, self.lista_tecla_ir_a.GetSelection())][0]
-        # Por si acaso: las dos con la misma tecla no pueden funcionar.
-        if posicion and posicion == ir_a:
-            posicion = ""
-        establecer("lista_tecla_posicion", posicion)
-        establecer("lista_tecla_ir_a", ir_a)
-        establecer("columnas_decir_encabezado", self.decir_encabezado.GetValue())
-        establecer("columnas_decir_contenido", self.decir_contenido.GetValue())
+        if hecha("_pagina_lectura"):
+            establecer("tablas_en_linea", self.tablas.GetValue())
+            establecer("ajuste_de_linea", self.ajuste.GetValue())
+            establecer("renglon_por_frase", self.renglon_frase.GetValue())
+            establecer("ancho_maximo_linea", int(self.ancho_linea.GetValue()))
+            establecer("navegacion_circular", self.circular.GetValue())
+            establecer("recordar_posicion", self.recordar.GetValue())
+            establecer("mostrar_formato", self.formato.GetValue())
+            establecer("marcar_llamadas_de_nota", self.marcar_notas.GetValue())
+            establecer("solo_articulo", self.solo_articulo.GetValue())
 
-        self._configuracion_de_ia()
-        establecer("ia_guardar_descripciones", self.ia_guardar.GetValue())
-        establecer("ia_anunciar_descripcion", self.ia_anunciar.GetValue())
+        if hecha("_pagina_personalizacion"):
+            establecer("usar_pestanas", self.usar_pestanas.GetValue())
+            establecer("restaurar_documentos", self.restaurar_documentos.GetValue())
+            establecer("pestanas_al_abrir",
+                       self._donde_abrir[max(0, self.pestanas_al_abrir.GetSelection())][0])
+            establecer("mostrar_arbol", self.mostrar_arbol.GetValue())
+            establecer("barra_recuentos", self.barra_recuentos.GetValue())
+            establecer("mostrar_bienvenida", self.mostrar_bienvenida.GetValue())
+            establecer("idioma", self._idiomas[max(self.idioma.GetSelection(), 0)][0])
 
-        establecer("comprobar_actualizaciones", self.comprobar_actualizaciones.GetValue())
-        establecer("actualizaciones_origen", self._origenes[
-            max(0, self.actualizaciones_origen.GetSelection())][0])
-        establecer("actualizaciones_url", self.actualizaciones_url.GetValue().strip())
+        if hecha("_pagina_accesibilidad"):
+            establecer("anunciar_imagenes_sin_texto", self.imagenes.GetValue())
+            establecer("columnas_decir_fila", self.decir_fila.GetValue())
+            posicion = self._teclas_lista[max(0, self.lista_tecla_posicion.GetSelection())][0]
+            ir_a = self._teclas_lista[max(0, self.lista_tecla_ir_a.GetSelection())][0]
+            # Por si acaso: las dos con la misma tecla no pueden funcionar.
+            if posicion and posicion == ir_a:
+                posicion = ""
+            establecer("lista_tecla_posicion", posicion)
+            establecer("lista_tecla_ir_a", ir_a)
+            establecer("columnas_decir_encabezado", self.decir_encabezado.GetValue())
+            establecer("columnas_decir_contenido", self.decir_contenido.GetValue())
 
-        establecer("minimizar_a_bandeja", self.a_bandeja.GetValue())
-        establecer("teclas_globales_activas", self.globales_activas.GetValue())
-        teclas_globales.guardar(self.configuracion, self._globales)
+        if hecha("_pagina_exportar"):
+            establecer("revisar_epub", self.revisar_epub.GetValue())
+            establecer("braille_contraido", self.braille_contraido.GetValue())
 
-        eleccion = self.fuente.GetStringSelection()
-        establecer("fuente_nombre", "" if eleccion == _("Fuente del sistema") else eleccion)
-        establecer("fuente_tamano", self.tamano.GetValue())
-        if self.usar_colores.GetValue():
-            establecer("color_texto", self.color_texto.valor())
-            establecer("color_fondo", self.color_fondo.valor())
-        else:
-            establecer("color_texto", "")
-            establecer("color_fondo", "")
+        if hecha("_pagina_ocr"):
+            establecer("pdf_estructura", self.pdf_estructura.GetValue())
+            establecer("pdf_geometria", self.pdf_geometria.GetValue())
+            establecer("pdf_ocr_modo", self._modos_ocr[max(0, self.pdf_modo.GetSelection())][0])
+            establecer("pdf_ocr_gris", self.ocr_gris.GetValue())
+            establecer("pdf_ocr_contraste", self.ocr_contraste.GetValue() / 10.0)
+            establecer("pdf_ocr_binarizar", self.ocr_binarizar.GetValue())
+            establecer("pdf_ocr_umbral", self.ocr_umbral.GetValue())
+            establecer("pdf_ocr_psm", self._psm[max(0, self.ocr_psm.GetSelection())][0])
+            establecer("pdf_ocr_oem", self._oem[max(0, self.ocr_oem.GetSelection())][0])
+            establecer("pdf_ocr_escala",
+                       self._escalas[max(0, self.ocr_escala.GetSelection())][0])
+            establecer("pdf_ocr_dpi", self.ocr_dpi.GetValue())
+            establecer("pdf_ocr_confianza", self.ocr_confianza.GetValue())
+            establecer("pdf_ocr_quitar_simbolos", self.ocr_simbolos.GetValue())
+            establecer("pdf_ocr_tablas", self.ocr_tablas.GetValue())
+            establecer("pdf_ocr_esmerado", self.ocr_esmerado.GetValue())
+            establecer("pdf_ocr_maximo", self.pdf_maximo.GetValue())
 
-        establecer("sonidos_activados", self.sonidos_activos.GetValue())
-        establecer("sonidos_solo_al_navegar", self.solo_navegar.GetValue())
-        establecer("avisar_elementos",
-                   self._avisos[max(0, self.avisar_elementos.GetSelection())][0])
-        establecer("sonidos_volumen", self.volumen.GetValue())
-        self.sonidos.activado = self.sonidos_activos.GetValue()
-        self.sonidos.establecer_volumen(self.volumen.GetValue())
+        if hecha("_pagina_daisy"):
+            establecer("daisy_velocidad", self.daisy_velocidad.GetValue())
+            establecer("daisy_volumen", self.daisy_volumen.GetValue())
+            establecer("daisy_mover_cursor", self.daisy_cursor.GetValue())
+            establecer("daisy_reproducir_al_abrir", self.daisy_al_abrir.GetValue())
 
-        establecer("idioma", self._idiomas[max(self.idioma.GetSelection(), 0)][0])
+        # La IA y la IA local van siempre juntas: si está una, está la otra.
+        if hecha("_pagina_ia") and hecha("_pagina_ollama"):
+            self._configuracion_de_ia()
+            establecer("ia_guardar_descripciones", self.ia_guardar.GetValue())
+            establecer("ia_anunciar_descripcion", self.ia_anunciar.GetValue())
 
-        nivel = self.nivel.GetStringSelection() or "INFO"
-        establecer("nivel_registro", nivel)
-        modulo_registro.cambiar_nivel(nivel)
+        if hecha("_pagina_apariencia"):
+            eleccion = self.fuente.GetStringSelection()
+            establecer("fuente_nombre", "" if eleccion == _("Fuente del sistema") else eleccion)
+            establecer("fuente_tamano", self.tamano.GetValue())
+            if self.usar_colores.GetValue():
+                establecer("color_texto", self.color_texto.valor())
+                establecer("color_fondo", self.color_fondo.valor())
+            else:
+                establecer("color_texto", "")
+                establecer("color_fondo", "")
+
+        if hecha("_pagina_sonidos"):
+            establecer("sonidos_activados", self.sonidos_activos.GetValue())
+            establecer("sonidos_solo_al_navegar", self.solo_navegar.GetValue())
+            establecer("avisar_elementos",
+                       self._avisos[max(0, self.avisar_elementos.GetSelection())][0])
+            establecer("sonidos_volumen", self.volumen.GetValue())
+            self.sonidos.activado = self.sonidos_activos.GetValue()
+            self.sonidos.establecer_volumen(self.volumen.GetValue())
+
+        if hecha("_pagina_biblioteca"):
+            establecer("sincronizacion_carpeta", self.sincro_carpeta.GetValue().strip())
+            establecer("sincronizacion_automatica", self.sincro_auto.GetValue())
+            self._guardar_biblioteca(establecer)
+
+        if hecha("_pagina_globales"):
+            establecer("minimizar_a_bandeja", self.a_bandeja.GetValue())
+            establecer("teclas_globales_activas", self.globales_activas.GetValue())
+            teclas_globales.guardar(self.configuracion, self._globales)
+
+        if hecha("_pagina_integracion"):
+            self._guardar_integracion(establecer)
+
+        if hecha("_pagina_avanzado"):
+            establecer("usar_cache", self.cache.GetValue())
+            establecer("comprobar_actualizaciones", self.comprobar_actualizaciones.GetValue())
+            establecer("actualizaciones_origen", self._origenes[
+                max(0, self.actualizaciones_origen.GetSelection())][0])
+            establecer("actualizaciones_url", self.actualizaciones_url.GetValue().strip())
+            nivel = self.nivel.GetStringSelection() or "INFO"
+            establecer("nivel_registro", nivel)
+            modulo_registro.cambiar_nivel(nivel)
 
         self.hay_que_reanalizar = any(
             self.configuracion.obtener(clave) != self._valores_previos[clave]

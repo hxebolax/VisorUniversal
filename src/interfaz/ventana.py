@@ -24,10 +24,12 @@ import os
 import re
 import threading
 import time
+import weakref
 from pathlib import Path
 
 import wx
 
+from interfaz.temporizadores import parar_al_destruir
 from formatos import base as formatos
 from interfaz import atajos as tabla_atajos
 from interfaz import anuncios
@@ -264,6 +266,7 @@ class VentanaPrincipal(wx.Frame):
         self._por_restaurar = None
         self._restaurar_activo = 0
         self._vigilante_encargos = wx.Timer(self)
+        parar_al_destruir(self, self._vigilante_encargos)
         self.Bind(wx.EVT_TIMER, self._al_revisar_encargos, self._vigilante_encargos)
         self._vigilante_encargos.Start(700)
 
@@ -486,6 +489,9 @@ class VentanaPrincipal(wx.Frame):
         else:
             self.SetStatusText(_("Listo. Pulsa Control+O para abrir un documento."))
         self.lector.texto.SetFocus()
+        # Una pestaña de la sesión anterior que aún no se había visitado: es
+        # ahora cuando se abre su documento.
+        self._abrir_pendiente(self.pestanas.actual)
 
     def _refrescar_titulo(self) -> None:
         """Escribe en el título de la ventana el documento de la pestaña activa."""
@@ -544,12 +550,21 @@ class VentanaPrincipal(wx.Frame):
         menu = getattr(self, "menu_pestanas", None)
         if menu is None:
             return
+        rotulos = self.pestanas.rotulos()
+        # Se llama a menudo (cada cambio de pestaña, cada apertura) y casi
+        # siempre para dejarlo igual: rehacer un menú cuesta, así que si no ha
+        # cambiado nada no se toca.
+        huella = (tuple(rotulos), self.pestanas.indice_actual)
+        if huella == getattr(self, "_huella_menu_pestanas", None):
+            return
+        self._huella_menu_pestanas = huella
+        self._soltar_enlaces("_enlaces_menu_pestanas")
         for elemento in list(menu.GetMenuItems())[self._fijos_de_pestanas:]:
             menu.Delete(elemento)
-        if len(self.pestanas) <= 1:
+        if len(rotulos) <= 1:
             return
         menu.AppendSeparator()
-        for numero, rotulo in enumerate(self.pestanas.rotulos(), start=1):
+        for numero, rotulo in enumerate(rotulos, start=1):
             entrada = menu.AppendRadioItem(
                 wx.ID_ANY, "&%d. %s" % (numero, rotulo.replace("&", "&&")[:60]))
             if numero - 1 == self.pestanas.indice_actual:
@@ -557,6 +572,19 @@ class VentanaPrincipal(wx.Frame):
             self.Bind(wx.EVT_MENU,
                       lambda evento, indice=numero - 1: self._ir_a_pestana(indice),
                       entrada)
+            self._enlaces_menu_pestanas.append(entrada.GetId())
+
+    def _soltar_enlaces(self, atributo: str) -> None:
+        """Quita los manejadores de un menú que se va a rehacer.
+
+        Sin esto, cada vez que se rehacía el menú de recientes o el de
+        pestañas se quedaban enganchados a la ventana los manejadores de las
+        entradas anteriores, y la lista que la ventana recorre con cada orden
+        de menú o atajo crecía durante toda la sesión.
+        """
+        for identificador in getattr(self, atributo, None) or []:
+            self.Unbind(wx.EVT_MENU, id=identificador)
+        setattr(self, atributo, [])
 
     def _ir_a_pestana(self, indice: int) -> None:
         """Salta a una pestaña por su número."""
@@ -648,6 +676,12 @@ class VentanaPrincipal(wx.Frame):
 
     def _construir_menus(self) -> None:
         """Crea la barra de menús completa."""
+        # Los menús de recientes y de pestañas son nuevos: lo que se recordaba
+        # de cómo estaban los anteriores ya no vale, y sus manejadores sobran.
+        self._recientes_en_menu = None
+        self._huella_menu_pestanas = None
+        self._soltar_enlaces("_enlaces_recientes")
+        self._soltar_enlaces("_enlaces_menu_pestanas")
         barra = wx.MenuBar()
 
         archivo = wx.Menu()
@@ -950,9 +984,15 @@ class VentanaPrincipal(wx.Frame):
 
     def _refrescar_recientes(self) -> None:
         """Rehace el submenú de libros recientes."""
+        recientes = self.configuracion.recientes()
+        # Al abrir un libro que ya era el último, la lista no cambia: rehacer
+        # el menú costaba más de una décima para dejarlo exactamente igual.
+        if recientes == getattr(self, "_recientes_en_menu", None):
+            return
+        self._recientes_en_menu = list(recientes)
+        self._soltar_enlaces("_enlaces_recientes")
         for elemento in list(self.menu_recientes.GetMenuItems()):
             self.menu_recientes.Delete(elemento)
-        recientes = self.configuracion.recientes()
         if not recientes:
             elemento = self.menu_recientes.Append(wx.ID_ANY, _("(No hay documentos recientes)"))
             elemento.Enable(False)
@@ -968,9 +1008,11 @@ class VentanaPrincipal(wx.Frame):
             elemento = self.menu_recientes.Append(wx.ID_ANY, rotulo, ruta)
             self.Bind(wx.EVT_MENU, lambda evento, destino=ruta: self.abrir_libro(destino),
                       id=elemento.GetId())
+            self._enlaces_recientes.append(elemento.GetId())
         self.menu_recientes.AppendSeparator()
         limpiar = self.menu_recientes.Append(wx.ID_ANY, _("&Vaciar la lista"))
         self.Bind(wx.EVT_MENU, self._al_vaciar_recientes, id=limpiar.GetId())
+        self._enlaces_recientes.append(limpiar.GetId())
 
     def _al_vaciar_recientes(self, evento) -> None:
         """Borra la lista de libros recientes."""
@@ -1150,6 +1192,12 @@ class VentanaPrincipal(wx.Frame):
         :return: Si se ha ido a una pestaña que ya existía.
         """
         for numero, sesion in enumerate(self.pestanas.sesiones):
+            if sesion.ruta_pendiente and _misma_ruta(sesion.ruta_pendiente, ruta):
+                # Reservado pero sin abrir: se va a su pestaña y se abre ahí.
+                if numero != self.pestanas.indice_actual:
+                    self.pestanas.seleccionar(numero)
+                self._abrir_pendiente(sesion)
+                return True
             if not sesion.ruta or not _misma_ruta(sesion.ruta, ruta):
                 continue
             if numero != self.pestanas.indice_actual:
@@ -1340,8 +1388,19 @@ class VentanaPrincipal(wx.Frame):
         # así que se limpia la del anterior: dejarla puesta haría que el
         # siguiente PDF cifrado intentara abrirse con una clave ajena.
         analizador_pdf.contrasena = ""
-        analizador_pdf.pedir_contrasena = (
-            lambda ruta, intento: dialogo_contrasena.solicitar(self, ruta, intento))
+        # El analizador vive mientras dure el programa: si guardara la ventana
+        # tal cual, la tendría sujeta después de cerrarla y Python la
+        # recogería al final, con wxPython ya desmontado, lo que acaba en una
+        # violación de acceso.  Por eso solo se queda con una referencia débil.
+        ventana = weakref.ref(self)
+
+        def pedir_contrasena(ruta: str, intento: int) -> str:
+            propia = ventana()
+            if not propia:
+                return ""           # ya no hay ventana sobre la que preguntar
+            return dialogo_contrasena.solicitar(propia, ruta, intento)
+
+        analizador_pdf.pedir_contrasena = pedir_contrasena
 
     def _cerrar_progreso(self) -> None:
         """Cierra la ventana de progreso, si estaba abierta."""
@@ -1373,6 +1432,7 @@ class VentanaPrincipal(wx.Frame):
         self.sonidos.reproducir("limite")
         self.lector.texto.SetFocus()
         self.anunciar(_("Apertura cancelada."))
+        wx.CallAfter(self._abrir_pendiente_delante)
 
     def _libro_listo(self, documento: Documento, ruta: str, libro_daisy=None) -> None:
         """Se ejecuta en el hilo de la interfaz cuando el libro está analizado."""
@@ -1444,6 +1504,7 @@ class VentanaPrincipal(wx.Frame):
         self._actualizar_estado(posicion)
         self._presentar_grabacion(posicion)
         self._continuar_cola()
+        wx.CallAfter(self._abrir_pendiente_delante)
 
     def _presentar_grabacion(self, posicion: int) -> None:
         """Avisa de que el libro trae grabación y, si se pidió, la arranca.
@@ -1474,7 +1535,8 @@ class VentanaPrincipal(wx.Frame):
         self.SetStatusText(_("No se ha podido abrir el documento."))
         self.sonidos.reproducir("error")
         log.error("No se ha podido abrir %s: %s", ruta, mensaje)
-        if getattr(self, "_por_restaurar", None):
+        wx.CallAfter(self._abrir_pendiente_delante)
+        if getattr(self, "_por_restaurar", None) is not None:
             # Restaurando la sesión anterior no se interrumpe con un aviso por
             # cada documento que ya no se pueda abrir: se anota y se sigue.
             self._continuar_cola()
@@ -1592,21 +1654,27 @@ class VentanaPrincipal(wx.Frame):
         rutas_abiertas = []
         activa = 0
         for indice, sesion in enumerate(self.pestanas.sesiones):
-            if not sesion.ruta or sesion.documento is None:
+            # Las pestañas que aún no se han visitado también cuentan: siguen
+            # abiertas, solo que su documento todavía no se ha cargado.
+            if sesion.documento is not None and sesion.ruta:
+                ruta = sesion.ruta
+            elif sesion.ruta_pendiente:
+                ruta = sesion.ruta_pendiente
+            else:
                 continue
             if sesion is self.pestanas.actual:
                 activa = len(rutas_abiertas)
-            rutas_abiertas.append(str(sesion.ruta))
+            rutas_abiertas.append(str(ruta))
         self.configuracion.establecer("documentos_abiertos", rutas_abiertas)
         self.configuracion.establecer("documento_activo", activa)
 
     def restaurar_documentos_abiertos(self, ademas: str = "") -> bool:
         """Vuelve a abrir los documentos que quedaron abiertos al cerrar.
 
-        Se abren **uno detrás de otro** y no todos a la vez: el análisis corre
-        en un hilo y solo hay uno, así que pedir cinco documentos de golpe haría
-        que cuatro se descartaran por «espera, todavía se está abriendo otro».
-        La cola la vacía :meth:`_seguir_restaurando` según van llegando.
+        Cada uno vuelve a tener su pestaña, pero solo se abre de verdad el que
+        estaba delante.  Los demás quedan reservados en su pestaña
+        (:attr:`Sesion.ruta_pendiente`) y se abren al entrar en ella, con
+        :meth:`_abrir_pendiente`.
 
         Los archivos que ya no existen se saltan sin decir nada: que un libro
         se haya movido de sitio no es un error que merezca un aviso al arrancar.
@@ -1636,11 +1704,68 @@ class VentanaPrincipal(wx.Frame):
                 activo = len(pendientes) - 1
         if not pendientes:
             return False
-        self._por_restaurar = pendientes
-        self._restaurar_activo = max(0, min(activo, len(pendientes) - 1))
+        activo = max(0, min(activo, len(pendientes) - 1))
         log.info("Restaurando %d documentos de la sesión anterior", len(pendientes))
-        self._seguir_restaurando()
+        # Cada documento recibe ya su pestaña, con su nombre, pero **solo se
+        # abre el que estaba delante**.  Los demás quedan reservados y se
+        # abren al entrar en su pestaña: abrirlos todos al arrancar era
+        # analizarlos, cargar su texto entero en el control, rehacer el árbol
+        # y anunciar cada uno, y con siete libros eran varios segundos con el
+        # programa ocupado para enseñar uno solo.
+        reservadas = []
+        for numero, ruta in enumerate(pendientes):
+            if numero == 0 and len(self.pestanas.sesiones) == 1 and self.sesion.vacia:
+                sesion = self.pestanas.actual
+            else:
+                sesion = self.pestanas.nueva(seleccionar=False)
+            sesion.ruta_pendiente = ruta
+            sesion.titulo_pendiente = (
+                self.configuracion.datos_de(ruta).titulo or "").strip()
+            self.pestanas.refrescar_rotulo(sesion)
+            reservadas.append(sesion)
+        delante = reservadas[activo]
+        self._restaurar_activo = self.pestanas.sesiones.index(delante)
+        # Una cola vacía, pero cola: así el final de la apertura sabe que se
+        # está restaurando (para no interrumpir con avisos) y coloca delante
+        # la pestaña que lo estaba.
+        self._por_restaurar = []
+        self.pestanas.seleccionar(self._restaurar_activo)
+        self._menu_de_pestanas()
+        self._abrir_pendiente(delante)
         return True
+
+    def _abrir_pendiente(self, sesion) -> bool:
+        """Abre el documento reservado de una pestaña, si es la de delante.
+
+        :return: Si se ha empezado a abrir.
+        """
+        if (sesion is None or not sesion.ruta_pendiente or self._cargando
+                or sesion is not self.pestanas.actual):
+            return False
+        ruta = sesion.ruta_pendiente
+        # Se quita la reserva antes de abrir: a partir de aquí es una apertura
+        # como cualquier otra, y si falla la pestaña se cierra por vacía.
+        sesion.ruta_pendiente = ""
+        sesion.titulo_pendiente = ""
+        if not Path(ruta).is_file():
+            log.info("El documento reservado ya no está: %s", ruta)
+            self._sesion_destino = sesion
+            self._cerrar_pestana_huerfana()
+            return False
+        self.abrir_libro(ruta, en_pestana_nueva=False)
+        return True
+
+    def _abrir_pendiente_delante(self) -> None:
+        """Si la pestaña de delante espera su documento, se abre ahora.
+
+        Hace falta al terminar otra apertura: mientras se abría un documento
+        no se puede empezar otro, así que la pestaña a la que se haya ido el
+        usuario en ese rato se quedó esperando.
+        """
+        try:
+            self._abrir_pendiente(self.pestanas.actual)
+        except RuntimeError:
+            pass                # la ventana se está cerrando
 
     def abrir_con_la_sesion(self, ruta: str) -> None:
         """Abre un libro y, si estaba pedido, recupera antes la sesión anterior.
@@ -1656,25 +1781,11 @@ class VentanaPrincipal(wx.Frame):
         if not self.restaurar_documentos_abiertos(ademas=ruta):
             self.abrir_libro(ruta)
 
-    def _seguir_restaurando(self) -> None:
-        """Abre el siguiente documento de la cola de restauración."""
-        pendientes = getattr(self, "_por_restaurar", None)
-        if not pendientes:
-            return
-        ruta = pendientes.pop(0)
-        # El primero va en la pestaña que ya existe, que está vacía; los demás,
-        # cada uno en la suya.
-        primero = len(self.pestanas.sesiones) == 1 and self.sesion.vacia
-        self.abrir_libro(ruta, en_pestana_nueva=not primero)
-
     def _continuar_cola(self) -> None:
-        """Sigue con la restauración, o la da por terminada si ya no queda nada."""
+        """Da por terminada la restauración, si había una en marcha."""
         if getattr(self, "_por_restaurar", None) is None:
             return
-        if self._por_restaurar:
-            wx.CallAfter(self._seguir_restaurando)
-        else:
-            self._terminar_restauracion()
+        self._terminar_restauracion()
 
     def _terminar_restauracion(self) -> None:
         """Coloca delante la pestaña que lo estaba y da por hecha la cola."""

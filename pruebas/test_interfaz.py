@@ -1003,9 +1003,124 @@ def test_la_ventana_de_opciones_tiene_la_pestana_de_biblioteca(ventana):
         assert "Biblioteca y sincronización" in nombres
         # Y los ajustes nuevos de la pestaña de lectura existen de verdad.
         assert dialogo.solo_articulo is not None
+        dialogo.construir_todas()
         assert dialogo.revisar_epub is not None
     finally:
         dialogo.Destroy()
+
+
+def test_las_opciones_solo_construyen_la_primera_pestana_al_abrir(ventana):
+    """Las demás se montan al visitarlas: construirlas todas costaba un segundo."""
+    from interfaz.dialogos.opciones import DialogoOpciones
+
+    dialogo = DialogoOpciones(ventana, ventana.configuracion, ventana.sonidos)
+    try:
+        assert dialogo.ajuste is not None            # Lectura, la primera
+        assert not hasattr(dialogo, "fuente")        # Apariencia, sin visitar
+        indice = [dialogo.cuaderno.GetPageText(n)
+                  for n in range(dialogo.cuaderno.GetPageCount())].index("Apariencia")
+        dialogo.cuaderno.SetSelection(indice)
+        assert dialogo.fuente is not None
+    finally:
+        dialogo.Destroy()
+
+
+def test_la_pestana_se_construye_aunque_la_cambie_windows(ventana):
+    """Con las flechas o el ratón cambia la pestaña el propio Windows.
+
+    Entonces el aviso de «va a cambiar» trae la pestaña que se deja, y solo
+    el de «ha cambiado» trae la nueva: con el primero solo, se llegaba a un
+    hueco vacío y había que salir y volver para ver los controles.
+    """
+    from interfaz.dialogos.opciones import DialogoOpciones
+
+    dialogo = DialogoOpciones(ventana, ventana.configuracion, ventana.sonidos)
+    try:
+        cuaderno = dialogo.cuaderno
+        indice = [cuaderno.GetPageText(n)
+                  for n in range(cuaderno.GetPageCount())].index("Apariencia")
+        # Lo mismo que hace Windows: cambia sin pasar por wx y avisa después.
+        cuaderno.ChangeSelection(indice)
+        assert not hasattr(dialogo, "fuente")
+        aviso = wx.BookCtrlEvent(wx.wxEVT_NOTEBOOK_PAGE_CHANGED, cuaderno.GetId(),
+                                 indice, 0)
+        aviso.SetEventObject(cuaderno)
+        cuaderno.GetEventHandler().ProcessEvent(aviso)
+        assert dialogo.fuente is not None
+        assert cuaderno.GetPage(indice).GetChildren()
+    finally:
+        dialogo.Destroy()
+
+
+def test_la_ia_y_la_ia_local_se_construyen_juntas(ventana):
+    """Cada una toca controles de la otra, así que van siempre a la par."""
+    from interfaz.dialogos.opciones import DialogoOpciones
+
+    dialogo = DialogoOpciones(ventana, ventana.configuracion, ventana.sonidos)
+    try:
+        indice = [dialogo.cuaderno.GetPageText(n)
+                  for n in range(dialogo.cuaderno.GetPageCount())].index("IA local")
+        dialogo.cuaderno.SetSelection(indice)
+        assert dialogo.ia_proveedor is not None      # de la pestaña de IA
+        assert dialogo.ollama_estado is not None     # de la de IA local
+        # Cada una en su hueco, no las dos en la que se ha pedido.
+        hueco_ia = dialogo.cuaderno.GetPage(indice - 1)
+        assert dialogo.ia_proveedor.GetGrandParent() is hueco_ia or \
+            hueco_ia.IsDescendant(dialogo.ia_proveedor)
+    finally:
+        dialogo.Destroy()
+
+
+def test_aceptar_sin_visitar_pestanas_no_cambia_sus_ajustes(ventana):
+    """Lo que no se ha visto se queda como estaba, sin tocar el registro."""
+    import wx as _wx
+    from interfaz.dialogos.opciones import DialogoOpciones
+
+    configuracion = ventana.configuracion
+    antes = {clave: configuracion.obtener(clave)
+             for clave in ("fuente_tamano", "pdf_ocr_maximo", "nivel_registro")}
+    configuracion.guardar = lambda: None          # la prueba no escribe en disco
+    try:
+        configuracion.establecer("fuente_tamano", 17)
+        configuracion.establecer("pdf_ocr_maximo", 42)
+        dialogo = DialogoOpciones(ventana, configuracion, ventana.sonidos)
+        try:
+            dialogo.EndModal = lambda codigo: None
+            dialogo._al_aceptar(_wx.CommandEvent())
+        finally:
+            dialogo.Destroy()
+        assert configuracion.obtener("fuente_tamano") == 17
+        assert configuracion.obtener("pdf_ocr_maximo") == 42
+    finally:
+        for clave, valor in antes.items():
+            configuracion.establecer(clave, valor)
+        del configuracion.guardar
+
+
+def test_construir_todas_las_pestanas_deja_todo_listo_para_aceptar(ventana):
+    """Con todas construidas, aceptar recoge todo como antes."""
+    import wx as _wx
+    from interfaz.dialogos.opciones import DialogoOpciones
+
+    configuracion = ventana.configuracion
+    antes = dict(configuracion._ajustes)
+    configuracion.guardar = lambda: None          # la prueba no escribe en disco
+    try:
+        dialogo = DialogoOpciones(ventana, configuracion, ventana.sonidos)
+        try:
+            dialogo.construir_todas()
+            assert not dialogo._pendientes
+            dialogo.tamano.SetValue(19)
+            dialogo.EndModal = lambda codigo: None
+            dialogo._guardar_integracion = lambda establecer: None   # sin tocar el registro
+            dialogo._al_aceptar(_wx.CommandEvent())
+        finally:
+            dialogo.Destroy()
+        assert configuracion.obtener("fuente_tamano") == 19
+    finally:
+        configuracion._ajustes.clear()
+        configuracion._ajustes.update(antes)
+        del configuracion.guardar
 
 
 # --- el menú de herramientas, repartido por tareas --------------------------

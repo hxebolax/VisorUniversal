@@ -76,10 +76,14 @@ class Pestanas(wx.Panel):
         """Crea el contenedor de páginas que toque y engancha su evento."""
         if self._con_pestanas:
             libro = wx.Notebook(self, style=wx.NB_TOP)
-            libro.Bind(wx.EVT_NOTEBOOK_PAGE_CHANGED, self._al_cambiar_pagina)
-            libro.Bind(wx.EVT_NOTEBOOK_PAGE_CHANGING, self._al_dejar_pagina)
         else:
             libro = wx.Simplebook(self)
+        # Los dos avisan igual al cambiar de página.  Sin lengüetas también hay
+        # que enterarse: se cambia de documento con Control+Tabulador, y la
+        # ventana tiene que ponerse al día (y abrir el documento reservado de
+        # esa página, si lo tiene).
+        libro.Bind(wx.EVT_BOOKCTRL_PAGE_CHANGED, self._al_cambiar_pagina)
+        libro.Bind(wx.EVT_BOOKCTRL_PAGE_CHANGING, self._al_dejar_pagina)
         libro.SetName(_("Documentos abiertos"))
         return libro
 
